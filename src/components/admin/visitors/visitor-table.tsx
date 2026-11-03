@@ -48,7 +48,6 @@ function getRouteLabel(path: string): string {
 export function VisitorTable({ records }: VisitorTableProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
-  const [isRealtimeConnected, setIsRealtimeConnected] = useState(false);
   const [liveRecords, setLiveRecords] = useState<VisitorAnalyticsRecord[]>(records);
   const [searchQuery, setSearchQuery] = useState("");
   const [deviceFilter, setDeviceFilter] = useState("ALL");
@@ -98,9 +97,7 @@ export function VisitorTable({ records }: VisitorTableProps) {
           router.refresh();
         }
       )
-      .subscribe((status) => {
-        setIsRealtimeConnected(status === "SUBSCRIBED");
-      });
+      .subscribe();
 
     return () => {
       supabase.removeChannel(channel);

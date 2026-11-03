@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useMemo, useState, useTransition } from "react";
+import React, { useCallback, useEffect, useMemo, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { subDays } from "date-fns";
 import { Mail, RefreshCw, Plus, Trash2 } from "lucide-react";
@@ -36,7 +36,6 @@ interface SubscriberTableProps {
 export function SubscriberTable({ initialSubscribers }: SubscriberTableProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
-  const [isRealtimeConnected, setIsRealtimeConnected] = useState(false);
   const [subscribers, setSubscribers] =
     useState<NewsletterSubscriber[]>(initialSubscribers);
   const [searchQuery, setSearchQuery] = useState("");
@@ -96,9 +95,7 @@ export function SubscriberTable({ initialSubscribers }: SubscriberTableProps) {
           }
         }
       )
-      .subscribe((status) => {
-        setIsRealtimeConnected(status === "SUBSCRIBED");
-      });
+      .subscribe();
 
     return () => {
       void supabase.removeChannel(channel);
@@ -178,7 +175,7 @@ export function SubscriberTable({ initialSubscribers }: SubscriberTableProps) {
     }
   };
 
-  const handleToggle = async (sub: NewsletterSubscriber) => {
+  const handleToggle = useCallback(async (sub: NewsletterSubscriber) => {
     const nextState = !sub.is_subscribed;
     const res = await toggleSubscriberStatusAction(sub.id, nextState);
     if (!res.success) {
@@ -194,7 +191,7 @@ export function SubscriberTable({ initialSubscribers }: SubscriberTableProps) {
       `${sub.email} marked as ${nextState ? "Subscribed" : "Unsubscribed"}.`
     );
     router.refresh();
-  };
+  }, [router]);
 
   const columns = useMemo<ColumnDef<NewsletterSubscriber>[]>(
     () => [
@@ -265,7 +262,7 @@ export function SubscriberTable({ initialSubscribers }: SubscriberTableProps) {
         ),
       },
     ],
-    []
+    [handleToggle]
   );
 
   const exportRows = filtered.map((s) => [

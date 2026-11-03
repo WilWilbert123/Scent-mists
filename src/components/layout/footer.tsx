@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, Sparkles } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { BRAND_NAME } from "@/lib/constants";
 import { FOOTER_NAV_GROUPS } from "@/data/navigation";
 

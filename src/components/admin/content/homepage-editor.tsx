@@ -8,7 +8,6 @@ import type { HomepageContentConfig } from "@/types/admin";
 import { updateHomepageContentAction } from "@/actions/content.actions";
 import { createSupabaseBrowserClient } from "@/lib/supabase/client";
 import { formatDisplayDateTime } from "@/lib/format-date";
-import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
@@ -34,7 +33,6 @@ export function HomepageEditor({
   const router = useRouter();
   const [content, setContent] = useState<HomepageContentConfig>(initialContent);
   const [isSaving, setIsSaving] = useState(false);
-  const [isRealtimeConnected, setIsRealtimeConnected] = useState(false);
 
   useEffect(() => {
     setContent(initialContent);
@@ -58,9 +56,7 @@ export function HomepageEditor({
           router.refresh();
         }
       )
-      .subscribe((status) => {
-        setIsRealtimeConnected(status === "SUBSCRIBED");
-      });
+      .subscribe();
 
     return () => {
       void supabase.removeChannel(channel);
