@@ -17,7 +17,7 @@ const SIGNATURE_NOTES = [
 
 export function HeroContent({ content }: HeroContentProps) {
   return (
-    <div className="relative z-10 flex flex-col justify-center space-y-6 lg:py-10">
+    <div className="relative z-10 flex flex-col justify-center space-y-4 sm:space-y-6 lg:py-10">
       {/* Subtle Maison Eyebrow */}
       <FadeIn delay={0.04} xOffset={-24} yOffset={0}>
         <div className="inline-flex items-center gap-3 text-[11px] uppercase tracking-[0.26em] text-foreground/75">
@@ -29,14 +29,14 @@ export function HeroContent({ content }: HeroContentProps) {
 
       {/* Brand Display Title */}
       <FadeIn delay={0.08} xOffset={-24} yOffset={0}>
-        <h1 className="font-serif text-5xl sm:text-6xl lg:text-[4.35rem] font-normal tracking-[0.06em] leading-[1.04] text-foreground">
+        <h1 className="font-serif text-4xl sm:text-6xl lg:text-[4.35rem] font-normal tracking-[0.06em] leading-[1.04] text-foreground">
           {content.heroHeadline}
         </h1>
       </FadeIn>
 
       {/* Signature Tagline */}
       <FadeIn delay={0.14} xOffset={-24} yOffset={0}>
-        <p className="font-serif text-xl sm:text-2xl lg:text-[1.65rem] italic font-normal tracking-wide text-foreground/90">
+        <p className="font-serif text-lg sm:text-2xl lg:text-[1.65rem] italic font-normal tracking-wide text-foreground/90">
           {content.heroSubheadline}
         </p>
       </FadeIn>
@@ -49,7 +49,7 @@ export function HeroContent({ content }: HeroContentProps) {
       {/* Concise Editorial Description & Key Notes */}
       <FadeIn delay={0.22} xOffset={-24} yOffset={0}>
         <div className="space-y-4 max-w-lg">
-          <p className="font-serif text-lg sm:text-[1.2rem] text-foreground/85 leading-relaxed">
+          <p className="font-serif text-base sm:text-[1.2rem] text-foreground/85 leading-relaxed">
             {content.heroDescription}
           </p>
 
@@ -68,12 +68,12 @@ export function HeroContent({ content }: HeroContentProps) {
 
       {/* Refined Action Row */}
       <FadeIn delay={0.28} xOffset={-24} yOffset={0}>
-        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-5 pt-3">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-5 pt-2 sm:pt-3">
           <Button
             asChild
             variant="outline"
             size="lg"
-            className="border-foreground/50 bg-background/30 backdrop-blur-xs hover:bg-foreground hover:text-background px-8 py-6 text-xs uppercase tracking-[0.2em]"
+            className="border-foreground/50 bg-background/30 backdrop-blur-xs hover:bg-foreground hover:text-background w-full sm:w-auto px-7 py-3 sm:py-6 text-xs uppercase tracking-[0.2em] min-h-[44px]"
           >
             <Link href={content.heroSecondaryCtaHref}>
               <span>{content.heroSecondaryCtaText}</span>

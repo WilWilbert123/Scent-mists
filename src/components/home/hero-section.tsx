@@ -16,8 +16,8 @@ export function HeroSection({ content }: HeroSectionProps) {
       className="relative min-h-[calc(100dvh-73px)] w-full overflow-hidden border-b border-border flex items-center"
     >
       <HeroBackground />
-      <div className="relative mx-auto w-full max-w-7xl px-4 py-14 sm:px-6 lg:px-8 lg:py-20">
-        <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 items-center">
+      <div className="relative mx-auto w-full max-w-7xl px-4 py-8 sm:py-14 sm:px-6 lg:px-8 lg:py-20">
+        <div className="grid grid-cols-1 gap-8 lg:gap-10 lg:grid-cols-12 items-center">
           <div className="lg:col-span-6">
             <HeroContent content={content} />
           </div>
