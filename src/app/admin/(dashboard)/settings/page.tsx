@@ -5,15 +5,18 @@ import {
   getAdminProfileAndLogsAction,
   getSupabaseDatabaseDiagnosticsAction,
 } from "@/actions/settings.actions";
+import { getCartDeliverySettingsAction } from "@/actions/delivery-settings.actions";
 import { formatDisplayDateTime } from "@/lib/format-date";
 import { Badge } from "@/components/ui/badge";
 import { StatCard } from "@/components/admin/dashboard/stat-card";
 import { DatabaseStorageManager } from "@/components/admin/settings/database-storage-manager";
+import { CartDeliveryPromoManager } from "@/components/admin/settings/cart-delivery-promo-manager";
 
 export default async function AdminSettingsIndexPage() {
-  const [{ admin, auditLogs }, diagnostics] = await Promise.all([
+  const [{ admin, auditLogs }, diagnostics, cartDeliverySettings] = await Promise.all([
     getAdminProfileAndLogsAction(),
     getSupabaseDatabaseDiagnosticsAction(),
+    getCartDeliverySettingsAction(),
   ]);
 
   const sections = [
@@ -133,6 +136,9 @@ export default async function AdminSettingsIndexPage() {
           );
         })}
       </div>
+
+      {/* Cart & Delivery Promo Settings (Admin Controlled) */}
+      <CartDeliveryPromoManager initialSettings={cartDeliverySettings} />
 
       {/* Live Supabase Tables & Storage Maintenance */}
       <DatabaseStorageManager initialDiagnostics={diagnostics} />

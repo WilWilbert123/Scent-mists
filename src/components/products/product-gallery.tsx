@@ -25,6 +25,7 @@ export function ProductGallery({
           src={activeImage}
           alt={`${name} presentation view`}
           fill
+          unoptimized
           sizes="(max-width: 1024px) 100vw, 50vw"
           className="object-cover"
           priority

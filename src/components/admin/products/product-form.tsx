@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Save } from "lucide-react";
-import type { Product, ProductFormValues } from "@/types/product";
+import type { Product, ProductFormValues, ProductGender, ProductVolume, ProductStatus } from "@/types/product";
 import { slugify } from "@/lib/utils";
 import {
   createProductAction,
@@ -25,30 +25,40 @@ export function ProductForm({ initialProduct, mode }: ProductFormProps) {
   const router = useRouter();
   const [name, setName] = useState(initialProduct?.name || "");
   const [slug, setSlug] = useState(initialProduct?.slug || "");
+  const [brand, setBrand] = useState(initialProduct?.brand || "Victoria's Secret");
+  const [sku, setSku] = useState(initialProduct?.sku || "");
+  const [volume, setVolume] = useState<ProductVolume>(initialProduct?.volume || "50ml");
+  const [gender, setGender] = useState<ProductGender>(initialProduct?.gender || "female");
+  const [price, setPrice] = useState<number>(initialProduct?.price || 199);
+  const [originalPrice, setOriginalPrice] = useState<number>(initialProduct?.original_price || 260);
+  const [stock, setStock] = useState<number>(initialProduct?.stock || 25);
+  const [status, setStatus] = useState<ProductStatus>(initialProduct?.status || "in_stock");
+
   const [fragranceFamily, setFragranceFamily] = useState(
-    initialProduct?.fragrance_family || "Floral Musky"
+    initialProduct?.fragrance_family || "Fruity Floral"
   );
   const [description, setDescription] = useState(
     initialProduct?.description || ""
   );
   const [topNotesText, setTopNotesText] = useState(
     initialProduct?.top_notes?.join(", ") ||
-      "Crisp Mountain Air Accord, White Bergamot Mist"
+      "Peach Nectar, Crisp Red Apple"
   );
   const [heartNotesText, setHeartNotesText] = useState(
     initialProduct?.heart_notes?.join(", ") ||
-      "Wild Cherry Blossom, Silver Needle White Tea"
+      "Night Jasmine, Pink Freesia"
   );
   const [baseNotesText, setBaseNotesText] = useState(
     initialProduct?.base_notes?.join(", ") ||
-      "Cashmere Cedarwood, Soft Silk Musk"
+      "Vanilla Orchid, White Amber"
   );
   const [imageUrl, setImageUrl] = useState(
     initialProduct?.image_url || "/images/products/sakura-mountain-mist.webp"
   );
-  const [galleryText, setGalleryText] = useState(
+  const [galleryText] = useState(
     initialProduct?.gallery?.join(", ") ||
-      "/images/products/sakura-mountain-mist.webp, /images/products/morning-cedar-mist.webp"
+      initialProduct?.image_url ||
+      "/images/products/sakura-mountain-mist.webp"
   );
   const [isFeatured, setIsFeatured] = useState(
     initialProduct?.is_featured ?? false
@@ -72,6 +82,14 @@ export function ProductForm({ initialProduct, mode }: ProductFormProps) {
     const payload: ProductFormValues = {
       name: name.trim(),
       slug: slug.trim(),
+      brand: brand.trim(),
+      sku: sku.trim() || undefined,
+      volume,
+      gender,
+      price: Number(price),
+      original_price: Number(originalPrice),
+      stock: Number(stock),
+      status,
       fragrance_family: fragranceFamily.trim(),
       description: description.trim(),
       top_notes: topNotesText
@@ -103,14 +121,14 @@ export function ProductForm({ initialProduct, mode }: ProductFormProps) {
           : await updateProductAction(initialProduct!.id, payload);
 
       if (!result.success) {
-        toast.error(result.error || "Unable to save fragrance showcase entry.");
+        toast.error(result.error || "Unable to save perfume entry.");
         return;
       }
 
       toast.success(
         mode === "create"
-          ? "Fragrance showcase entry created."
-          : "Fragrance showcase entry updated."
+          ? "Perfume entry created and added to inventory."
+          : "Perfume entry updated."
       );
       router.push("/admin/products");
       router.refresh();
@@ -122,25 +140,180 @@ export function ProductForm({ initialProduct, mode }: ProductFormProps) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="space-y-6 border border-border bg-surface-elevated p-6 sm:p-8"
+      className="space-y-6 border border-border bg-surface-elevated p-6 sm:p-8 rounded-xl"
     >
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-        <div className="space-y-1.5">
+      {/* Basic Info */}
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
+        <div className="space-y-1.5 sm:col-span-2">
           <label
             htmlFor="prod-name"
             className="block text-xs uppercase tracking-[0.14em] text-foreground font-medium"
           >
-            Fragrance Name
+            Perfume Name *
           </label>
           <Input
             id="prod-name"
             required
             value={name}
             onChange={(e) => handleNameChange(e.target.value)}
-            placeholder="Sakura & Mountain Mist"
+            placeholder="e.g. VS - Bombshell (CVS03)"
           />
         </div>
 
+        <div className="space-y-1.5">
+          <label
+            htmlFor="prod-brand"
+            className="block text-xs uppercase tracking-[0.14em] text-foreground font-medium"
+          >
+            Brand
+          </label>
+          <Input
+            id="prod-brand"
+            value={brand}
+            onChange={(e) => setBrand(e.target.value)}
+            placeholder="e.g. Victoria's Secret, Bvlgari"
+          />
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
+        <div className="space-y-1.5">
+          <label
+            htmlFor="prod-sku"
+            className="block text-xs uppercase tracking-[0.14em] text-foreground font-medium"
+          >
+            SKU Code
+          </label>
+          <Input
+            id="prod-sku"
+            value={sku}
+            onChange={(e) => setSku(e.target.value)}
+            placeholder="CVS03, CCK02"
+          />
+        </div>
+
+        <div className="space-y-1.5">
+          <label
+            htmlFor="prod-volume"
+            className="block text-xs uppercase tracking-[0.14em] text-foreground font-medium"
+          >
+            Volume Size
+          </label>
+          <Select
+            id="prod-volume"
+            value={volume}
+            onChange={(e) => setVolume(e.target.value as ProductVolume)}
+            options={[
+              { label: "50ml Aroma Body Mist", value: "50ml" },
+              { label: "85ml Eau de Parfum", value: "85ml" },
+              { label: "100ml Signature Flacon", value: "100ml" },
+            ]}
+          />
+        </div>
+
+        <div className="space-y-1.5">
+          <label
+            htmlFor="prod-gender"
+            className="block text-xs uppercase tracking-[0.14em] text-foreground font-medium"
+          >
+            Target Audience
+          </label>
+          <Select
+            id="prod-gender"
+            value={gender}
+            onChange={(e) => setGender(e.target.value as ProductGender)}
+            options={[
+              { label: "Female Perfume", value: "female" },
+              { label: "Male Perfume", value: "male" },
+              { label: "Unisex / Universal", value: "unisex" },
+            ]}
+          />
+        </div>
+
+        <div className="space-y-1.5">
+          <label
+            htmlFor="prod-status"
+            className="block text-xs uppercase tracking-[0.14em] text-foreground font-medium"
+          >
+            Stock Status
+          </label>
+          <Select
+            id="prod-status"
+            value={status}
+            onChange={(e) => setStatus(e.target.value as ProductStatus)}
+            options={[
+              { label: "In Stock", value: "in_stock" },
+              { label: "Low Stock", value: "low_stock" },
+              { label: "Out of Stock", value: "out_of_stock" },
+            ]}
+          />
+        </div>
+      </div>
+
+      {/* Pricing & Inventory */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 border-y border-border py-4">
+        <div className="space-y-1.5">
+          <label
+            htmlFor="prod-price"
+            className="block text-xs uppercase tracking-[0.14em] text-foreground font-medium"
+          >
+            Selling Price (PHP ₱) *
+          </label>
+          <Input
+            id="prod-price"
+            type="number"
+            min="0"
+            required
+            value={price}
+            onChange={(e) => setPrice(Number(e.target.value))}
+            placeholder="199"
+          />
+        </div>
+
+        <div className="space-y-1.5">
+          <label
+            htmlFor="prod-orig-price"
+            className="block text-xs uppercase tracking-[0.14em] text-foreground font-medium"
+          >
+            Original Slash Price (PHP ₱)
+          </label>
+          <Input
+            id="prod-orig-price"
+            type="number"
+            min="0"
+            value={originalPrice}
+            onChange={(e) => setOriginalPrice(Number(e.target.value))}
+            placeholder="260"
+          />
+        </div>
+
+        <div className="space-y-1.5">
+          <label
+            htmlFor="prod-stock"
+            className="block text-xs uppercase tracking-[0.14em] text-foreground font-medium"
+          >
+            Inventory Stock (Units Available) *
+          </label>
+          <Input
+            id="prod-stock"
+            type="number"
+            min="0"
+            required
+            value={stock}
+            onChange={(e) => {
+              const val = Number(e.target.value);
+              setStock(val);
+              if (val === 0) setStatus("out_of_stock");
+              else if (val <= 10) setStatus("low_stock");
+              else setStatus("in_stock");
+            }}
+            placeholder="25"
+          />
+        </div>
+      </div>
+
+      {/* URL & Fragrance Family */}
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
         <div className="space-y-1.5">
           <label
             htmlFor="prod-slug"
@@ -153,30 +326,24 @@ export function ProductForm({ initialProduct, mode }: ProductFormProps) {
             required
             value={slug}
             onChange={(e) => setSlug(slugify(e.target.value))}
-            placeholder="sakura-and-mountain-mist"
+            placeholder="aroma-body-mist-50ml-vs-bombshell"
           />
         </div>
-      </div>
 
-      <div className="space-y-1.5 max-w-sm">
-        <label
-          htmlFor="prod-family"
-          className="block text-xs uppercase tracking-[0.14em] text-foreground font-medium"
-        >
-          Fragrance Family
-        </label>
-        <Select
-          id="prod-family"
-          value={fragranceFamily}
-          onChange={(e) => setFragranceFamily(e.target.value)}
-          options={[
-            { label: "Floral Musky", value: "Floral Musky" },
-            { label: "Woody Aromatic", value: "Woody Aromatic" },
-            { label: "Floral Green", value: "Floral Green" },
-            { label: "Amber Floral", value: "Amber Floral" },
-            { label: "Citrus Botanical", value: "Citrus Botanical" },
-          ]}
-        />
+        <div className="space-y-1.5">
+          <label
+            htmlFor="prod-family"
+            className="block text-xs uppercase tracking-[0.14em] text-foreground font-medium"
+          >
+            Fragrance Family
+          </label>
+          <Input
+            id="prod-family"
+            value={fragranceFamily}
+            onChange={(e) => setFragranceFamily(e.target.value)}
+            placeholder="Fruity Floral Gourmand, Citrus Marine, etc."
+          />
+        </div>
       </div>
 
       <div className="space-y-1.5">
@@ -184,18 +351,19 @@ export function ProductForm({ initialProduct, mode }: ProductFormProps) {
           htmlFor="prod-description"
           className="block text-xs uppercase tracking-[0.14em] text-foreground font-medium"
         >
-          Editorial Description
+          Description &amp; Scent Notes
         </label>
         <Textarea
           id="prod-description"
           required
+          rows={3}
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          placeholder="Describe the olfactory inspiration and atmospheric character..."
+          placeholder="Describe the scent characteristics and opening accords..."
         />
       </div>
 
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
         <div className="space-y-1.5">
           <label
             htmlFor="prod-top-notes"
@@ -245,22 +413,8 @@ export function ProductForm({ initialProduct, mode }: ProductFormProps) {
       <ProductImageUpload
         value={imageUrl}
         onChange={setImageUrl}
-        label="Primary Showcase Image"
+        label="Primary Perfume Visual"
       />
-
-      <div className="space-y-1.5">
-        <label
-          htmlFor="prod-gallery"
-          className="block text-xs uppercase tracking-[0.14em] text-foreground font-medium"
-        >
-          Gallery Image Paths (Comma separated)
-        </label>
-        <Input
-          id="prod-gallery"
-          value={galleryText}
-          onChange={(e) => setGalleryText(e.target.value)}
-        />
-      </div>
 
       <div className="flex flex-wrap items-center gap-6 border-t border-border pt-4">
         <label className="inline-flex items-center gap-2.5 text-sm text-foreground cursor-pointer">
@@ -270,7 +424,7 @@ export function ProductForm({ initialProduct, mode }: ProductFormProps) {
             onChange={(e) => setIsPublished(e.target.checked)}
             className="h-4 w-4"
           />
-          <span>Published on Public Showcase</span>
+          <span>Published on Storefront</span>
         </label>
 
         <label className="inline-flex items-center gap-2.5 text-sm text-foreground cursor-pointer">
@@ -280,7 +434,7 @@ export function ProductForm({ initialProduct, mode }: ProductFormProps) {
             onChange={(e) => setIsFeatured(e.target.checked)}
             className="h-4 w-4"
           />
-          <span>Featured Signature Fragrance</span>
+          <span>Featured Main Fragrance</span>
         </label>
       </div>
 
@@ -298,7 +452,7 @@ export function ProductForm({ initialProduct, mode }: ProductFormProps) {
             {isSubmitting
               ? "Saving..."
               : mode === "create"
-              ? "Create Fragrance Entry"
+              ? "Add Perfume to Inventory"
               : "Save Changes"}
           </span>
         </Button>
@@ -306,4 +460,3 @@ export function ProductForm({ initialProduct, mode }: ProductFormProps) {
     </form>
   );
 }
-

@@ -6,6 +6,7 @@ import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import {
   LayoutDashboard,
+  ShoppingBag,
   BarChart3,
   Users,
   MessageSquare,
@@ -27,6 +28,7 @@ import { toast } from "@/components/ui/toast";
 
 const ICON_MAP: Record<AdminNavItem["iconName"], React.ComponentType<{ className?: string }>> = {
   LayoutDashboard,
+  ShoppingBag,
   BarChart3,
   Users,
   MessageSquare,
@@ -179,4 +181,3 @@ export function AdminSidebar() {
     </aside>
   );
 }
-

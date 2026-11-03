@@ -3,6 +3,8 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   images: {
+    dangerouslyAllowSVG: true,
+    contentDispositionType: "inline",
     formats: ["image/avif", "image/webp"],
     remotePatterns: [
       {
@@ -52,4 +54,3 @@ const nextConfig: NextConfig = {
 };
 
 export default nextConfig;
-
