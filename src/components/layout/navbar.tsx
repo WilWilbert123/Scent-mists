@@ -15,7 +15,7 @@ export function Navbar() {
 
   return (
     <header className="sticky top-0 z-40 w-full border-b border-border/70 bg-background/90 backdrop-blur-md">
-      <div className="mx-auto flex h-[72px] max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto flex h-14 sm:h-[72px] max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Brand Logo & Wordmark */}
         <Link
           href="/"
@@ -31,7 +31,7 @@ export function Navbar() {
               className="object-contain"
             />
           </span>
-          <span className="font-serif text-xl sm:text-2xl tracking-[0.22em] text-foreground">
+          <span className="hidden sm:inline-block font-serif sm:text-2xl tracking-[0.22em] text-foreground">
             {BRAND_NAME}
           </span>
         </Link>
