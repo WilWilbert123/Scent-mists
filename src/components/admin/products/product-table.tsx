@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useMemo, useState, useTransition } from "react";
+import React, { useCallback, useEffect, useMemo, useState, useTransition } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -26,7 +26,6 @@ interface ProductTableProps {
 export function ProductTable({ initialProducts }: ProductTableProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
-  const [isRealtimeConnected, setIsRealtimeConnected] = useState(false);
   const [products, setProducts] = useState<Product[]>(initialProducts);
   const [searchQuery, setSearchQuery] = useState("");
   const [deleteTarget, setDeleteTarget] = useState<Product | null>(null);
@@ -58,9 +57,7 @@ export function ProductTable({ initialProducts }: ProductTableProps) {
           router.refresh();
         }
       )
-      .subscribe((status) => {
-        setIsRealtimeConnected(status === "SUBSCRIBED");
-      });
+      .subscribe();
 
     return () => {
       void supabase.removeChannel(channel);
@@ -115,63 +112,69 @@ export function ProductTable({ initialProducts }: ProductTableProps) {
     }
   };
 
-  const handleTogglePublished = async (prod: Product) => {
-    const nextState = !prod.is_published;
-    const res = await updateProductAction(prod.id, {
-      name: prod.name,
-      slug: prod.slug,
-      description: prod.description,
-      fragrance_family: prod.fragrance_family,
-      top_notes: prod.top_notes,
-      heart_notes: prod.heart_notes,
-      base_notes: prod.base_notes,
-      image_url: prod.image_url,
-      gallery: prod.gallery,
-      collection_id: prod.collection_id ?? null,
-      is_featured: prod.is_featured,
-      is_published: nextState,
-    });
-    if (!res.success) {
-      toast.error(res.error || "Unable to update visibility.");
-      return;
-    }
-    setProducts((prev) =>
-      prev.map((p) => (p.id === prod.id ? { ...p, is_published: nextState } : p))
-    );
-    toast.success(
-      `${prod.name} marked as ${nextState ? "Published" : "Draft"}.`
-    );
-    router.refresh();
-  };
+  const handleTogglePublished = useCallback(
+    async (prod: Product) => {
+      const nextState = !prod.is_published;
+      const res = await updateProductAction(prod.id, {
+        name: prod.name,
+        slug: prod.slug,
+        description: prod.description,
+        fragrance_family: prod.fragrance_family,
+        top_notes: prod.top_notes,
+        heart_notes: prod.heart_notes,
+        base_notes: prod.base_notes,
+        image_url: prod.image_url,
+        gallery: prod.gallery,
+        collection_id: prod.collection_id ?? null,
+        is_featured: prod.is_featured,
+        is_published: nextState,
+      });
+      if (!res.success) {
+        toast.error(res.error || "Unable to update visibility.");
+        return;
+      }
+      setProducts((prev) =>
+        prev.map((p) => (p.id === prod.id ? { ...p, is_published: nextState } : p))
+      );
+      toast.success(
+        `${prod.name} marked as ${nextState ? "Published" : "Draft"}.`
+      );
+      router.refresh();
+    },
+    [router]
+  );
 
-  const handleToggleFeatured = async (prod: Product) => {
-    const nextState = !prod.is_featured;
-    const res = await updateProductAction(prod.id, {
-      name: prod.name,
-      slug: prod.slug,
-      description: prod.description,
-      fragrance_family: prod.fragrance_family,
-      top_notes: prod.top_notes,
-      heart_notes: prod.heart_notes,
-      base_notes: prod.base_notes,
-      image_url: prod.image_url,
-      gallery: prod.gallery,
-      collection_id: prod.collection_id ?? null,
-      is_featured: nextState,
-      is_published: prod.is_published,
-    });
-    if (!res.success) {
-      toast.error(res.error || "Unable to update featured status.");
-      return;
-    }
-    setProducts((prev) =>
-      prev.map((p) => (p.id === prod.id ? { ...p, is_featured: nextState } : p))
-    );
-    toast.success(
-      `${prod.name} marked as ${nextState ? "Signature Creation" : "Collection Edition"}.`
-    );
-    router.refresh();
-  };
+  const handleToggleFeatured = useCallback(
+    async (prod: Product) => {
+      const nextState = !prod.is_featured;
+      const res = await updateProductAction(prod.id, {
+        name: prod.name,
+        slug: prod.slug,
+        description: prod.description,
+        fragrance_family: prod.fragrance_family,
+        top_notes: prod.top_notes,
+        heart_notes: prod.heart_notes,
+        base_notes: prod.base_notes,
+        image_url: prod.image_url,
+        gallery: prod.gallery,
+        collection_id: prod.collection_id ?? null,
+        is_featured: nextState,
+        is_published: prod.is_published,
+      });
+      if (!res.success) {
+        toast.error(res.error || "Unable to update featured status.");
+        return;
+      }
+      setProducts((prev) =>
+        prev.map((p) => (p.id === prod.id ? { ...p, is_featured: nextState } : p))
+      );
+      toast.success(
+        `${prod.name} marked as ${nextState ? "Signature Creation" : "Collection Edition"}.`
+      );
+      router.refresh();
+    },
+    [router]
+  );
 
   const columns = useMemo<ColumnDef<Product>[]>(
     () => [
@@ -308,7 +311,7 @@ export function ProductTable({ initialProducts }: ProductTableProps) {
         ),
       },
     ],
-    []
+    [handleToggleFeatured, handleTogglePublished]
   );
 
   return (

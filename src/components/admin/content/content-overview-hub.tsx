@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState, useTransition } from "react";
+import React, { useEffect, useTransition } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
@@ -26,7 +26,6 @@ interface ContentOverviewHubProps {
 export function ContentOverviewHub({ overview }: ContentOverviewHubProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
-  const [isRealtimeConnected, setIsRealtimeConnected] = useState(false);
 
   useEffect(() => {
     const supabase = createSupabaseBrowserClient();
@@ -41,9 +40,7 @@ export function ContentOverviewHub({ overview }: ContentOverviewHubProps) {
           router.refresh();
         }
       )
-      .subscribe((status) => {
-        setIsRealtimeConnected(status === "SUBSCRIBED");
-      });
+      .subscribe();
 
     return () => {
       void supabase.removeChannel(channel);

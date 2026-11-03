@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useMemo, useState, useTransition } from "react";
+import React, { useCallback, useEffect, useMemo, useState, useTransition } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -32,7 +32,6 @@ interface CollectionTableProps {
 export function CollectionTable({ initialCollections }: CollectionTableProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
-  const [isRealtimeConnected, setIsRealtimeConnected] = useState(false);
   const [collections, setCollections] =
     useState<Collection[]>(initialCollections);
   const [searchQuery, setSearchQuery] = useState("");
@@ -79,9 +78,7 @@ export function CollectionTable({ initialCollections }: CollectionTableProps) {
           router.refresh();
         }
       )
-      .subscribe((status) => {
-        setIsRealtimeConnected(status === "SUBSCRIBED");
-      });
+      .subscribe();
 
     return () => {
       void supabase.removeChannel(channel);
@@ -159,7 +156,7 @@ export function CollectionTable({ initialCollections }: CollectionTableProps) {
     );
   }, [collections, searchQuery]);
 
-  const handleTogglePublished = async (col: Collection) => {
+  const handleTogglePublished = useCallback(async (col: Collection) => {
     const nextState = !col.is_published;
     const res = await updateCollectionAction(col.id, {
       name: col.name,
@@ -181,7 +178,7 @@ export function CollectionTable({ initialCollections }: CollectionTableProps) {
       `${col.name} ${nextState ? "published" : "unpublished"}.`
     );
     router.refresh();
-  };
+  }, [router]);
 
   const handleConfirmDelete = async () => {
     if (!deleteTarget) return;
@@ -332,7 +329,7 @@ export function CollectionTable({ initialCollections }: CollectionTableProps) {
         ),
       },
     ],
-    []
+    [handleTogglePublished]
   );
 
   return (

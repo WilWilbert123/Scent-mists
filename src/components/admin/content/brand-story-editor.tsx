@@ -8,7 +8,6 @@ import type { BrandStoryContentConfig } from "@/types/admin";
 import { updateBrandStoryContentAction } from "@/actions/content.actions";
 import { createSupabaseBrowserClient } from "@/lib/supabase/client";
 import { formatDisplayDateTime } from "@/lib/format-date";
-import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
@@ -26,7 +25,6 @@ export function BrandStoryEditor({
   const router = useRouter();
   const [story, setStory] = useState<BrandStoryContentConfig>(initialStory);
   const [isSaving, setIsSaving] = useState(false);
-  const [isRealtimeConnected, setIsRealtimeConnected] = useState(false);
 
   useEffect(() => {
     setStory(initialStory);
@@ -50,9 +48,7 @@ export function BrandStoryEditor({
           router.refresh();
         }
       )
-      .subscribe((status) => {
-        setIsRealtimeConnected(status === "SUBSCRIBED");
-      });
+      .subscribe();
 
     return () => {
       void supabase.removeChannel(channel);

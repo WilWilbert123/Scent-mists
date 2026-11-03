@@ -10,7 +10,7 @@ interface ModelEnvironmentProps {
 /**
  * Studio HDRI Lightformers for realistic optical crystal glass specular reflections
  * and a grounded contact shadow aligned directly onto the background stone ledge.
- */
+ *////////
 export function ModelEnvironment({ theme }: ModelEnvironmentProps) {
   const isDark = theme === "dark";
   const shadowY = isDark ? -1.42 : -1.24;

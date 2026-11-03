@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState, useTransition } from "react";
+import React, { useEffect, useTransition } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Calendar, RefreshCw } from "lucide-react";
 import { createSupabaseBrowserClient } from "@/lib/supabase/client";
@@ -17,7 +17,6 @@ export function DashboardDateFilter() {
   const searchParams = useSearchParams();
   const currentDays = searchParams.get("days") || "30";
   const [isPending, startTransition] = useTransition();
-  const [isRealtimeConnected, setIsRealtimeConnected] = useState(false);
 
   // Subscribe to live Supabase changes so Dashboard & Analytics auto-update in real time
   useEffect(() => {
@@ -51,9 +50,7 @@ export function DashboardDateFilter() {
         { event: "*", schema: "public", table: "collections" },
         () => router.refresh()
       )
-      .subscribe((status) => {
-        setIsRealtimeConnected(status === "SUBSCRIBED");
-      });
+      .subscribe();
 
     return () => {
       supabase.removeChannel(channel);

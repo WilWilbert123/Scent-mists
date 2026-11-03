@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useMemo, useState, useTransition } from "react";
+import React, { useCallback, useEffect, useMemo, useState, useTransition } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import type { ColumnDef } from "@tanstack/react-table";
@@ -38,7 +38,6 @@ interface EnquiryTableProps {
 export function EnquiryTable({ initialEnquiries }: EnquiryTableProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
-  const [isRealtimeConnected, setIsRealtimeConnected] = useState(false);
   const [enquiries, setEnquiries] = useState<Enquiry[]>(initialEnquiries);
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("ALL");
@@ -91,9 +90,7 @@ export function EnquiryTable({ initialEnquiries }: EnquiryTableProps) {
           }
         }
       )
-      .subscribe((status) => {
-        setIsRealtimeConnected(status === "SUBSCRIBED");
-      });
+      .subscribe();
 
     return () => {
       void supabase.removeChannel(channel);
@@ -140,7 +137,7 @@ export function EnquiryTable({ initialEnquiries }: EnquiryTableProps) {
     });
   }, [enquiries, statusFilter, searchQuery]);
 
-  const handleQuickStatus = async (id: string, status: EnquiryStatus) => {
+  const handleQuickStatus = useCallback(async (id: string, status: EnquiryStatus) => {
     const res = await updateEnquiryStatusAction({ id, status });
     if (!res.success) {
       toast.error(res.error || "Failed to update status.");
@@ -151,7 +148,7 @@ export function EnquiryTable({ initialEnquiries }: EnquiryTableProps) {
     );
     toast.success(`Enquiry marked as ${status}.`);
     router.refresh();
-  };
+  }, [router]);
 
   const handleConfirmDelete = async () => {
     if (!deleteTarget) return;
@@ -287,7 +284,7 @@ export function EnquiryTable({ initialEnquiries }: EnquiryTableProps) {
         ),
       },
     ],
-    []
+    [handleQuickStatus]
   );
 
   const exportRows = filteredEnquiries.map((e) => [

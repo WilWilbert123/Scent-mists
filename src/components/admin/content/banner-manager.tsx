@@ -8,7 +8,6 @@ import type { BannerItemConfig } from "@/types/admin";
 import { updateBannersContentAction } from "@/actions/content.actions";
 import { createSupabaseBrowserClient } from "@/lib/supabase/client";
 import { formatDisplayDateTime } from "@/lib/format-date";
-import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
@@ -23,7 +22,6 @@ export function BannerManager({ initialBanners, updatedAt }: BannerManagerProps)
   const router = useRouter();
   const [banners, setBanners] = useState<BannerItemConfig[]>(initialBanners);
   const [isSaving, setIsSaving] = useState(false);
-  const [isRealtimeConnected, setIsRealtimeConnected] = useState(false);
 
   useEffect(() => {
     setBanners(initialBanners);
@@ -47,9 +45,7 @@ export function BannerManager({ initialBanners, updatedAt }: BannerManagerProps)
           router.refresh();
         }
       )
-      .subscribe((status) => {
-        setIsRealtimeConnected(status === "SUBSCRIBED");
-      });
+      .subscribe();
 
     return () => {
       void supabase.removeChannel(channel);

@@ -23,7 +23,6 @@ interface AuditLogTableProps {
 export function AuditLogTable({ initialLogs }: AuditLogTableProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
-  const [isRealtimeConnected, setIsRealtimeConnected] = useState(false);
   const [logs, setLogs] = useState<AuditLogEntry[]>(initialLogs);
   const [searchQuery, setSearchQuery] = useState("");
   const [resourceFilter, setResourceFilter] = useState<string>("ALL");
@@ -58,9 +57,7 @@ export function AuditLogTable({ initialLogs }: AuditLogTableProps) {
           router.refresh();
         }
       )
-      .subscribe((status) => {
-        setIsRealtimeConnected(status === "SUBSCRIBED");
-      });
+      .subscribe();
 
     return () => {
       void supabase.removeChannel(channel);

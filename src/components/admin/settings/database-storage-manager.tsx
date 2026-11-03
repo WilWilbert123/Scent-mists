@@ -54,7 +54,6 @@ export function DatabaseStorageManager({
 }: DatabaseStorageManagerProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
-  const [isRealtimeConnected, setIsRealtimeConnected] = useState(false);
   const [diagnostics, setDiagnostics] =
     useState<SupabaseDatabaseDiagnostics>(initialDiagnostics);
   const [cleanTarget, setCleanTarget] = useState<SupabaseTableStat | null>(null);
@@ -77,9 +76,7 @@ export function DatabaseStorageManager({
           router.refresh();
         }
       )
-      .subscribe((status) => {
-        setIsRealtimeConnected(status === "SUBSCRIBED");
-      });
+      .subscribe();
 
     return () => {
       void supabase.removeChannel(channel);

@@ -16,7 +16,6 @@ interface AdminHeaderProps {
 export function AdminHeader({
   adminEmail,
   adminName,
-  isDatabaseConnected = false,
 }: AdminHeaderProps) {
   return (
     <header className="sticky top-0 z-30 flex h-16 w-full items-center justify-between border-b border-border bg-surface-elevated/95 px-4 sm:px-6 lg:px-8 backdrop-blur-sm">
