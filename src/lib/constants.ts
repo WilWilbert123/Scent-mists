@@ -21,7 +21,7 @@ export const STORAGE_BUCKETS = {
 } as const;
 
 export const DEFAULT_HOMEPAGE_CONTENT: HomepageContentConfig = {
-  announcementEnabled: true,
+  announcementEnabled: false,
   announcementText:
     "SCENTS & MISTS — Explore our high-altitude botanical Eau de Parfum showcase.",
   announcementLinkText: "Explore the Collection",

@@ -15,7 +15,7 @@ export function HeroBackground() {
         priority
          quality={92}
         sizes="100vw"
-        className="object-cover object-right-bottom dark:hidden"
+        className="object-cover object-center sm:object-right-bottom dark:hidden transform-gpu"
       />
 
       {/* Dark Mode: Deep espresso-charcoal atmosphere, smoky blush mist, dark stone ledge & glowing sakura */}
@@ -26,7 +26,7 @@ export function HeroBackground() {
         priority
         quality={92}
         sizes="100vw"
-        className="hidden object-cover object-right-bottom dark:block"
+        className="hidden object-cover object-center sm:object-right-bottom dark:block transform-gpu"
       />
 
       {/* Subtle left-side readability veil that preserves the mountain peaks, mist, stone ledge, and blossoms */}

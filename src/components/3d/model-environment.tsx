@@ -18,7 +18,7 @@ export function ModelEnvironment({ theme }: ModelEnvironmentProps) {
   return (
     <group>
       {/* High-contrast studio softboxes for crisp optical glass & diamond-cut cap reflections */}
-      <Environment resolution={256}>
+      <Environment resolution={128}>
         <group rotation={[-Math.PI / 6, 0, 0]}>
           {/* Key vertical studio softbox (left rim highlight on glass) */}
           <Lightformer

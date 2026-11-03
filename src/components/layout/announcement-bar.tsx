@@ -12,7 +12,7 @@ interface AnnouncementBarProps {
 }
 
 export function AnnouncementBar({
-  enabled = true,
+  enabled = false,
   text = "SCENTS & MISTS — Explore our high-altitude botanical Eau de Parfum showcase.",
   linkText = "Explore the Collection",
   linkHref = "/collections",
