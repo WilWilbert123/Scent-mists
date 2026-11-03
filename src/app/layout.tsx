@@ -5,6 +5,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/providers/theme-provider";
 import { SupabaseProvider } from "@/providers/supabase-provider";
 import { QueryProvider } from "@/providers/query-provider";
+import { CartProvider } from "@/context/cart-context";
 import { AppToastProvider } from "@/components/ui/toast";
 import { InitialLoader } from "@/components/layout/initial-loader";
 import { constructMetadata } from "@/lib/metadata";
@@ -61,9 +62,11 @@ export default function RootLayout({
         <ThemeProvider>
           <SupabaseProvider>
             <QueryProvider>
-              <InitialLoader />
-              {children}
-              <AppToastProvider />
+              <CartProvider>
+                <InitialLoader />
+                {children}
+                <AppToastProvider />
+              </CartProvider>
             </QueryProvider>
           </SupabaseProvider>
         </ThemeProvider>

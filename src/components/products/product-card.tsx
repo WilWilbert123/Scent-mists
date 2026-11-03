@@ -3,8 +3,9 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, Eye } from "lucide-react";
+import { ShoppingBag, Star } from "lucide-react";
 import type { Product } from "@/types/product";
+import { useCart } from "@/context/cart-context";
 import { cn } from "@/lib/utils";
 
 export interface ProductCardProps {
@@ -14,112 +15,104 @@ export interface ProductCardProps {
   className?: string;
 }
 
-export function ProductCard({
-  product,
-  editionIndex,
-  onOpenDossier,
-  className,
-}: ProductCardProps) {
-  const topNote = product.top_notes?.[0]?.replace(/\s*\(Sample\)/gi, "").trim();
-  const heartNote = product.heart_notes?.[0]?.replace(/\s*\(Sample\)/gi, "").trim();
-  const baseNote = product.base_notes?.[0]?.replace(/\s*\(Sample\)/gi, "").trim();
+export function ProductCard({ product, className }: ProductCardProps) {
+  const { addItem } = useCart();
+  const fallbackImage = `/images/perfumes/${product.slug}.webp`;
+  const [imgSrc, setImgSrc] = React.useState(
+    product.image_url || fallbackImage
+  );
 
-  const editionNumber =
-    typeof editionIndex === "number"
-      ? `0${editionIndex + 1}`
-      : product.is_featured
-        ? "01"
-        : null;
+  React.useEffect(() => {
+    setImgSrc(product.image_url || `/images/perfumes/${product.slug}.webp`);
+  }, [product.image_url, product.slug]);
 
-  const concentrationLabel =
-    product.concentration ||
-    (product.slug === "velvet-amber-and-sakura-dusk"
-      ? "Extrait de Parfum"
-      : "Eau de Parfum");
+  const isOutOfStock =
+    product.status === "out_of_stock" || (typeof product.stock === "number" && product.stock <= 0);
+  const isLowStock =
+    product.status === "low_stock" ||
+    (typeof product.stock === "number" && product.stock > 0 && product.stock <= 10);
+
+  const price = product.price || 199;
+  const originalPrice = product.original_price || Math.round(price * 1.25);
+  const discountPercent = Math.round(((originalPrice - price) / originalPrice) * 100);
+
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    addItem(product, 1);
+  };
 
   return (
     <article
       className={cn(
-        "group relative flex flex-col justify-between border border-border/80 bg-surface-elevated transition-all duration-500 hover:border-accent/60 hover:shadow-luxury overflow-hidden",
+        "group relative flex flex-col justify-between rounded-xl border border-border/70 bg-surface-elevated transition-all duration-300 hover:border-accent/50 hover:shadow-lg overflow-hidden",
         className
       )}
-      style={{ containerType: "inline-size" }}
     >
-      {/* Top Archival Header */}
-      <div className="flex items-center justify-between border-b border-border/60 px-4 sm:px-5 py-3 text-[10px] uppercase tracking-[0.22em] text-muted-foreground bg-surface/60 font-mono">
-        <span className="font-medium text-foreground/85 flex items-center gap-1.5">
-          {editionNumber && (
-            <span className="text-accent font-semibold">N° {editionNumber} •</span>
-          )}
-          <span>{product.fragrance_family}</span>
-        </span>
-        <span className="text-muted-foreground/80">
-          {product.volume_display || "100 ML"}
-        </span>
-      </div>
-
-      {/* Photorealistic Flacon Stage */}
-      <div className="relative aspect-[4/5] w-full overflow-hidden bg-gradient-to-b from-surface via-surface/40 to-surface-elevated">
+      {/* Product Image Stage */}
+      <div className="relative aspect-[4/5] w-full overflow-hidden bg-surface">
         <Link
           href={`/products/${product.slug}`}
           className="relative block h-full w-full"
-          aria-label={`View ${product.name} details`}
+          aria-label={`View ${product.name}`}
         >
           <Image
-            src={product.image_url}
-            alt={`${product.name} — ${product.fragrance_family} ${concentrationLabel}`}
+            src={imgSrc}
+            alt={product.name}
             fill
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-            className="object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
+            unoptimized
+            onError={() => setImgSrc(fallbackImage)}
+            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+            className="object-cover object-center transition-transform duration-500 ease-out group-hover:scale-105"
           />
-          {/* Subtle Ambient Vignette */}
-          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-40 transition-opacity duration-500 group-hover:opacity-60" />
         </Link>
 
-        {/* Signature Flacon Pill */}
-        {product.is_featured && (
-          <div className="absolute left-3.5 top-3.5 z-10 pointer-events-none">
-            <span className="inline-flex items-center gap-1.5 border border-border/80 bg-background/95 px-2.5 py-1 text-[9px] uppercase tracking-[0.2em] font-medium text-foreground shadow-xs backdrop-blur-xs font-mono">
-              <span className="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden="true" />
-              <span>Signature Flacon</span>
+        {/* Minimal Tags on Image */}
+        <div className="absolute left-2 top-2 z-10 flex flex-wrap gap-1 pointer-events-none">
+          <span className="rounded bg-background/90 backdrop-blur-xs px-1.5 py-0.5 text-[9px] font-mono font-medium text-foreground border border-border/60">
+            {product.volume || "50ml"}
+          </span>
+          {product.is_main_male && (
+            <span className="rounded bg-blue-600/90 text-white px-1.5 py-0.5 text-[9px] font-medium tracking-wide">
+              Male
+            </span>
+          )}
+          {product.is_main_female && (
+            <span className="rounded bg-pink-600/90 text-white px-1.5 py-0.5 text-[9px] font-medium tracking-wide">
+              Female
+            </span>
+          )}
+        </div>
+
+        {/* Discount Pill */}
+        {discountPercent > 0 && (
+          <div className="absolute right-2 top-2 z-10 pointer-events-none">
+            <span className="rounded bg-accent text-accent-foreground px-1.5 py-0.5 text-[9px] font-bold font-mono shadow-xs">
+              -{discountPercent}%
             </span>
           </div>
         )}
 
-        {/* Quick Dossier Hover Overlay */}
-        {onOpenDossier && (
-          <div className="absolute inset-x-0 bottom-3 flex justify-center z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-            <button
-              type="button"
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                onOpenDossier(product);
-              }}
-              className="pointer-events-auto inline-flex items-center gap-1.5 border border-border/80 bg-background/90 px-3 py-1.5 text-[10px] uppercase tracking-[0.18em] font-medium text-foreground shadow-sm backdrop-blur-xs hover:border-accent hover:text-accent transition-colors cursor-pointer"
-            >
-              <Eye className="h-3 w-3" aria-hidden="true" />
-              <span>Olfactory Dossier</span>
-            </button>
+        {/* Out of Stock Overlay */}
+        {isOutOfStock && (
+          <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/60 backdrop-blur-xs">
+            <span className="rounded bg-red-600 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-white">
+              Out of Stock
+            </span>
           </div>
         )}
       </div>
 
-      {/* Editorial Body */}
-      <div className="flex flex-1 flex-col justify-between p-5 sm:p-6 space-y-5">
-        <div className="space-y-2.5">
-          <div className="flex items-center justify-between">
-            <p className="text-[10px] uppercase tracking-[0.24em] font-mono text-accent">
-              {concentrationLabel}
-            </p>
-            {product.collection_slug && (
-              <span className="text-[9px] uppercase tracking-[0.18em] text-muted-foreground/70 hidden sm:inline">
-                Pure Maceration
-              </span>
-            )}
-          </div>
+      {/* Clean Info Section (No clunky accords or long quotes) */}
+      <div className="flex flex-1 flex-col justify-between p-3 sm:p-4 space-y-2.5">
+        <div className="space-y-1">
+          {/* Brand */}
+          <p className="text-[10px] font-mono uppercase tracking-wider text-accent font-semibold truncate">
+            {product.brand || "SCENTS & MISTS"}
+          </p>
 
-          <h3 className="font-serif text-2xl font-normal tracking-tight text-foreground leading-snug">
+          {/* Perfume Name */}
+          <h3 className="font-serif text-sm sm:text-base font-medium text-foreground leading-snug line-clamp-1">
             <Link
               href={`/products/${product.slug}`}
               className="hover:text-accent transition-colors"
@@ -128,79 +121,54 @@ export function ProductCard({
             </Link>
           </h3>
 
-          {product.scent_profile ? (
-            <p className="text-xs sm:text-[13px] italic text-muted-foreground leading-relaxed line-clamp-2">
-              &ldquo;{product.scent_profile}&rdquo;
-            </p>
-          ) : (
-            <p className="text-xs sm:text-[13px] text-muted-foreground leading-relaxed line-clamp-2">
-              {product.description}
-            </p>
-          )}
-        </div>
-
-        {/* Structured 3-Tier Olfactory Accord Progression */}
-        <div className="space-y-4 border-t border-border/60 pt-4">
-          <div className="grid grid-cols-3 gap-2 border border-border/50 bg-surface/50 p-2.5 text-center">
-            <div className="space-y-0.5">
-              <span className="block text-[8px] uppercase tracking-[0.2em] text-muted-foreground/80 font-mono">
-                Opening
+          {/* Rating & Stock in One Clean Minimal Line (Real Data Only) */}
+          <div className="flex items-center justify-between text-[10px] sm:text-[11px] pt-0.5">
+            {product.rating_count && product.rating_count > 0 ? (
+              <div className="flex items-center gap-1 text-amber-500 font-mono">
+                <Star className="h-3 w-3 fill-current" />
+                <span className="font-semibold">{product.rating}</span>
+              </div>
+            ) : (
+              <span className="text-[10px] font-mono text-muted-foreground">
+                {(product.sold_count ?? 0) > 0 ? `${product.sold_count} sold` : "0 reviews"}
               </span>
-              <p
-                className="text-[11px] font-medium text-foreground/90 truncate"
-                title={topNote || "Dewy Citrus"}
-              >
-                {topNote || "Dewy Citrus"}
-              </p>
-            </div>
-            <div className="space-y-0.5 border-x border-border/50 px-1">
-              <span className="block text-[8px] uppercase tracking-[0.2em] text-accent font-mono">
-                Heart
-              </span>
-              <p
-                className="text-[11px] font-medium text-foreground/90 truncate"
-                title={heartNote || "Alpine Blossom"}
-              >
-                {heartNote || "Alpine Blossom"}
-              </p>
-            </div>
-            <div className="space-y-0.5">
-              <span className="block text-[8px] uppercase tracking-[0.2em] text-muted-foreground/80 font-mono">
-                Base
-              </span>
-              <p
-                className="text-[11px] font-medium text-foreground/90 truncate"
-                title={baseNote || "Mountain Cedar"}
-              >
-                {baseNote || "Mountain Cedar"}
-              </p>
-            </div>
-          </div>
+            )}
 
-          {/* Action Row */}
-          <div className="flex items-center justify-between border-t border-border/50 pt-3">
-            <Link
-              href={`/products/${product.slug}`}
-              className="inline-flex items-center gap-1.5 text-[11px] uppercase tracking-[0.2em] font-medium text-foreground hover:text-accent transition-colors group/link"
-              aria-label={`Discover ${product.name}`}
-            >
-              <span>Explore Flacon</span>
-              <ArrowRight
-                className="h-3 w-3 transition-transform duration-300 group-hover/link:translate-x-1"
-                aria-hidden="true"
-              />
-            </Link>
-
-            {onOpenDossier && (
-              <button
-                type="button"
-                onClick={() => onOpenDossier(product)}
-                className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
-              >
-                Full Dossier
-              </button>
+            {isOutOfStock ? (
+              <span className="text-[10px] text-rose-500 font-medium">Sold Out</span>
+            ) : isLowStock ? (
+              <span className="text-[10px] text-amber-500 font-medium">Few Left</span>
+            ) : (
+              <span className="text-[10px] text-emerald-500 font-medium">In Stock</span>
             )}
           </div>
+        </div>
+
+        {/* Price & Add to Cart Button */}
+        <div className="space-y-2 pt-1 border-t border-border/50">
+          <div className="flex items-baseline gap-1.5">
+            <span className="font-mono text-sm sm:text-base font-bold text-foreground">
+              ₱{price.toLocaleString()}
+            </span>
+            {originalPrice > price && (
+              <span className="font-mono text-[10px] text-muted-foreground line-through">
+                ₱{originalPrice.toLocaleString()}
+              </span>
+            )}
+          </div>
+
+          <button
+            type="button"
+            disabled={isOutOfStock}
+            onClick={handleAddToCart}
+            className={cn(
+              "w-full flex items-center justify-center gap-1.5 rounded-lg bg-primary py-2 px-3 text-[11px] font-medium uppercase tracking-wider text-primary-foreground hover:bg-accent transition-colors cursor-pointer",
+              isOutOfStock && "opacity-40 cursor-not-allowed hover:bg-primary"
+            )}
+          >
+            <ShoppingBag className="h-3.5 w-3.5" />
+            <span>Add to Cart</span>
+          </button>
         </div>
       </div>
     </article>

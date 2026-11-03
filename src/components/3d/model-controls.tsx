@@ -8,18 +8,19 @@ interface ModelControlsProps {
 }
 
 export function ModelControls({ theme = "light" }: ModelControlsProps) {
-  const targetY = theme === "dark" ? -0.32 : -0.18;
+  const targetY = theme === "dark" ? -0.26 : 0.04;
+  const targetX = theme === "dark" ? 0.14 : 0.12;
 
   return (
     <OrbitControls
-      target={[0.14, targetY, 0]}
+      target={[targetX, targetY, 0]}
       enableZoom={false}
       enablePan={false}
       autoRotate={false}
-      minPolarAngle={Math.PI / 2.25}
-      maxPolarAngle={Math.PI / 1.92}
-      minAzimuthAngle={-Math.PI / 3.5}
-      maxAzimuthAngle={Math.PI / 3.5}
+      minPolarAngle={Math.PI / 2.35}
+      maxPolarAngle={Math.PI / 1.88}
+      minAzimuthAngle={-Math.PI / 3.2}
+      maxAzimuthAngle={Math.PI / 3.2}
       dampingFactor={0.07}
       enableDamping
     />

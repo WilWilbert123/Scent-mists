@@ -18,30 +18,48 @@ export function ModelEnvironment({ theme }: ModelEnvironmentProps) {
   return (
     <group>
       {/* High-contrast studio softboxes for crisp optical glass & diamond-cut cap reflections */}
-      <Environment resolution={128}>
+      <Environment resolution={256}>
         <group rotation={[-Math.PI / 6, 0, 0]}>
+          {/* Dark studio contrast flags on left & right to define glass bevels & edges against light backgrounds */}
+          <Lightformer
+            form="rect"
+            intensity={isDark ? 0.7 : 0.9}
+            color="#140E10"
+            scale={[3, 14, 1]}
+            position={[-5.0, 0.5, 0.5]}
+            target={[0, 0, 0]}
+          />
+          <Lightformer
+            form="rect"
+            intensity={isDark ? 0.7 : 0.9}
+            color="#140E10"
+            scale={[3, 14, 1]}
+            position={[5.0, 0.5, 0.5]}
+            target={[0, 0, 0]}
+          />
+
           {/* Key vertical studio softbox (left rim highlight on glass) */}
           <Lightformer
             form="rect"
-            intensity={isDark ? 6.5 : 8.0}
-            color="#FFF8F2"
-            scale={[1.4, 8, 1]}
-            position={[-3.8, 1.5, 3.2]}
+            intensity={isDark ? 3.0 : 3.6}
+            color="#FFFFFF"
+            scale={[1.2, 8, 1]}
+            position={[-3.2, 1.2, 3.2]}
             target={[0, 0, 0]}
           />
           {/* Secondary vertical studio strip (right warm rose-gold rim highlight) */}
           <Lightformer
             form="rect"
-            intensity={isDark ? 5.5 : 6.5}
-            color="#FDE2E6"
-            scale={[1.2, 8, 1]}
-            position={[3.8, 1.2, 2.8]}
+            intensity={isDark ? 2.4 : 3.0}
+            color="#FDE8EC"
+            scale={[1.0, 8, 1]}
+            position={[3.2, 1.0, 3.0]}
             target={[0, 0, 0]}
           />
-          {/* Overhead crown softbox for diamond-cut crystal stopper facets */}
+          {/* Overhead crown softbox for crystal stopper facets */}
           <Lightformer
             form="rect"
-            intensity={isDark ? 5.0 : 6.0}
+            intensity={isDark ? 2.8 : 3.4}
             color="#FFFFFF"
             scale={[5, 2.5, 1]}
             position={[0, 5.5, 1.5]}
@@ -50,7 +68,7 @@ export function ModelEnvironment({ theme }: ModelEnvironmentProps) {
           {/* Warm champagne front fill strip */}
           <Lightformer
             form="rect"
-            intensity={isDark ? 2.4 : 3.2}
+            intensity={isDark ? 1.2 : 1.5}
             color="#FFEAD9"
             scale={[4, 1.5, 1]}
             position={[0, -1.5, 4.5]}

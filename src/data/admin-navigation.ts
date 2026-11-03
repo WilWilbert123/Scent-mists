@@ -3,6 +3,7 @@ export interface AdminNavItem {
   href: string;
   iconName:
     | "LayoutDashboard"
+    | "ShoppingBag"
     | "BarChart3"
     | "Users"
     | "MessageSquare"
@@ -21,6 +22,12 @@ export const ADMIN_NAV_ITEMS: AdminNavItem[] = [
     href: "/admin",
     iconName: "LayoutDashboard",
     description: "Brand performance, visitor metrics, and recent enquiries",
+  },
+  {
+    label: "Orders",
+    href: "/admin/orders",
+    iconName: "ShoppingBag",
+    description: "Customer orders, Leaflet delivery map location, and status workflow",
   },
   {
     label: "Analytics",
@@ -77,4 +84,3 @@ export const ADMIN_NAV_ITEMS: AdminNavItem[] = [
     description: "Admin profile, security, and dashboard appearance",
   },
 ];
-

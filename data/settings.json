@@ -1,0 +1,7 @@
+{
+  "freeDeliveryPromoEnabled": false,
+  "threshold": 500,
+  "promoText": "Add ₱{amount} more for FREE Delivery",
+  "successText": "🎉 Congratulations! You qualify for FREE Delivery!"
+}
+

@@ -1,7 +1,7 @@
 "use client";
 
-import React from "react";
-import { RoundedBox } from "@react-three/drei";
+import React, { useMemo, useRef } from "react";
+import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { usePerfumeLabelTexture } from "./model-materials";
 
@@ -10,377 +10,443 @@ interface PerfumeModelProps {
 }
 
 /**
- * Interactive 3D Perfume Flacon for SCENTS & MISTS.
- * Grounded directly onto the background rock ledge without auto-rotation,
- * crafted with multi-layered optical crystal glass, chamfered vertical bevels,
- * warm rose-champagne parfum liquid, polished rose-gold atomizer collar,
- * and a diamond-cut octagonal crystal stopper.
+ * Helper to construct an emerald-cut octagonal cross section.
+ * Provides the signature beveled corners of luxury crystal flacons.
+ */
+function createOctagonShape(halfWidth: number, halfDepth: number, chamfer: number): THREE.Shape {
+  const shape = new THREE.Shape();
+  shape.moveTo(-halfWidth + chamfer, -halfDepth);
+  shape.lineTo(halfWidth - chamfer, -halfDepth);
+  shape.lineTo(halfWidth, -halfDepth + chamfer);
+  shape.lineTo(halfWidth, halfDepth - chamfer);
+  shape.lineTo(halfWidth - chamfer, halfDepth);
+  shape.lineTo(-halfWidth + chamfer, halfDepth);
+  shape.lineTo(-halfWidth, halfDepth - chamfer);
+  shape.lineTo(-halfWidth, -halfDepth + chamfer);
+  shape.closePath();
+  return shape;
+}
+
+/**
+ * Photorealistic 3D Luxury Crystal Perfume Flacon for SCENTS & MISTS.
+ * Clean, single-instance front label with zero ghosting or duplication across sides, back, or cap.
  */
 export function PerfumeModel({ theme }: PerfumeModelProps) {
+  const groupRef = useRef<THREE.Group>(null);
   const labelTexture = usePerfumeLabelTexture(theme);
   const isDark = theme === "dark";
 
-  // Align the base of the flacon directly onto the stone ledge in both themes
-  // In dark mode, the black slate rock ledge sits lower in the composition
+  // Base position aligned with background stone ledge
   const basePosition: [number, number, number] = isDark
     ? [0.14, -0.62, 0]
-    : [0.12, -0.2, 0];
+    : [0.12, -0.22, 0];
+
+  // 1. Emerald-cut outer crystal bottle geometry
+  const outerBodyGeo = useMemo(() => {
+    const shape = createOctagonShape(0.78, 0.44, 0.18);
+    const geo = new THREE.ExtrudeGeometry(shape, {
+      depth: 1.58,
+      bevelEnabled: true,
+      bevelSegments: 5,
+      steps: 1,
+      bevelSize: 0.05,
+      bevelThickness: 0.05,
+    });
+    geo.center();
+    return geo;
+  }, []);
+
+  // 2. Heavy solid crystal base (glass punt)
+  const basePuntGeo = useMemo(() => {
+    const shape = createOctagonShape(0.8, 0.46, 0.19);
+    const geo = new THREE.ExtrudeGeometry(shape, {
+      depth: 0.36,
+      bevelEnabled: true,
+      bevelSegments: 4,
+      steps: 1,
+      bevelSize: 0.04,
+      bevelThickness: 0.04,
+    });
+    geo.center();
+    return geo;
+  }, []);
+
+  // 3. Chamfered crystal shoulder transition
+  const shoulderGeo = useMemo(() => {
+    const shape = createOctagonShape(0.68, 0.38, 0.15);
+    const geo = new THREE.ExtrudeGeometry(shape, {
+      depth: 0.16,
+      bevelEnabled: true,
+      bevelSegments: 3,
+      steps: 1,
+      bevelSize: 0.03,
+      bevelThickness: 0.03,
+    });
+    geo.center();
+    return geo;
+  }, []);
+
+  // 4. Inner liquid elixir geometry (precisely contoured to bottle interior)
+  const liquidCoreGeo = useMemo(() => {
+    const shape = createOctagonShape(0.65, 0.33, 0.13);
+    const geo = new THREE.ExtrudeGeometry(shape, {
+      depth: 1.24,
+      bevelEnabled: true,
+      bevelSegments: 3,
+      steps: 1,
+      bevelSize: 0.03,
+      bevelThickness: 0.03,
+    });
+    geo.center();
+    return geo;
+  }, []);
+
+  // 5. Clean crystal stopper cap (seamless, no internal duplication)
+  const capGeo = useMemo(() => {
+    const shape = createOctagonShape(0.56, 0.38, 0.14);
+    const geo = new THREE.ExtrudeGeometry(shape, {
+      depth: 0.36,
+      bevelEnabled: true,
+      bevelSegments: 2,
+      steps: 1,
+      bevelSize: 0.12,
+      bevelThickness: 0.14,
+    });
+    geo.center();
+    return geo;
+  }, []);
+
+  // 6. Top diamond table facet on cap
+  const capTableGeo = useMemo(() => {
+    const shape = createOctagonShape(0.38, 0.25, 0.08);
+    const geo = new THREE.ExtrudeGeometry(shape, {
+      depth: 0.06,
+      bevelEnabled: true,
+      bevelSegments: 1,
+      steps: 1,
+      bevelSize: 0.04,
+      bevelThickness: 0.04,
+    });
+    geo.center();
+    return geo;
+  }, []);
+
+  // Gentle natural breathing motion catching specular studio lights
+  useFrame((state) => {
+    if (!groupRef.current) return;
+    const t = state.clock.getElapsedTime();
+    groupRef.current.rotation.y = -0.05 + Math.sin(t * 0.65) * 0.035;
+    groupRef.current.rotation.x = Math.sin(t * 0.45) * 0.01;
+  });
 
   return (
     <group
+      ref={groupRef}
       position={basePosition}
-      rotation={[0, -0.08, 0]}
+      rotation={[0, -0.05, 0]}
       scale={0.78}
     >
-      {/* 1. Outer Crystal Glass Shell (Crisp specular reflections, no label-duplicating distortion) */}
-      <RoundedBox
-        args={[1.56, 1.98, 0.86]}
-        radius={0.07}
-        smoothness={6}
-        position={[0, -0.35, 0]}
-        castShadow
-        receiveShadow
-        renderOrder={4}
-      >
-        <meshPhysicalMaterial
-          color="#FFFFFF"
-          transparent
-          opacity={isDark ? 0.22 : 0.26}
-          roughness={0.015}
-          metalness={0.08}
-          ior={1.54}
-          reflectivity={1}
-          clearcoat={1}
-          clearcoatRoughness={0.01}
-          envMapIntensity={isDark ? 2.8 : 2.4}
-          specularIntensity={1}
-          specularColor="#FFF7F2"
-          depthWrite={false}
-        />
-      </RoundedBox>
-
-      {/* 2. Inner Optical Glass Wall Cavity (Gives realistic thick glass wall edges on left & right) */}
-      <RoundedBox
-        args={[1.4, 1.72, 0.72]}
-        radius={0.05}
-        smoothness={4}
-        position={[0, -0.32, 0]}
+      {/* ============================================================== */}
+      {/* 1. LUMINOUS PERFUME ELIXIR (INTERNAL LIQUID CHAMBER)          */}
+      {/* ============================================================== */}
+      <mesh
+        geometry={liquidCoreGeo}
+        position={[0, -0.16, 0]}
+        rotation={[-Math.PI / 2, 0, 0]}
         renderOrder={2}
       >
         <meshPhysicalMaterial
-          color={isDark ? "#FFF2EE" : "#FFF9F6"}
-          transparent
-          opacity={0.16}
-          roughness={0.02}
-          metalness={0.05}
-          ior={1.52}
-          clearcoat={1}
-          envMapIntensity={2.0}
-          side={THREE.BackSide}
-          depthWrite={false}
-        />
-      </RoundedBox>
-
-      {/* 3. Four Vertical Chamfered Crystal Corner Pillars (Catches crisp studio rim highlights like real cut glass) */}
-      {[
-        [-0.73, -0.35, 0.39],
-        [0.73, -0.35, 0.39],
-        [-0.73, -0.35, -0.39],
-        [0.73, -0.35, -0.39],
-      ].map(([cx, cy, cz], idx) => (
-        <mesh
-          key={idx}
-          position={[cx, cy, cz]}
-          rotation={[0, Math.PI / 4, 0]}
-          renderOrder={5}
-        >
-          <boxGeometry args={[0.07, 1.9, 0.07]} />
-          <meshPhysicalMaterial
-            color="#FFF9F5"
-            transparent
-            opacity={isDark ? 0.42 : 0.48}
-            roughness={0.01}
-            metalness={0.15}
-            clearcoat={1}
-            envMapIntensity={3.0}
-            depthWrite={false}
-          />
-        </mesh>
-      ))}
-
-      {/* 4. Stepped Crystal Glass Shoulder */}
-      <RoundedBox
-        args={[1.32, 0.12, 0.72]}
-        radius={0.03}
-        smoothness={4}
-        position={[0, 0.67, 0]}
-        renderOrder={4}
-      >
-        <meshPhysicalMaterial
-          color="#FFFDFB"
-          transparent
-          opacity={0.42}
-          roughness={0.02}
-          metalness={0.12}
-          ior={1.54}
-          clearcoat={1}
-          envMapIntensity={2.8}
-          depthWrite={false}
-        />
-      </RoundedBox>
-
-      {/* 5. Thick Heavy Solid Crystal Base Punt (Bottom Weight Block Sitting on the Rock) */}
-      <RoundedBox
-        args={[1.54, 0.28, 0.84]}
-        radius={0.04}
-        smoothness={4}
-        position={[0, -1.2, 0]}
-        castShadow
-        receiveShadow
-        renderOrder={3}
-      >
-        <meshPhysicalMaterial
-          color={isDark ? "#F7E5DF" : "#FFF8F5"}
-          transparent
-          opacity={0.55}
-          roughness={0.03}
-          metalness={0.14}
-          ior={1.56}
-          clearcoat={1}
-          envMapIntensity={2.8}
-        />
-      </RoundedBox>
-
-      {/* Base Internal Optical Reflection Plate (Bright champagne-crystal refraction at bottle bottom) */}
-      <mesh position={[0, -1.07, 0]} rotation={[-Math.PI / 2, 0, 0]} renderOrder={3}>
-        <planeGeometry args={[1.38, 0.68]} />
-        <meshPhysicalMaterial
-          color="#F7D6C8"
-          metalness={0.45}
-          roughness={0.08}
-          clearcoat={1}
-          envMapIntensity={2.4}
-        />
-      </mesh>
-
-      {/* 6. Inner Warm Rose-Champagne Parfum Liquid Core */}
-      <RoundedBox
-        args={[1.36, 1.44, 0.66]}
-        radius={0.04}
-        smoothness={4}
-        position={[0, -0.34, 0]}
-        renderOrder={1}
-      >
-        <meshPhysicalMaterial
-          color={isDark ? "#E4B29E" : "#EFC3B4"}
-          emissive={isDark ? "#5E3529" : "#7A493B"}
-          emissiveIntensity={isDark ? 0.28 : 0.16}
-          transparent
-          opacity={0.78}
-          roughness={0.04}
-          metalness={0.06}
-          ior={1.36}
-          clearcoat={0.9}
-          envMapIntensity={1.8}
-        />
-      </RoundedBox>
-
-      {/* Top Liquid Meniscus Surface (Bright golden-rose liquid surface rim) */}
-      <mesh position={[0, 0.38, 0]} rotation={[-Math.PI / 2, 0, 0]} renderOrder={2}>
-        <planeGeometry args={[1.34, 0.64]} />
-        <meshPhysicalMaterial
-          color="#FCE2D7"
-          transparent
-          opacity={0.68}
-          roughness={0.03}
-          metalness={0.25}
+          color={isDark ? "#DF683B" : "#EC7F4F"}
+          emissive={isDark ? "#6E2412" : "#873516"}
+          emissiveIntensity={isDark ? 0.42 : 0.30}
+          transmission={0.42}
+          roughness={0.015}
+          metalness={0.03}
+          ior={1.38}
+          thickness={0.9}
+          attenuationColor="#FFA680"
+          attenuationDistance={1.1}
+          clearcoat={1.0}
+          clearcoatRoughness={0.02}
           envMapIntensity={2.5}
         />
       </mesh>
 
-      {/* 7. Internal Glass Atomizer Dip Tube */}
-      <mesh position={[0, -0.22, 0]} renderOrder={2}>
-        <cylinderGeometry args={[0.02, 0.015, 1.75, 20]} />
+      {/* Meniscus / Liquid Top Surface Line */}
+      <mesh position={[0, 0.48, 0]} rotation={[-Math.PI / 2, 0, 0]} renderOrder={3}>
+        <planeGeometry args={[1.28, 0.64]} />
+        <meshPhysicalMaterial
+          color="#FFDEC9"
+          transmission={0.5}
+          roughness={0.02}
+          metalness={0.1}
+          clearcoat={1.0}
+          ior={1.38}
+        />
+      </mesh>
+
+      {/* Internal Glass Dip Tube (Atomizer Straw) */}
+      <mesh position={[0.016, -0.12, 0.01]} rotation={[0, 0, 0.032]} renderOrder={3}>
+        <cylinderGeometry args={[0.013, 0.011, 1.68, 32]} />
         <meshPhysicalMaterial
           color="#FFFFFF"
-          transparent
-          opacity={0.65}
+          transmission={0.65}
           roughness={0.05}
-          metalness={0.2}
-          clearcoat={1}
-          envMapIntensity={2.2}
+          metalness={0.1}
+          clearcoat={1.0}
+          ior={1.5}
         />
       </mesh>
 
-      {/* 8. Champagne-Gold Metallic Label Backing Plate */}
-      <mesh position={[0, -0.34, 0.432]} renderOrder={6}>
-        <boxGeometry args={[1.06, 1.24, 0.012]} />
+      {/* ============================================================== */}
+      {/* 2. OUTER CRYSTAL FLACON GLASS (PRISTINE TRANSPARENT OPTICS)    */}
+      {/* ============================================================== */}
+      {/* Main Emerald-Cut Chamfered Crystal Body */}
+      <mesh
+        geometry={outerBodyGeo}
+        position={[0, -0.1, 0]}
+        rotation={[-Math.PI / 2, 0, 0]}
+        castShadow
+        receiveShadow
+        renderOrder={10}
+      >
         <meshPhysicalMaterial
-          color="#E5BEAA"
-          emissive="#593A2B"
-          emissiveIntensity={0.18}
-          metalness={0.78}
-          roughness={0.18}
-          clearcoat={0.8}
-          envMapIntensity={2.0}
+          color={isDark ? "#EDE3DF" : "#E4D8D2"}
+          roughness={0.02}
+          metalness={0.02}
+          transmission={0.88}
+          ior={1.52}
+          thickness={1.1}
+          attenuationColor={isDark ? "#D2B8AE" : "#C4A69B"}
+          attenuationDistance={1.3}
+          clearcoat={1.0}
+          clearcoatRoughness={0.01}
+          reflectivity={1.0}
+          specularIntensity={1.5}
+          specularColor="#FFFFFF"
+          envMapIntensity={isDark ? 2.8 : 2.5}
         />
       </mesh>
 
-      {/* 9. Front Embossed Archival Brand Label ("SCENTS & MISTS") */}
-      <mesh position={[0, -0.34, 0.44]} renderOrder={7}>
-        <planeGeometry args={[1.0, 1.18]} />
-        <meshStandardMaterial
-          map={labelTexture ?? undefined}
-          color="#FFFFFF"
-          roughness={0.32}
+      {/* Solid Crystal Glass Punt (Thick Heavy Glass Pedestal Base) */}
+      <mesh
+        geometry={basePuntGeo}
+        position={[0, -1.04, 0]}
+        rotation={[-Math.PI / 2, 0, 0]}
+        castShadow
+        receiveShadow
+        renderOrder={10}
+      >
+        <meshPhysicalMaterial
+          color={isDark ? "#DECBC4" : "#D0BCB4"}
+          roughness={0.02}
           metalness={0.04}
+          transmission={0.75}
+          ior={1.53}
+          thickness={1.8}
+          attenuationColor={isDark ? "#C0A49A" : "#B29489"}
+          attenuationDistance={0.9}
+          clearcoat={1.0}
+          clearcoatRoughness={0.01}
+          reflectivity={1.0}
+          specularIntensity={1.6}
+          envMapIntensity={3.2}
         />
       </mesh>
 
-      {/* 10. Multi-Tiered Polished Rose-Gold Atomizer Neck & Collar */}
+      {/* Beveled Crystal Shoulder */}
+      <mesh
+        geometry={shoulderGeo}
+        position={[0, 0.78, 0]}
+        rotation={[-Math.PI / 2, 0, 0]}
+        renderOrder={10}
+      >
+        <meshPhysicalMaterial
+          color={isDark ? "#EDE3DF" : "#E4D8D2"}
+          roughness={0.02}
+          metalness={0.02}
+          transmission={0.84}
+          ior={1.52}
+          thickness={1.0}
+          attenuationColor={isDark ? "#D2B8AE" : "#C4A69B"}
+          attenuationDistance={1.2}
+          clearcoat={1.0}
+          reflectivity={1.0}
+          envMapIntensity={2.6}
+        />
+      </mesh>
+
+      {/* Cylindrical Glass Bottle Neck */}
+      <mesh position={[0, 0.94, 0]} renderOrder={10}>
+        <cylinderGeometry args={[0.24, 0.28, 0.18, 32]} />
+        <meshPhysicalMaterial
+          color={isDark ? "#EDE3DF" : "#E4D8D2"}
+          roughness={0.02}
+          transmission={0.84}
+          ior={1.52}
+          thickness={0.8}
+          clearcoat={1.0}
+        />
+      </mesh>
+
+      {/* ============================================================== */}
+      {/* 3. LUXURY FRONT LABEL (RENDERED ON TOP ONLY - ZERO GHOSTING)   */}
+      {/* ============================================================== */}
+      <group position={[0, -0.12, 0.50]}>
+        {/* Brushed Gold Backing Plate (Completely blocks reverse bleed-through) */}
+        <mesh position={[0, 0, -0.004]} renderOrder={99}>
+          <boxGeometry args={[0.96, 1.14, 0.008]} />
+          <meshPhysicalMaterial
+            color="#D4A778"
+            emissive="#5C3B24"
+            emissiveIntensity={0.15}
+            metalness={0.92}
+            roughness={0.16}
+            clearcoat={1.0}
+            envMapIntensity={2.5}
+          />
+        </mesh>
+
+        {/* High-Resolution Front Label Canvas (Single-sided Front ONLY) */}
+        <mesh position={[0, 0, 0.004]} renderOrder={100}>
+          <planeGeometry args={[0.92, 1.1]} />
+          <meshStandardMaterial
+            map={labelTexture ?? undefined}
+            color="#FFFFFF"
+            roughness={0.3}
+            metalness={0.05}
+            side={THREE.FrontSide}
+          />
+        </mesh>
+      </group>
+
+      {/* ============================================================== */}
+      {/* 4. POLISHED ROSE GOLD ATOMIZER NECK & COLLAR ASSEMBLY          */}
+      {/* ============================================================== */}
       {/* Base Flanged Collar Ring */}
-      <mesh position={[0, 0.76, 0]} castShadow>
+      <mesh position={[0, 0.96, 0]} castShadow renderOrder={5}>
         <cylinderGeometry args={[0.33, 0.35, 0.06, 64]} />
         <meshPhysicalMaterial
-          color="#F0CEB9"
-          emissive="#6B4634"
-          emissiveIntensity={0.22}
-          metalness={0.88}
-          roughness={0.14}
-          clearcoat={0.9}
-          envMapIntensity={2.4}
-        />
-      </mesh>
-
-      {/* Stepped Mid-Collar Ring */}
-      <mesh position={[0, 0.81, 0]} castShadow>
-        <cylinderGeometry args={[0.29, 0.31, 0.05, 64]} />
-        <meshPhysicalMaterial
-          color="#E5BC9E"
-          emissive="#5E3C2A"
+          color="#E8BA98"
+          emissive="#6B4129"
           emissiveIntensity={0.2}
-          metalness={0.9}
-          roughness={0.15}
+          metalness={0.95}
+          roughness={0.1}
+          clearcoat={1.0}
+          envMapIntensity={3.2}
+        />
+      </mesh>
+
+      {/* Knurled Collar Ring */}
+      <mesh position={[0, 1.02, 0]} renderOrder={5}>
+        <cylinderGeometry args={[0.3, 0.3, 0.06, 64]} />
+        <meshPhysicalMaterial
+          color="#F2CCA4"
+          metalness={0.94}
+          roughness={0.18}
           clearcoat={0.9}
-          envMapIntensity={2.4}
+          envMapIntensity={3.0}
         />
       </mesh>
 
-      {/* Main Polished Champagne-Gold Neck Cylinder */}
-      <mesh position={[0, 0.94, 0]} castShadow>
-        <cylinderGeometry args={[0.25, 0.25, 0.22, 64]} />
+      {/* Main Mirror-Polished Gold Collar Column */}
+      <mesh position={[0, 1.12, 0]} castShadow renderOrder={5}>
+        <cylinderGeometry args={[0.26, 0.28, 0.16, 64]} />
         <meshPhysicalMaterial
-          color="#ECC5AF"
-          emissive="#694331"
-          emissiveIntensity={0.22}
-          metalness={0.88}
-          roughness={0.13}
-          clearcoat={0.95}
-          envMapIntensity={2.6}
+          color="#E8BA98"
+          emissive="#613C25"
+          emissiveIntensity={0.18}
+          metalness={0.96}
+          roughness={0.08}
+          clearcoat={1.0}
+          envMapIntensity={3.4}
         />
       </mesh>
 
-      {/* Upper Crimped Rose-Gold Collar Lip */}
-      <mesh position={[0, 1.06, 0]} castShadow>
-        <cylinderGeometry args={[0.29, 0.28, 0.05, 64]} />
+      {/* Stepped Transition Ring */}
+      <mesh position={[0, 1.21, 0]} renderOrder={5}>
+        <cylinderGeometry args={[0.28, 0.26, 0.04, 64]} />
         <meshPhysicalMaterial
-          color="#F5D7C6"
-          emissive="#6E4735"
-          emissiveIntensity={0.24}
-          metalness={0.88}
-          roughness={0.12}
-          clearcoat={1}
-          envMapIntensity={2.6}
+          color="#F9DFC4"
+          metalness={0.96}
+          roughness={0.08}
+          clearcoat={1.0}
         />
       </mesh>
 
-      {/* Inner Golden Atomizer Spray Head (Visible Inside Crystal Stopper) */}
-      <mesh position={[0, 1.17, 0]}>
+      {/* Inner Golden Spray Pump Head Actuator */}
+      <mesh position={[0, 1.3, 0]} renderOrder={5}>
         <cylinderGeometry args={[0.16, 0.16, 0.18, 48]} />
         <meshPhysicalMaterial
-          color="#E8C0A7"
-          emissive="#5C3B2B"
-          emissiveIntensity={0.2}
-          metalness={0.86}
-          roughness={0.16}
-          envMapIntensity={2.2}
+          color="#E8BA98"
+          metalness={0.94}
+          roughness={0.12}
+          envMapIntensity={2.8}
         />
       </mesh>
 
-      {/* Micro Spray Nozzle Aperture */}
-      <mesh position={[0, 1.18, 0.162]} rotation={[Math.PI / 2, 0, 0]}>
-        <cylinderGeometry args={[0.025, 0.025, 0.02, 24]} />
-        <meshStandardMaterial color="#2A1E19" metalness={0.9} roughness={0.2} />
+      {/* Atomizer Nozzle Orifice Hole */}
+      <mesh position={[0, 1.31, 0.162]} rotation={[Math.PI / 2, 0, 0]} renderOrder={6}>
+        <cylinderGeometry args={[0.022, 0.022, 0.025, 24]} />
+        <meshStandardMaterial color="#1C1412" metalness={0.8} roughness={0.3} />
       </mesh>
 
-      {/* 11. Diamond-Cut Octagonal Crystal Stopper Cap (Crisp Flat-Shaded Gem Facets) */}
-      <group position={[0, 1.33, 0]}>
-        {/* Lower 8-faceted crystal bevel */}
-        <mesh position={[0, -0.13, 0]} castShadow renderOrder={5}>
-          <cylinderGeometry args={[0.6, 0.28, 0.16, 8]} />
+      {/* ============================================================== */}
+      {/* 5. SEAMLESS CRYSTAL JEWEL STOPPER (CAP) - ZERO DUPLICATION     */}
+      {/* ============================================================== */}
+      <group position={[0, 1.56, 0]}>
+        {/* Main Crystal Stopper (Faceted Cut Crystal Jewel) */}
+        <mesh
+          geometry={capGeo}
+          position={[0, 0, 0]}
+          rotation={[-Math.PI / 2, 0, 0]}
+          castShadow
+          renderOrder={20}
+        >
           <meshPhysicalMaterial
-            color="#FFFFFF"
-            transparent
-            opacity={0.58}
-            roughness={0.015}
-            metalness={0.18}
-            ior={1.58}
-            reflectivity={1}
-            clearcoat={1}
-            envMapIntensity={3.2}
-            flatShading
-          />
-        </mesh>
-
-        {/* Central 8-faceted octagonal crystal crown */}
-        <mesh position={[0, 0, 0]} castShadow renderOrder={5}>
-          <cylinderGeometry args={[0.64, 0.6, 0.13, 8]} />
-          <meshPhysicalMaterial
-            color="#FFFDFB"
-            transparent
-            opacity={0.64}
+            color={isDark ? "#F8EFEA" : "#F2E8E2"}
             roughness={0.01}
-            metalness={0.22}
-            ior={1.6}
-            reflectivity={1}
-            clearcoat={1}
-            envMapIntensity={3.5}
-            flatShading
-          />
-        </mesh>
-
-        {/* Upper 8-faceted diamond table */}
-        <mesh position={[0, 0.12, 0]} castShadow renderOrder={5}>
-          <cylinderGeometry args={[0.38, 0.64, 0.11, 8]} />
-          <meshPhysicalMaterial
-            color="#FFFFFF"
-            transparent
-            opacity={0.6}
-            roughness={0.015}
-            metalness={0.2}
-            ior={1.58}
-            reflectivity={1}
-            clearcoat={1}
-            envMapIntensity={3.2}
-            flatShading
-          />
-        </mesh>
-
-        {/* Inner Crystal Core Ring for Gem Depth */}
-        <mesh position={[0, 0, 0]} renderOrder={4}>
-          <cylinderGeometry args={[0.36, 0.32, 0.28, 16]} />
-          <meshPhysicalMaterial
-            color="#FBE6DE"
-            transparent
-            opacity={0.38}
-            roughness={0.04}
-            metalness={0.15}
+            metalness={0.04}
+            transmission={0.76}
             ior={1.54}
-            envMapIntensity={2.4}
+            thickness={1.6}
+            attenuationColor={isDark ? "#D4B9AF" : "#C6A89D"}
+            attenuationDistance={1.1}
+            clearcoat={1.0}
+            clearcoatRoughness={0.01}
+            reflectivity={1.0}
+            specularIntensity={1.8}
+            specularColor="#FFFFFF"
+            flatShading={true}
+            envMapIntensity={3.8}
+          />
+        </mesh>
+
+        {/* Top Chamfered Diamond Table Facet */}
+        <mesh
+          geometry={capTableGeo}
+          position={[0, 0.22, 0]}
+          rotation={[-Math.PI / 2, 0, 0]}
+          castShadow
+          renderOrder={21}
+        >
+          <meshPhysicalMaterial
+            color={isDark ? "#FAF3EF" : "#F6ECE6"}
+            roughness={0.01}
+            metalness={0.03}
+            transmission={0.72}
+            ior={1.54}
+            thickness={1.0}
+            attenuationColor={isDark ? "#D8BFB5" : "#CBAFA4"}
+            attenuationDistance={1.0}
+            clearcoat={1.0}
+            reflectivity={1.0}
+            specularIntensity={1.9}
+            flatShading={true}
+            envMapIntensity={4.0}
           />
         </mesh>
       </group>
     </group>
   );
 }
-
