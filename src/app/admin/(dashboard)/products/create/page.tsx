@@ -1,0 +1,32 @@
+import React from "react";
+import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
+import { ProductForm } from "@/components/admin/products/product-form";
+
+export default function AdminCreateProductPage() {
+  return (
+    <div className="space-y-6">
+      <div>
+        <Link
+          href="/admin/products"
+          className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.16em] text-muted-foreground hover:text-foreground"
+        >
+          <ArrowLeft className="h-3.5 w-3.5" aria-hidden="true" />
+          <span>Back to Fragrances</span>
+        </Link>
+      </div>
+
+      <div className="border-b border-border pb-4">
+        <h1 className="font-serif text-3xl text-foreground">
+          Create Fragrance Showcase Entry
+        </h1>
+        <p className="text-xs text-muted-foreground">
+          Add a new fragrance presentation to the SCENTS &amp; MISTS archive.
+        </p>
+      </div>
+
+      <ProductForm mode="create" />
+    </div>
+  );
+}
+

@@ -1,0 +1,82 @@
+/* SCENTS & MISTS — Theme System (Himalayan Cherry Blossom Air) */
+:root {
+  /* Raw Light Palette (DEFAULT) */
+  --color-ivory-warm: #FAF8F4;
+  --color-cream-soft: #F3EEE8;
+  --color-blossom-pink: #E8C6CE;
+  --color-rose-muted: #B98792;
+  --color-sage: #A6B1A0;
+  --color-charcoal: #242322;
+  --color-white-soft: #FFFFFF;
+
+  /* Raw Dark Palette */
+  --color-charcoal-deep: #171615;
+  --color-bg-dark: #201D1C;
+  --color-blush-soft: #D8B7C0;
+  --color-ivory-text: #F5F0EB;
+  --color-gray-muted: #A9A19B;
+
+  /* Semantic Tokens — Light Mode Default */
+  --background: #FAF8F4;
+  --foreground: #242322;
+  --surface: #F3EEE8;
+  --surface-elevated: #FFFFFF;
+  --border: #E5DDD5;
+  --muted: #EFE9E1;
+  --muted-foreground: #6C6560;
+  --primary: #242322;
+  --primary-foreground: #FAF8F4;
+  --secondary: #E8C6CE;
+  --secondary-foreground: #242322;
+  --accent: #B98792;
+  --accent-foreground: #FFFFFF;
+  --radius: 0.25rem;
+
+  /* Browser Native UI adaptation (modern-web-guidance: dark-mode) */
+  color-scheme: light dark;
+  --scrollbar-track: #F3EEE8;
+  --scrollbar-thumb: #C9B9B5;
+  accent-color: var(--accent);
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+  scrollbar-width: thin;
+
+  &:has(> head > meta[name="color-scheme"][content="dark"]) {
+    color-scheme: dark;
+  }
+  &:has(> head > meta[name="color-scheme"][content="light"]) {
+    color-scheme: light;
+  }
+}
+
+.dark,
+:root:has(> head > meta[name="color-scheme"][content="dark"]) {
+  --background: #171615;
+  --foreground: #F5F0EB;
+  --surface: #201D1C;
+  --surface-elevated: #282423;
+  --border: #352F2D;
+  --muted: #262221;
+  --muted-foreground: #A9A19B;
+  --primary: #F5F0EB;
+  --primary-foreground: #171615;
+  --secondary: #D8B7C0;
+  --secondary-foreground: #171615;
+  --accent: #B98792;
+  --accent-foreground: #171615;
+  --scrollbar-track: #201D1C;
+  --scrollbar-thumb: #4A423F;
+}
+
+@supports not (scrollbar-color: auto) {
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-thumb);
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--scrollbar-track);
+  }
+}
+
