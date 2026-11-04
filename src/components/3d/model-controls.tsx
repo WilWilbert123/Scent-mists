@@ -2,14 +2,16 @@
 
 import React from "react";
 import { OrbitControls } from "@react-three/drei";
+import { useMediaQuery } from "@/hooks/use-media-query";
 
 interface ModelControlsProps {
   theme?: "light" | "dark";
 }
 
 export function ModelControls({ theme = "light" }: ModelControlsProps) {
-  const targetY = theme === "dark" ? -0.26 : 0.04;
-  const targetX = theme === "dark" ? 0.14 : 0.12;
+  const isMobile = useMediaQuery("(max-width: 768px)");
+  const targetX = isMobile ? 0 : theme === "dark" ? 0.14 : 0.12;
+  const targetY = isMobile ? -0.05 : theme === "dark" ? -0.26 : 0.04;
 
   return (
     <OrbitControls
