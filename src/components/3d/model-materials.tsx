@@ -118,3 +118,52 @@ export function usePerfumeLabelTexture(theme: "light" | "dark") {
     return texture;
   }, [theme]);
 }
+
+/**
+ * Procedural soft radial mist/smoke puff texture for ethereal perfume vapour.
+ */
+export function useSmokeTexture() {
+  return useMemo(() => {
+    if (typeof document === "undefined") return null;
+    const canvas = document.createElement("canvas");
+    canvas.width = 256;
+    canvas.height = 256;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return null;
+
+    // Ethereal multi-stop feathered cloud puff
+    const grad = ctx.createRadialGradient(128, 128, 0, 128, 128, 128);
+    grad.addColorStop(0, "rgba(255, 255, 255, 0.85)");
+    grad.addColorStop(0.25, "rgba(252, 248, 244, 0.55)");
+    grad.addColorStop(0.55, "rgba(245, 238, 232, 0.22)");
+    grad.addColorStop(0.8, "rgba(240, 230, 224, 0.06)");
+    grad.addColorStop(1, "rgba(255, 255, 255, 0)");
+
+    ctx.fillStyle = grad;
+    ctx.beginPath();
+    ctx.arc(128, 128, 128, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Soft organic wisp puffs around the center
+    const puffs = [
+      [110, 105, 70, 0.18],
+      [145, 115, 65, 0.16],
+      [125, 145, 75, 0.15],
+      [95, 135, 55, 0.12],
+    ];
+    for (const [px, py, pr, pAlpha] of puffs) {
+      const pGrad = ctx.createRadialGradient(px, py, 0, px, py, pr);
+      pGrad.addColorStop(0, `rgba(255, 255, 255, ${pAlpha})`);
+      pGrad.addColorStop(1, "rgba(255, 255, 255, 0)");
+      ctx.fillStyle = pGrad;
+      ctx.beginPath();
+      ctx.arc(px, py, pr, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    const texture = new THREE.CanvasTexture(canvas);
+    texture.colorSpace = THREE.SRGBColorSpace;
+    texture.needsUpdate = true;
+    return texture;
+  }, []);
+}

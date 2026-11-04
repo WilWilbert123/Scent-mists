@@ -5,6 +5,7 @@ import { Canvas } from "@react-three/fiber";
 import { useTheme } from "@/hooks/use-theme";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { PerfumeModel } from "./perfume-model";
+import { PerfumeMistSmoke } from "./perfume-mist-smoke";
 import { ModelLighting } from "./model-lighting";
 import { ModelEnvironment } from "./model-environment";
 import { ModelControls } from "./model-controls";
@@ -77,6 +78,7 @@ export function PerfumeScene() {
           >
             <ModelLighting theme={theme} />
             <PerfumeModel theme={theme} />
+            <PerfumeMistSmoke theme={theme} />
             <ModelEnvironment theme={theme} />
             <ModelControls theme={theme} />
           </Canvas>
