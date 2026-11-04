@@ -44,8 +44,8 @@ export function ProductDetails({ product }: ProductDetailsProps) {
   };
 
   return (
-    <div className="space-y-16">
-      <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 items-start">
+    <div className="space-y-10 sm:space-y-16">
+      <div className="grid grid-cols-1 gap-6 sm:gap-8 lg:gap-12 lg:grid-cols-12 items-start">
         {/* Left: Gallery */}
         <div className="lg:col-span-6">
           <ProductGallery
@@ -56,7 +56,7 @@ export function ProductDetails({ product }: ProductDetailsProps) {
         </div>
 
         {/* Right: Product & E-Commerce Purchase Section */}
-        <div className="lg:col-span-6 space-y-7">
+        <div className="lg:col-span-6 space-y-5 sm:space-y-7">
           {/* Brand Badge */}
           <div className="space-y-3">
             <div className="flex flex-wrap items-center gap-2">

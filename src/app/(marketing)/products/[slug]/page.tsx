@@ -50,45 +50,46 @@ export default async function ProductShowcaseDetailPage({
   const jsonLd = generateFragranceShowcaseJsonLd(product);
 
   return (
-    <PageTransition className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8 space-y-20">
+    <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-
-      <div>
-        <Link
-          href="/shop"
-          className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.18em] text-muted-foreground hover:text-foreground transition-colors"
-        >
-          <ArrowLeft className="h-3.5 w-3.5" aria-hidden="true" />
-          <span>Back to Fragrance Showcase</span>
-        </Link>
-      </div>
-
-      <ProductDetails product={product} />
-
-      {/* Direct Fragrance Enquiry Section */}
-      <section aria-labelledby="fragrance-enquiry-heading" className="border-t border-border pt-16">
-        <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 items-start">
-          <div className="lg:col-span-5 space-y-4">
-            <p className="eyebrow-label text-accent">Private Concierge</p>
-            <h2 id="fragrance-enquiry-heading" className="heading-section text-foreground">
-              Enquire About {product.name}
-            </h2>
-            <p className="text-sm leading-relaxed text-muted-foreground">
-              Submit an enquiry to request complimentary scent blotters, private
-              salon consultations, or availability details for {product.name}.
-            </p>
-          </div>
-          <div className="lg:col-span-7">
-            <EnquiryForm fragranceName={product.name} />
-          </div>
+      <PageTransition className="mx-auto max-w-7xl px-4 pt-3 pb-12 sm:pt-6 sm:pb-16 lg:px-8 space-y-6 sm:space-y-12 lg:space-y-16">
+        <div>
+          <Link
+            href="/shop"
+            className="inline-flex items-center gap-1.5 text-xs uppercase tracking-[0.18em] text-muted-foreground hover:text-foreground transition-colors py-1"
+          >
+            <ArrowLeft className="h-3.5 w-3.5" aria-hidden="true" />
+            <span>Back to Fragrance Showcase</span>
+          </Link>
         </div>
-      </section>
 
-      <RelatedProducts products={allProducts} currentSlug={product.slug} />
-    </PageTransition>
+        <ProductDetails product={product} />
+
+        {/* Direct Fragrance Enquiry Section */}
+        <section aria-labelledby="fragrance-enquiry-heading" className="border-t border-border pt-10 sm:pt-16">
+          <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 items-start">
+            <div className="lg:col-span-5 space-y-3">
+              <p className="eyebrow-label text-accent">Private Concierge</p>
+              <h2 id="fragrance-enquiry-heading" className="heading-section text-foreground">
+                Enquire About {product.name}
+              </h2>
+              <p className="text-sm leading-relaxed text-muted-foreground">
+                Submit an enquiry to request complimentary scent blotters, private
+                salon consultations, or availability details for {product.name}.
+              </p>
+            </div>
+            <div className="lg:col-span-7">
+              <EnquiryForm fragranceName={product.name} />
+            </div>
+          </div>
+        </section>
+
+        <RelatedProducts products={allProducts} currentSlug={product.slug} />
+      </PageTransition>
+    </>
   );
 }
 
