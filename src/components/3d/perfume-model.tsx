@@ -75,16 +75,16 @@ export function PerfumeModel({ theme }: PerfumeModelProps) {
     { x: -0.18, y: -1.04, z: 0.32, r: 0.026 },
   ], []);
 
-  // 1. Emerald-cut outer crystal bottle geometry
+  // 1. Sleek French crystal flacon body geometry with crisp micro-bevels
   const outerBodyGeo = useMemo(() => {
-    const shape = createOctagonShape(0.78, 0.44, 0.18);
+    const shape = createOctagonShape(0.76, 0.44, 0.06);
     const geo = new THREE.ExtrudeGeometry(shape, {
       depth: 1.58,
       bevelEnabled: true,
-      bevelSegments: 5,
+      bevelSegments: 3,
       steps: 1,
-      bevelSize: 0.05,
-      bevelThickness: 0.05,
+      bevelSize: 0.02,
+      bevelThickness: 0.02,
     });
     geo.center();
     return geo;
@@ -92,14 +92,14 @@ export function PerfumeModel({ theme }: PerfumeModelProps) {
 
   // 2. Heavy solid crystal base (glass punt)
   const basePuntGeo = useMemo(() => {
-    const shape = createOctagonShape(0.8, 0.46, 0.19);
+    const shape = createOctagonShape(0.78, 0.46, 0.06);
     const geo = new THREE.ExtrudeGeometry(shape, {
       depth: 0.36,
       bevelEnabled: true,
-      bevelSegments: 4,
+      bevelSegments: 3,
       steps: 1,
-      bevelSize: 0.04,
-      bevelThickness: 0.04,
+      bevelSize: 0.02,
+      bevelThickness: 0.02,
     });
     geo.center();
     return geo;
@@ -107,14 +107,14 @@ export function PerfumeModel({ theme }: PerfumeModelProps) {
 
   // 3. Chamfered crystal shoulder transition
   const shoulderGeo = useMemo(() => {
-    const shape = createOctagonShape(0.68, 0.38, 0.15);
+    const shape = createOctagonShape(0.68, 0.38, 0.05);
     const geo = new THREE.ExtrudeGeometry(shape, {
       depth: 0.16,
       bevelEnabled: true,
-      bevelSegments: 3,
+      bevelSegments: 2,
       steps: 1,
-      bevelSize: 0.03,
-      bevelThickness: 0.03,
+      bevelSize: 0.02,
+      bevelThickness: 0.02,
     });
     geo.center();
     return geo;
@@ -122,14 +122,14 @@ export function PerfumeModel({ theme }: PerfumeModelProps) {
 
   // 4. Inner liquid elixir geometry (precisely contoured to bottle interior)
   const liquidCoreGeo = useMemo(() => {
-    const shape = createOctagonShape(0.65, 0.33, 0.13);
+    const shape = createOctagonShape(0.66, 0.34, 0.04);
     const geo = new THREE.ExtrudeGeometry(shape, {
       depth: 1.24,
       bevelEnabled: true,
-      bevelSegments: 3,
+      bevelSegments: 2,
       steps: 1,
-      bevelSize: 0.03,
-      bevelThickness: 0.03,
+      bevelSize: 0.02,
+      bevelThickness: 0.02,
     });
     geo.center();
     return geo;
@@ -137,14 +137,14 @@ export function PerfumeModel({ theme }: PerfumeModelProps) {
 
   // 5. Clean crystal stopper cap (seamless, no internal duplication)
   const capGeo = useMemo(() => {
-    const shape = createOctagonShape(0.56, 0.38, 0.14);
+    const shape = createOctagonShape(0.54, 0.36, 0.08);
     const geo = new THREE.ExtrudeGeometry(shape, {
       depth: 0.36,
       bevelEnabled: true,
       bevelSegments: 2,
       steps: 1,
-      bevelSize: 0.12,
-      bevelThickness: 0.14,
+      bevelSize: 0.08,
+      bevelThickness: 0.10,
     });
     geo.center();
     return geo;
@@ -169,9 +169,9 @@ export function PerfumeModel({ theme }: PerfumeModelProps) {
   useFrame((state) => {
     if (!groupRef.current) return;
     const t = state.clock.getElapsedTime();
-    // Ultra-smooth slowmo rotation
-    groupRef.current.rotation.y = Math.sin(t * 0.26) * 0.20;
-    groupRef.current.rotation.x = Math.sin(t * 0.18) * 0.012;
+    // Ultra-smooth subtle slowmo rotation (gentle drift keeps the single label pristine)
+    groupRef.current.rotation.y = Math.sin(t * 0.20) * 0.08;
+    groupRef.current.rotation.x = Math.sin(t * 0.14) * 0.008;
 
     // Animate fresh micro-bubbles rising inside the water
     bubbleRefs.current.forEach((mesh, idx) => {
@@ -388,7 +388,7 @@ export function PerfumeModel({ theme }: PerfumeModelProps) {
       {/* 3. LUXURY FRONT LABEL (SINGLE INSTANCE FRONT ONLY - NO GHOST)   */}
       {/* Fits snugly inside the front flat facet with zero side bleed   */}
       {/* ============================================================== */}
-      <group position={[0, -0.12, 0.495]}>
+      <group position={[0, -0.12, 0.465]}>
         {/* Brushed Gold Backing Plate (Blocks reverse bleed-through and reflections) */}
         <mesh position={[0, 0, -0.003]} renderOrder={99}>
           <boxGeometry args={[0.74, 0.90, 0.006]} />
@@ -414,6 +414,10 @@ export function PerfumeModel({ theme }: PerfumeModelProps) {
             side={THREE.FrontSide}
             transparent={false}
             depthWrite={true}
+            depthTest={true}
+            polygonOffset={true}
+            polygonOffsetFactor={-2}
+            polygonOffsetUnits={-2}
           />
         </mesh>
       </group>
