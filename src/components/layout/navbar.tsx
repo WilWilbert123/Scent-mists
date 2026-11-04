@@ -21,12 +21,13 @@ export function Navbar() {
     <>
       <header className="sticky top-0 z-50 w-full border-b border-border/60 bg-background/95 backdrop-blur-md">
         <div className="mx-auto flex h-14 sm:h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-          {/* Brand Logo & Wordmark */}
+          {/* Brand Logo & Wordmark (Logo-only on mobile, Wordmark on sm+) */}
           <Link
             href="/"
+            aria-label={BRAND_NAME}
             className="inline-flex items-center gap-2.5 transition-opacity hover:opacity-85"
           >
-            <span className="relative h-8 w-8 shrink-0">
+            <span className="relative h-8 w-8 sm:h-8 sm:w-8 shrink-0">
               <Image
                 src="/images/logo/scentmistslogo.png"
                 alt={`${BRAND_NAME} emblem`}
@@ -36,7 +37,7 @@ export function Navbar() {
                 className="object-contain"
               />
             </span>
-            <span className="font-serif text-lg sm:text-xl tracking-[0.18em] text-foreground font-medium">
+            <span className="hidden sm:inline font-serif text-lg sm:text-xl tracking-[0.18em] text-foreground font-medium">
               {BRAND_NAME}
             </span>
           </Link>
