@@ -162,3 +162,4 @@ export function PerfumeMistSmoke({ theme }: PerfumeMistSmokeProps) {
     </group>
   );
 }
+

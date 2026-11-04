@@ -3,14 +3,16 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X, ArrowRight } from "lucide-react";
+import { Menu, X, ArrowRight, ShoppingBag } from "lucide-react";
 import { PUBLIC_NAV_ITEMS } from "@/data/navigation";
 import { BRAND_NAME } from "@/lib/constants";
+import { useCart } from "@/context/cart-context";
 import { cn } from "@/lib/utils";
 
 export function MobileNavigation() {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
+  const { totalItems, setIsCartOpen } = useCart();
 
   return (
     <div className="md:hidden">
@@ -60,14 +62,28 @@ export function MobileNavigation() {
                 );
               })}
             </ul>
-            <div className="mt-5 pt-2">
+            {/* Drawer Hero Actions (Moved into Drawer for Clean Mobile View) */}
+            <div className="mt-6 pt-4 border-t border-border/60 space-y-2.5">
               <Link
-                href="/shop"
+                href="/#catalog"
                 onClick={() => setIsOpen(false)}
-                className="inline-flex w-full items-center justify-center rounded-lg bg-primary px-6 py-3 text-xs uppercase tracking-wider font-semibold text-primary-foreground transition-colors hover:bg-accent"
+                className="flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-6 py-3.5 text-xs uppercase tracking-wider font-semibold text-primary-foreground transition-colors hover:bg-accent shadow-sm"
               >
-                Browse All Perfumes
+                <span>Explore Perfumes</span>
+                <ArrowRight className="h-4 w-4" aria-hidden="true" />
               </Link>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setIsOpen(false);
+                  setIsCartOpen(true);
+                }}
+                className="flex w-full items-center justify-center gap-2 rounded-lg border border-border/80 bg-background/50 backdrop-blur-xs px-5 py-3.5 text-xs uppercase tracking-wider font-semibold text-foreground hover:bg-surface transition-colors cursor-pointer"
+              >
+                <ShoppingBag className="h-4 w-4" />
+                <span>View Cart ({totalItems})</span>
+              </button>
             </div>
           </nav>
         </div>
