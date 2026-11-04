@@ -33,6 +33,7 @@ function createOctagonShape(halfWidth: number, halfDepth: number, chamfer: numbe
  */
 export function PerfumeModel({ theme }: PerfumeModelProps) {
   const groupRef = useRef<THREE.Group>(null);
+  const bubbleRefs = useRef<(THREE.Mesh | null)[]>([]);
   const labelTexture = usePerfumeLabelTexture(theme);
   const isDark = theme === "dark";
 
@@ -40,6 +41,39 @@ export function PerfumeModel({ theme }: PerfumeModelProps) {
   const basePosition: [number, number, number] = isDark
     ? [0.14, -0.62, 0]
     : [0.12, -0.22, 0];
+
+  // Fresh effervescent micro-bubbles inside the fresh perfume water chamber
+  const bubbles = useMemo(() => {
+    return Array.from({ length: 22 }, (_, i) => ({
+      x: (Math.sin(i * 1.7) * 0.22) + (i % 2 === 0 ? 0.016 : -0.016),
+      initialY: -0.7 + (i / 22) * 1.15,
+      z: (Math.cos(i * 2.3) * 0.12) + 0.02,
+      radius: 0.012 + (i % 4) * 0.005,
+      speed: 0.06 + (i % 3) * 0.03,
+      swayOffset: i * 0.8,
+    }));
+  }, []);
+
+  // Fresh water dew droplets condensed on the outer crystal glass
+  const droplets = useMemo(() => [
+    // On the crystal shoulder
+    { x: -0.42, y: 0.76, z: 0.22, r: 0.028 },
+    { x: -0.28, y: 0.81, z: 0.25, r: 0.022 },
+    { x: 0.32, y: 0.78, z: 0.24, r: 0.032 },
+    { x: 0.45, y: 0.74, z: 0.20, r: 0.024 },
+    { x: 0.18, y: 0.82, z: 0.26, r: 0.018 },
+    { x: -0.15, y: 0.80, z: 0.25, r: 0.020 },
+    // On the chamfered corners
+    { x: -0.58, y: 0.25, z: 0.34, r: 0.026 },
+    { x: 0.58, y: 0.35, z: 0.34, r: 0.025 },
+    { x: -0.62, y: -0.45, z: 0.32, r: 0.028 },
+    { x: 0.62, y: -0.35, z: 0.32, r: 0.024 },
+    // On the heavy crystal base punt
+    { x: -0.48, y: -0.98, z: 0.28, r: 0.030 },
+    { x: 0.42, y: -1.02, z: 0.29, r: 0.032 },
+    { x: 0.12, y: -0.96, z: 0.33, r: 0.022 },
+    { x: -0.18, y: -1.04, z: 0.32, r: 0.026 },
+  ], []);
 
   // 1. Emerald-cut outer crystal bottle geometry
   const outerBodyGeo = useMemo(() => {
@@ -131,12 +165,23 @@ export function PerfumeModel({ theme }: PerfumeModelProps) {
     return geo;
   }, []);
 
-  // Graceful slow-motion showcase rotation (slowmo)
+  // Graceful slow-motion showcase rotation (slowmo) & dynamic water bubbles
   useFrame((state) => {
     if (!groupRef.current) return;
     const t = state.clock.getElapsedTime();
     groupRef.current.rotation.y = Math.sin(t * 0.4) * 0.32;
     groupRef.current.rotation.x = Math.sin(t * 0.25) * 0.015;
+
+    // Animate fresh micro-bubbles rising inside the water
+    bubbleRefs.current.forEach((mesh, idx) => {
+      if (!mesh) return;
+      const b = bubbles[idx];
+      if (!b) return;
+      const cycleHeight = 1.25;
+      const progressY = ((t * b.speed + b.initialY + 0.8) % cycleHeight) - 0.75;
+      mesh.position.y = progressY;
+      mesh.position.x = b.x + Math.sin(t * 1.5 + b.swayOffset) * 0.012;
+    });
   });
 
   return (
@@ -147,7 +192,7 @@ export function PerfumeModel({ theme }: PerfumeModelProps) {
       scale={0.78}
     >
       {/* ============================================================== */}
-      {/* 1. LUMINOUS PERFUME ELIXIR (INTERNAL LIQUID CHAMBER)          */}
+      {/* 1. FRESH PERFUME WATER & ELIXIR (INTERNAL FLUID CHAMBER)       */}
       {/* ============================================================== */}
       <mesh
         geometry={liquidCoreGeo}
@@ -156,34 +201,61 @@ export function PerfumeModel({ theme }: PerfumeModelProps) {
         renderOrder={2}
       >
         <meshPhysicalMaterial
-          color={isDark ? "#DF683B" : "#EC7F4F"}
-          emissive={isDark ? "#6E2412" : "#873516"}
-          emissiveIntensity={isDark ? 0.42 : 0.30}
-          transmission={0.42}
-          roughness={0.015}
-          metalness={0.03}
-          ior={1.38}
-          thickness={0.9}
-          attenuationColor="#FFA680"
-          attenuationDistance={1.1}
+          color={isDark ? "#E5753C" : "#FFA26B"}
+          emissive={isDark ? "#631C0C" : "#993B18"}
+          emissiveIntensity={isDark ? 0.38 : 0.26}
+          transmission={0.78}
+          roughness={0.012}
+          metalness={0.02}
+          ior={1.34}
+          thickness={0.85}
+          attenuationColor={isDark ? "#D97B52" : "#FFC7A6"}
+          attenuationDistance={1.0}
           clearcoat={1.0}
-          clearcoatRoughness={0.02}
-          envMapIntensity={2.5}
+          clearcoatRoughness={0.01}
+          reflectivity={1.0}
+          envMapIntensity={2.8}
         />
       </mesh>
 
-      {/* Meniscus / Liquid Top Surface Line */}
+      {/* Meniscus / Liquid Top Surface Line (Refractive fluid boundary) */}
       <mesh position={[0, 0.48, 0]} rotation={[-Math.PI / 2, 0, 0]} renderOrder={3}>
-        <planeGeometry args={[1.28, 0.64]} />
+        <planeGeometry args={[1.26, 0.62]} />
         <meshPhysicalMaterial
-          color="#FFDEC9"
-          transmission={0.5}
+          color="#FFE5D4"
+          transmission={0.72}
           roughness={0.02}
-          metalness={0.1}
+          metalness={0.05}
           clearcoat={1.0}
-          ior={1.38}
+          ior={1.34}
+          reflectivity={1.0}
         />
       </mesh>
+
+      {/* Fresh Effervescent Micro-Bubbles inside the water */}
+      <group position={[0, -0.16, 0]}>
+        {bubbles.map((b, idx) => (
+          <mesh
+            key={idx}
+            ref={(el) => {
+              bubbleRefs.current[idx] = el;
+            }}
+            position={[b.x, b.initialY, b.z]}
+            renderOrder={3}
+          >
+            <sphereGeometry args={[b.radius, 12, 12]} />
+            <meshPhysicalMaterial
+              color="#FFFFFF"
+              emissive="#FFD9BF"
+              emissiveIntensity={0.3}
+              transmission={0.85}
+              roughness={0.02}
+              ior={1.33}
+              clearcoat={1.0}
+            />
+          </mesh>
+        ))}
+      </group>
 
       {/* Internal Glass Dip Tube (Atomizer Straw) */}
       <mesh position={[0.016, -0.12, 0.01]} rotation={[0, 0, 0.032]} renderOrder={3}>
@@ -199,8 +271,30 @@ export function PerfumeModel({ theme }: PerfumeModelProps) {
       </mesh>
 
       {/* ============================================================== */}
-      {/* 2. OUTER CRYSTAL FLACON GLASS (PRISTINE TRANSPARENT OPTICS)    */}
+      {/* 2. OUTER CRYSTAL FLACON GLASS & FRESH CONDENSED DEW DROPLETS   */}
       {/* ============================================================== */}
+      {/* Fresh Water Dew Droplets Condensed on Crystal Glass */}
+      <group position={[0, -0.1, 0]}>
+        {droplets.map((d, idx) => (
+          <mesh
+            key={idx}
+            position={[d.x, d.y, d.z]}
+            renderOrder={15}
+          >
+            <sphereGeometry args={[d.r, 14, 14, 0, Math.PI * 2, 0, Math.PI * 0.6]} />
+            <meshPhysicalMaterial
+              color="#FFFFFF"
+              transmission={0.92}
+              roughness={0.01}
+              ior={1.33}
+              clearcoat={1.0}
+              reflectivity={1.0}
+              specularIntensity={1.8}
+            />
+          </mesh>
+        ))}
+      </group>
+
       {/* Main Emerald-Cut Chamfered Crystal Body */}
       <mesh
         geometry={outerBodyGeo}
@@ -295,7 +389,7 @@ export function PerfumeModel({ theme }: PerfumeModelProps) {
       <group position={[0, -0.12, 0.50]}>
         {/* Brushed Gold Backing Plate (Completely blocks reverse bleed-through) */}
         <mesh position={[0, 0, -0.004]} renderOrder={99}>
-          <boxGeometry args={[0.96, 1.14, 0.008]} />
+          <boxGeometry args={[0.86, 1.02, 0.008]} />
           <meshPhysicalMaterial
             color="#D4A778"
             emissive="#5C3B24"
@@ -309,7 +403,7 @@ export function PerfumeModel({ theme }: PerfumeModelProps) {
 
         {/* High-Resolution Front Label Canvas (Single-sided Front ONLY - Zero ghosting) */}
         <mesh position={[0, 0, 0.004]} renderOrder={100}>
-          <planeGeometry args={[0.92, 1.1]} />
+          <planeGeometry args={[0.82, 0.98]} />
           <meshStandardMaterial
             map={labelTexture ?? undefined}
             color="#FFFFFF"
