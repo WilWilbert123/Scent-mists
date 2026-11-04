@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X, ArrowRight, ShoppingBag } from "lucide-react";
@@ -13,6 +13,23 @@ export function MobileNavigation() {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
   const { totalItems, setIsCartOpen } = useCart();
+
+  // Prevent background scrolling and handle ESC key when drawer is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+      const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.key === "Escape") setIsOpen(false);
+      };
+      window.addEventListener("keydown", handleKeyDown);
+      return () => {
+        document.body.style.overflow = "";
+        window.removeEventListener("keydown", handleKeyDown);
+      };
+    } else {
+      document.body.style.overflow = "";
+    }
+  }, [isOpen]);
 
   return (
     <div className="md:hidden">
@@ -32,61 +49,72 @@ export function MobileNavigation() {
       </button>
 
       {isOpen && (
-        <div
-          id="mobile-primary-nav"
-          role="dialog"
-          aria-label={`${BRAND_NAME} mobile menu`}
-          className="fixed inset-x-0 top-[57px] z-50 border-b border-border bg-surface-elevated/98 backdrop-blur-md px-6 py-6 shadow-xl"
-        >
-          <nav aria-label="Mobile Primary">
-            <ul className="flex flex-col space-y-2">
-              {PUBLIC_NAV_ITEMS.map((item) => {
-                const isActive =
-                  item.href === "/"
-                    ? pathname === "/"
-                    : pathname.startsWith(item.href);
-                return (
-                  <li key={item.href}>
-                    <Link
-                      href={item.href}
-                      onClick={() => setIsOpen(false)}
-                      className={cn(
-                        "flex items-center justify-between border-b border-border/40 py-3 text-base font-medium tracking-wide transition-colors",
-                        isActive ? "text-accent font-semibold" : "text-foreground"
-                      )}
-                    >
-                      <span>{item.label}</span>
-                      <ArrowRight className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
-                    </Link>
-                  </li>
-                );
-              })}
-            </ul>
-            {/* Drawer Hero Actions (Moved into Drawer for Clean Mobile View) */}
-            <div className="mt-6 pt-4 border-t border-border/60 space-y-2.5">
-              <Link
-                href="/#catalog"
-                onClick={() => setIsOpen(false)}
-                className="flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-6 py-3.5 text-xs uppercase tracking-wider font-semibold text-primary-foreground transition-colors hover:bg-accent shadow-sm"
-              >
-                <span>Explore Perfumes</span>
-                <ArrowRight className="h-4 w-4" aria-hidden="true" />
-              </Link>
+        <>
+          {/* Full-Screen Frosted Blurred Backdrop (Eliminates transparency) */}
+          <div
+            className="fixed inset-0 top-[56px] sm:top-[64px] z-40 bg-black/55 backdrop-blur-md transition-opacity duration-300"
+            onClick={() => setIsOpen(false)}
+            aria-hidden="true"
+          />
 
-              <button
-                type="button"
-                onClick={() => {
-                  setIsOpen(false);
-                  setIsCartOpen(true);
-                }}
-                className="flex w-full items-center justify-center gap-2 rounded-lg border border-border/80 bg-background/50 backdrop-blur-xs px-5 py-3.5 text-xs uppercase tracking-wider font-semibold text-foreground hover:bg-surface transition-colors cursor-pointer"
-              >
-                <ShoppingBag className="h-4 w-4" />
-                <span>View Cart ({totalItems})</span>
-              </button>
-            </div>
-          </nav>
-        </div>
+          {/* Drawer Menu Panel with Frosted Glass & Heavy Blur (Not Transparent) */}
+          <div
+            id="mobile-primary-nav"
+            role="dialog"
+            aria-label={`${BRAND_NAME} mobile menu`}
+            className="fixed inset-x-0 top-[56px] sm:top-[64px] z-50 border-b border-border/80 bg-[#FAF5EE]/95 dark:bg-[#1C1817]/95 backdrop-blur-2xl px-6 py-6 shadow-2xl transition-all duration-200"
+          >
+            <nav aria-label="Mobile Primary">
+              <ul className="flex flex-col space-y-2">
+                {PUBLIC_NAV_ITEMS.map((item) => {
+                  const isActive =
+                    item.href === "/"
+                      ? pathname === "/"
+                      : pathname.startsWith(item.href);
+                  return (
+                    <li key={item.href}>
+                      <Link
+                        href={item.href}
+                        onClick={() => setIsOpen(false)}
+                        className={cn(
+                          "flex items-center justify-between border-b border-border/40 py-3 text-base font-medium tracking-wide transition-colors",
+                          isActive ? "text-accent font-semibold" : "text-foreground"
+                        )}
+                      >
+                        <span>{item.label}</span>
+                        <ArrowRight className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
+
+              {/* Drawer Hero Actions (Moved into Drawer for Clean Mobile View) */}
+              <div className="mt-6 pt-4 border-t border-border/60 space-y-2.5">
+                <Link
+                  href="/#catalog"
+                  onClick={() => setIsOpen(false)}
+                  className="flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-6 py-3.5 text-xs uppercase tracking-wider font-semibold text-primary-foreground transition-colors hover:bg-accent shadow-sm"
+                >
+                  <span>Explore Perfumes</span>
+                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                </Link>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsOpen(false);
+                    setIsCartOpen(true);
+                  }}
+                  className="flex w-full items-center justify-center gap-2 rounded-lg border border-border/80 bg-background/80 backdrop-blur-sm px-5 py-3.5 text-xs uppercase tracking-wider font-semibold text-foreground hover:bg-surface transition-colors cursor-pointer"
+                >
+                  <ShoppingBag className="h-4 w-4" />
+                  <span>View Cart ({totalItems})</span>
+                </button>
+              </div>
+            </nav>
+          </div>
+        </>
       )}
     </div>
   );
