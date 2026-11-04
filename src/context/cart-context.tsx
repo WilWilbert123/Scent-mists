@@ -95,7 +95,6 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
           selectedSize: product.volume,
         };
         toast.success(`Added "${product.name}" to cart.`);
-        setIsCartOpen(true);
         return [...prev, newItem];
       }
     });
