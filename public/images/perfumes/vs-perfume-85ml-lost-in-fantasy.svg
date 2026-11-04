@@ -40,7 +40,7 @@
       <stop offset="100%" stop-color="#8a4f2e" />
     </linearGradient>
 
-    <!-- Gold Foil Text & Borders -->
+    <!-- Gold Foil Text &amp; Borders -->
     <linearGradient id="goldFoil" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#d4af37" />
       <stop offset="40%" stop-color="#f7e1a0" />
@@ -106,7 +106,7 @@
     <rect x="360" y="245" width="80" height="12" rx="3" fill="url(#goldCollar)" stroke="url(#goldFoil)" stroke-width="0.8" />
     <!-- Atomizer Core Neck -->
     <rect x="350" y="257" width="100" height="42" rx="4" fill="url(#goldCollar)" stroke="url(#goldFoil)" stroke-width="1" />
-    <!-- Collar Highlights & Ridges -->
+    <!-- Collar Highlights &amp; Ridges -->
     <line x1="350" y1="272" x2="450" y2="272" stroke="#ffffff" stroke-width="1.5" stroke-opacity="0.6" />
     <line x1="350" y1="288" x2="450" y2="288" stroke="#ffffff" stroke-width="1.2" stroke-opacity="0.5" />
     <!-- Bottom Collar Flange (Rests on shoulder) -->
@@ -115,7 +115,7 @@
     <!-- ============================================== -->
     <!-- 3. HEAVY CRYSTAL FLACON (SQUARE FACETED BODY)  -->
     <!-- ============================================== -->
-    <!-- Outer Heavy Crystal Glass Silhouette with Beveled Shoulders & Base -->
+    <!-- Outer Heavy Crystal Glass Silhouette with Beveled Shoulders &amp; Base -->
     <path d="M235 345 L320 313 L480 313 L565 345 L565 790 L535 830 L265 830 L235 790 Z"
           fill="#1c1618"
           stroke="#ffffff"
@@ -138,7 +138,7 @@
     <line x1="400" y1="313" x2="400" y2="800" stroke="#ffffff" stroke-opacity="0.45" stroke-width="3" />
     <line x1="398" y1="313" x2="398" y2="800" stroke="#075985" stroke-opacity="0.4" stroke-width="1.5" />
 
-    <!-- Crystal Wall Glass Glints & Specular Highlights -->
+    <!-- Crystal Wall Glass Glints &amp; Specular Highlights -->
     <line x1="237" y1="346" x2="237" y2="788" stroke="url(#specularGlint)" stroke-width="6" stroke-opacity="0.85" />
     <line x1="265" y1="365" x2="265" y2="795" stroke="#ffffff" stroke-width="2" stroke-opacity="0.7" />
     <line x1="535" y1="365" x2="535" y2="795" stroke="#ffffff" stroke-width="1.5" stroke-opacity="0.4" />
