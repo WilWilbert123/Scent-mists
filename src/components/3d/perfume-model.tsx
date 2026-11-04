@@ -131,12 +131,12 @@ export function PerfumeModel({ theme }: PerfumeModelProps) {
     return geo;
   }, []);
 
-  // Gentle natural breathing motion catching specular studio lights
+  // Graceful slow-motion showcase rotation (slowmo)
   useFrame((state) => {
     if (!groupRef.current) return;
     const t = state.clock.getElapsedTime();
-    groupRef.current.rotation.y = -0.05 + Math.sin(t * 0.65) * 0.035;
-    groupRef.current.rotation.x = Math.sin(t * 0.45) * 0.01;
+    groupRef.current.rotation.y = Math.sin(t * 0.4) * 0.32;
+    groupRef.current.rotation.x = Math.sin(t * 0.25) * 0.015;
   });
 
   return (
@@ -307,7 +307,7 @@ export function PerfumeModel({ theme }: PerfumeModelProps) {
           />
         </mesh>
 
-        {/* High-Resolution Front Label Canvas (Single-sided Front ONLY) */}
+        {/* High-Resolution Front Label Canvas (Single-sided Front ONLY - Zero ghosting) */}
         <mesh position={[0, 0, 0.004]} renderOrder={100}>
           <planeGeometry args={[0.92, 1.1]} />
           <meshStandardMaterial
@@ -316,6 +316,9 @@ export function PerfumeModel({ theme }: PerfumeModelProps) {
             roughness={0.3}
             metalness={0.05}
             side={THREE.FrontSide}
+            transparent={true}
+            opacity={1.0}
+            depthWrite={true}
           />
         </mesh>
       </group>
