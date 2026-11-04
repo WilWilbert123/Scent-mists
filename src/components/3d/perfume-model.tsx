@@ -169,8 +169,9 @@ export function PerfumeModel({ theme }: PerfumeModelProps) {
   useFrame((state) => {
     if (!groupRef.current) return;
     const t = state.clock.getElapsedTime();
-    groupRef.current.rotation.y = Math.sin(t * 0.4) * 0.32;
-    groupRef.current.rotation.x = Math.sin(t * 0.25) * 0.015;
+    // Ultra-smooth slowmo rotation
+    groupRef.current.rotation.y = Math.sin(t * 0.26) * 0.20;
+    groupRef.current.rotation.x = Math.sin(t * 0.18) * 0.012;
 
     // Animate fresh micro-bubbles rising inside the water
     bubbleRefs.current.forEach((mesh, idx) => {
@@ -201,16 +202,16 @@ export function PerfumeModel({ theme }: PerfumeModelProps) {
         renderOrder={2}
       >
         <meshPhysicalMaterial
-          color={isDark ? "#E5753C" : "#FFA26B"}
-          emissive={isDark ? "#631C0C" : "#993B18"}
-          emissiveIntensity={isDark ? 0.38 : 0.26}
-          transmission={0.78}
-          roughness={0.012}
+          color={isDark ? "#FFAE7A" : "#FFE0C8"}
+          emissive={isDark ? "#591E0A" : "#803512"}
+          emissiveIntensity={isDark ? 0.30 : 0.20}
+          transmission={0.85}
+          roughness={0.02}
           metalness={0.02}
-          ior={1.34}
-          thickness={0.85}
-          attenuationColor={isDark ? "#D97B52" : "#FFC7A6"}
-          attenuationDistance={1.0}
+          ior={1.33}
+          thickness={0.7}
+          attenuationColor={isDark ? "#E08B5B" : "#FFC49E"}
+          attenuationDistance={1.2}
           clearcoat={1.0}
           clearcoatRoughness={0.01}
           reflectivity={1.0}
@@ -305,20 +306,20 @@ export function PerfumeModel({ theme }: PerfumeModelProps) {
         renderOrder={10}
       >
         <meshPhysicalMaterial
-          color={isDark ? "#EDE3DF" : "#E4D8D2"}
-          roughness={0.02}
-          metalness={0.02}
+          color={isDark ? "#EDE3DF" : "#F6EFEA"}
+          roughness={0.03}
+          metalness={0.04}
           transmission={0.88}
-          ior={1.52}
-          thickness={1.1}
-          attenuationColor={isDark ? "#D2B8AE" : "#C4A69B"}
-          attenuationDistance={1.3}
+          ior={1.48}
+          thickness={0.85}
+          attenuationColor={isDark ? "#D2B8AE" : "#CDB3A7"}
+          attenuationDistance={1.4}
           clearcoat={1.0}
-          clearcoatRoughness={0.01}
+          clearcoatRoughness={0.015}
           reflectivity={1.0}
-          specularIntensity={1.5}
+          specularIntensity={1.7}
           specularColor="#FFFFFF"
-          envMapIntensity={isDark ? 2.8 : 2.5}
+          envMapIntensity={isDark ? 3.0 : 2.8}
         />
       </mesh>
 
@@ -332,12 +333,12 @@ export function PerfumeModel({ theme }: PerfumeModelProps) {
         renderOrder={10}
       >
         <meshPhysicalMaterial
-          color={isDark ? "#DECBC4" : "#D0BCB4"}
+          color={isDark ? "#DECBC4" : "#D8C5BD"}
           roughness={0.02}
           metalness={0.04}
-          transmission={0.75}
-          ior={1.53}
-          thickness={1.8}
+          transmission={0.78}
+          ior={1.50}
+          thickness={1.6}
           attenuationColor={isDark ? "#C0A49A" : "#B29489"}
           attenuationDistance={0.9}
           clearcoat={1.0}
@@ -356,17 +357,17 @@ export function PerfumeModel({ theme }: PerfumeModelProps) {
         renderOrder={10}
       >
         <meshPhysicalMaterial
-          color={isDark ? "#EDE3DF" : "#E4D8D2"}
+          color={isDark ? "#EDE3DF" : "#F6EFEA"}
           roughness={0.02}
           metalness={0.02}
-          transmission={0.84}
-          ior={1.52}
-          thickness={1.0}
-          attenuationColor={isDark ? "#D2B8AE" : "#C4A69B"}
-          attenuationDistance={1.2}
+          transmission={0.85}
+          ior={1.48}
+          thickness={0.8}
+          attenuationColor={isDark ? "#D2B8AE" : "#CDB3A7"}
+          attenuationDistance={1.3}
           clearcoat={1.0}
           reflectivity={1.0}
-          envMapIntensity={2.6}
+          envMapIntensity={2.8}
         />
       </mesh>
 
@@ -374,44 +375,44 @@ export function PerfumeModel({ theme }: PerfumeModelProps) {
       <mesh position={[0, 0.94, 0]} renderOrder={10}>
         <cylinderGeometry args={[0.24, 0.28, 0.18, 32]} />
         <meshPhysicalMaterial
-          color={isDark ? "#EDE3DF" : "#E4D8D2"}
+          color={isDark ? "#EDE3DF" : "#F6EFEA"}
           roughness={0.02}
-          transmission={0.84}
-          ior={1.52}
-          thickness={0.8}
+          transmission={0.85}
+          ior={1.48}
+          thickness={0.7}
           clearcoat={1.0}
         />
       </mesh>
 
       {/* ============================================================== */}
-      {/* 3. LUXURY FRONT LABEL (RENDERED ON TOP ONLY - ZERO GHOSTING)   */}
+      {/* 3. LUXURY FRONT LABEL (SINGLE INSTANCE FRONT ONLY - NO GHOST)   */}
+      {/* Fits snugly inside the front flat facet with zero side bleed   */}
       {/* ============================================================== */}
-      <group position={[0, -0.12, 0.50]}>
-        {/* Brushed Gold Backing Plate (Completely blocks reverse bleed-through) */}
-        <mesh position={[0, 0, -0.004]} renderOrder={99}>
-          <boxGeometry args={[0.86, 1.02, 0.008]} />
+      <group position={[0, -0.12, 0.495]}>
+        {/* Brushed Gold Backing Plate (Blocks reverse bleed-through and reflections) */}
+        <mesh position={[0, 0, -0.003]} renderOrder={99}>
+          <boxGeometry args={[0.74, 0.90, 0.006]} />
           <meshPhysicalMaterial
             color="#D4A778"
             emissive="#5C3B24"
-            emissiveIntensity={0.15}
-            metalness={0.92}
-            roughness={0.16}
-            clearcoat={1.0}
-            envMapIntensity={2.5}
+            emissiveIntensity={0.12}
+            metalness={0.90}
+            roughness={0.2}
+            clearcoat={0.8}
+            envMapIntensity={2.2}
           />
         </mesh>
 
         {/* High-Resolution Front Label Canvas (Single-sided Front ONLY - Zero ghosting) */}
-        <mesh position={[0, 0, 0.004]} renderOrder={100}>
-          <planeGeometry args={[0.82, 0.98]} />
+        <mesh position={[0, 0, 0.003]} renderOrder={100}>
+          <planeGeometry args={[0.70, 0.86]} />
           <meshStandardMaterial
             map={labelTexture ?? undefined}
             color="#FFFFFF"
-            roughness={0.3}
-            metalness={0.05}
+            roughness={0.35}
+            metalness={0.02}
             side={THREE.FrontSide}
-            transparent={true}
-            opacity={1.0}
+            transparent={false}
             depthWrite={true}
           />
         </mesh>

@@ -48,9 +48,9 @@ export function HeroContent({ content }: HeroContentProps) {
         </div>
       </FadeIn>
 
-      {/* Action Buttons */}
+      {/* Action Buttons - Moved to drawer on mobile, shown here on tablet & desktop */}
       <FadeIn delay={0.28} xOffset={-24} yOffset={0}>
-        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center lg:justify-start gap-2.5 sm:gap-3 pt-2">
+        <div className="hidden md:flex sm:flex-row items-stretch sm:items-center justify-center lg:justify-start gap-2.5 sm:gap-3 pt-2">
           <Button
             asChild
             size="lg"
