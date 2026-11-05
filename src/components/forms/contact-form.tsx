@@ -4,7 +4,7 @@ import React, { useEffect, useId, useState } from "react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Send, CheckCircle2, AlertCircle } from "lucide-react";
+import { Send, CheckCircle2, AlertCircle, MessageSquare } from "lucide-react";
 import { enquirySubmissionSchema } from "@/lib/validations";
 import type { EnquirySubmissionValues } from "@/types/enquiry";
 import { isSupabaseBrowserConfigured } from "@/lib/supabase/client";
@@ -158,22 +158,22 @@ export function ContactForm({ defaultSubject = "" }: ContactFormProps) {
       method="POST"
       action="/api/contact"
       noValidate
-      className="border border-border/80 bg-surface-elevated shadow-luxury overflow-hidden"
+      className="rounded-xl sm:rounded-2xl border border-border/80 bg-surface-elevated shadow-luxury overflow-hidden"
     >
       {/* Top Status Bar */}
-      <div className="flex items-center justify-between border-b border-border/60 bg-surface/60 px-6 py-3.5 sm:px-10 text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
-        <span className="font-medium text-foreground/85">
-          Direct Concierge Dispatch
+      <div className="flex items-center justify-between border-b border-border/60 bg-surface/60 px-3.5 py-2 sm:px-8 sm:py-3.5 text-[9px] sm:text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
+        <span className="font-medium text-foreground/85 flex items-center gap-1.5">
+          <MessageSquare className="h-3 w-3 text-accent" />
+          <span>Direct Concierge Dispatch</span>
         </span>
         {isLiveConnected && (
-          <span className="inline-flex items-center gap-1.5 text-foreground/80">
-            <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+          <span className="inline-flex items-center gap-1.5 text-foreground/80 font-mono text-[9px]">
 
           </span>
         )}
       </div>
 
-      <div className="p-6 sm:p-10 space-y-6">
+      <div className="p-3 sm:p-8 space-y-2.5 sm:space-y-5">
         {/* Hidden anti-spam honeypot field */}
         <div className="hidden" aria-hidden="true">
           <input
@@ -189,18 +189,18 @@ export function ContactForm({ defaultSubject = "" }: ContactFormProps) {
         {serverError && (
           <div
             role="alert"
-            className="flex items-start gap-3 border border-red-800/40 bg-red-950/10 p-4 text-sm text-red-700 dark:text-red-300"
+            className="flex items-start gap-2.5 rounded-lg border border-red-800/40 bg-red-950/10 p-3 text-xs text-red-700 dark:text-red-300"
           >
             <AlertCircle className="h-4 w-4 shrink-0 mt-0.5" aria-hidden="true" />
             <span>{serverError}</span>
           </div>
         )}
 
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-          <div className="space-y-1.5">
+        <div className="grid grid-cols-1 gap-2.5 sm:gap-4 sm:grid-cols-2">
+          <div className="space-y-1">
             <label
               htmlFor={`${formId}-full_name`}
-              className="block text-xs uppercase tracking-[0.16em] text-foreground font-medium"
+              className="block text-[10px] sm:text-xs uppercase tracking-wider text-foreground font-medium"
             >
               Full Name <span className="text-accent">*</span>
             </label>
@@ -213,24 +213,24 @@ export function ContactForm({ defaultSubject = "" }: ContactFormProps) {
                 errors.full_name ? `${formId}-full_name-error` : undefined
               }
               placeholder="Your full name"
-              className="bg-background"
+              className="bg-background min-h-[38px] sm:min-h-[44px] py-1.5 sm:py-2 text-xs px-3 rounded-lg"
               {...register("full_name")}
             />
             {errors.full_name && (
               <p
                 id={`${formId}-full_name-error`}
                 role="alert"
-                className="text-xs text-red-600 dark:text-red-400"
+                className="text-[10px] text-red-600 dark:text-red-400"
               >
                 {errors.full_name.message}
               </p>
             )}
           </div>
 
-          <div className="space-y-1.5">
+          <div className="space-y-1">
             <label
               htmlFor={`${formId}-email`}
-              className="block text-xs uppercase tracking-[0.16em] text-foreground font-medium"
+              className="block text-[10px] sm:text-xs uppercase tracking-wider text-foreground font-medium"
             >
               Email Address <span className="text-accent">*</span>
             </label>
@@ -247,14 +247,14 @@ export function ContactForm({ defaultSubject = "" }: ContactFormProps) {
                 errors.email ? `${formId}-email-error` : undefined
               }
               placeholder="you@domain.com"
-              className="bg-background"
+              className="bg-background min-h-[38px] sm:min-h-[44px] py-1.5 sm:py-2 text-xs px-3 rounded-lg"
               {...register("email")}
             />
             {errors.email && (
               <p
                 id={`${formId}-email-error`}
                 role="alert"
-                className="text-xs text-red-600 dark:text-red-400"
+                className="text-[10px] text-red-600 dark:text-red-400"
               >
                 {errors.email.message}
               </p>
@@ -262,11 +262,40 @@ export function ContactForm({ defaultSubject = "" }: ContactFormProps) {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-          <div className="space-y-1.5">
+        <div className="grid grid-cols-1 gap-2.5 sm:gap-4 sm:grid-cols-2">
+          <div className="space-y-1">
+            <label
+              htmlFor={`${formId}-subject`}
+              className="block text-[10px] sm:text-xs uppercase tracking-wider text-foreground font-medium"
+            >
+              Subject <span className="text-accent">*</span>
+            </label>
+            <Input
+              id={`${formId}-subject`}
+              required
+              aria-invalid={Boolean(errors.subject)}
+              aria-describedby={
+                errors.subject ? `${formId}-subject-error` : undefined
+              }
+              placeholder="Fragrance enquiry"
+              className="bg-background min-h-[38px] sm:min-h-[44px] py-1.5 sm:py-2 text-xs px-3 rounded-lg"
+              {...register("subject")}
+            />
+            {errors.subject && (
+              <p
+                id={`${formId}-subject-error`}
+                role="alert"
+                className="text-[10px] text-red-600 dark:text-red-400"
+              >
+                {errors.subject.message}
+              </p>
+            )}
+          </div>
+
+          <div className="space-y-1">
             <label
               htmlFor={`${formId}-phone`}
-              className="block text-xs uppercase tracking-[0.16em] text-foreground font-medium"
+              className="block text-[10px] sm:text-xs uppercase tracking-wider text-foreground font-medium"
             >
               Telephone (Optional)
             </label>
@@ -278,82 +307,54 @@ export function ContactForm({ defaultSubject = "" }: ContactFormProps) {
               aria-describedby={
                 errors.phone ? `${formId}-phone-error` : undefined
               }
-              placeholder="Optional phone number"
-              className="bg-background"
+              placeholder="Phone number"
+              className="bg-background min-h-[38px] sm:min-h-[44px] py-1.5 sm:py-2 text-xs px-3 rounded-lg"
               {...register("phone")}
             />
             {errors.phone && (
               <p
                 id={`${formId}-phone-error`}
                 role="alert"
-                className="text-xs text-red-600 dark:text-red-400"
+                className="text-[10px] text-red-600 dark:text-red-400"
               >
                 {errors.phone.message}
               </p>
             )}
           </div>
-
-          <div className="space-y-1.5">
-            <label
-              htmlFor={`${formId}-subject`}
-              className="block text-xs uppercase tracking-[0.16em] text-foreground font-medium"
-            >
-              Subject <span className="text-accent">*</span>
-            </label>
-            <Input
-              id={`${formId}-subject`}
-              required
-              aria-invalid={Boolean(errors.subject)}
-              aria-describedby={
-                errors.subject ? `${formId}-subject-error` : undefined
-              }
-              placeholder="Fragrance Enquiry — Sakura & Mountain Mist"
-              className="bg-background"
-              {...register("subject")}
-            />
-            {errors.subject && (
-              <p
-                id={`${formId}-subject-error`}
-                role="alert"
-                className="text-xs text-red-600 dark:text-red-400"
-              >
-                {errors.subject.message}
-              </p>
-            )}
-          </div>
         </div>
 
-        <div className="space-y-1.5">
+        <div className="space-y-1">
           <label
             htmlFor={`${formId}-message`}
-            className="block text-xs uppercase tracking-[0.16em] text-foreground font-medium"
+            className="block text-[10px] sm:text-xs uppercase tracking-wider text-foreground font-medium"
           >
             Your Enquiry <span className="text-accent">*</span>
           </label>
           <Textarea
             id={`${formId}-message`}
             required
+            rows={3}
             aria-invalid={Boolean(errors.message)}
             aria-describedby={
               errors.message ? `${formId}-message-error` : undefined
             }
-            placeholder="Share your questions regarding fragrance notes, sillage, private consultations, or press requests..."
-            className="bg-background"
+            placeholder="Share your questions regarding fragrance notes, sillage, private consultations, or delivery..."
+            className="bg-background min-h-[70px] sm:min-h-[110px] py-2 px-3 text-xs rounded-lg resize-none"
             {...register("message")}
           />
           {errors.message && (
             <p
               id={`${formId}-message-error`}
               role="alert"
-              className="text-xs text-red-600 dark:text-red-400"
+              className="text-[10px] text-red-600 dark:text-red-400"
             >
               {errors.message.message}
             </p>
           )}
         </div>
 
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-t border-border/60 pt-5">
-          <p className="text-xs text-muted-foreground">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-2.5 sm:gap-4 border-t border-border/60 pt-2.5 sm:pt-4">
+          <p className="text-[10px] sm:text-xs text-muted-foreground text-center sm:text-left">
             Your details are handled confidentially in accordance with our{" "}
             <Link
               href="/privacy"
@@ -363,9 +364,13 @@ export function ContactForm({ defaultSubject = "" }: ContactFormProps) {
             </Link>
             .
           </p>
-          <Button type="submit" disabled={isSubmitting} className="shrink-0">
+          <Button
+            type="submit"
+            disabled={isSubmitting}
+            className="w-full sm:w-auto min-h-[38px] sm:min-h-[42px] px-6 py-2 text-xs font-semibold uppercase tracking-wider rounded-lg shadow-sm cursor-pointer shrink-0"
+          >
             <span>{isSubmitting ? "Submitting Enquiry..." : "Submit Enquiry"}</span>
-            <Send className="h-3.5 w-3.5" aria-hidden="true" />
+            <Send className="h-3 w-3 ml-1.5" aria-hidden="true" />
           </Button>
         </div>
       </div>

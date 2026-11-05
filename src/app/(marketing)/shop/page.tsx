@@ -2,8 +2,12 @@ import React from "react";
 import type { Metadata } from "next";
 import { constructMetadata } from "@/lib/metadata";
 import { getPublicProductsAction } from "@/actions/product.actions";
+import { getBannersContentAction } from "@/actions/content.actions";
+import type { BannerItemConfig } from "@/types/admin";
 import { ProductGrid } from "@/components/products/product-grid";
+import { ShopBannerCarousel } from "@/components/shop/shop-banner-carousel";
 import { PageTransition } from "@/components/animations/page-transition";
+import { DEFAULT_BANNERS } from "@/lib/constants";
 
 export const metadata: Metadata = constructMetadata({
   title: "Shop Fragrances & Body Mists",
@@ -13,21 +17,27 @@ export const metadata: Metadata = constructMetadata({
 });
 
 export default async function ShopShowcasePage() {
-  const products = await getPublicProductsAction();
+  const [products, bannersFromDb] = await Promise.all([
+    getPublicProductsAction(),
+    getBannersContentAction(),
+  ]);
+
+  // Use active banners from database; if none configured with placement === "shop", use default shop banners
+  const shopBannersFromDb = (bannersFromDb || []).filter(
+    (b: BannerItemConfig) => (b.placement === "shop" || !b.placement) && b.isActive !== false && Boolean(b.imageUrl)
+  );
+
+  const shopBanners =
+    shopBannersFromDb.length > 0
+      ? shopBannersFromDb
+      : DEFAULT_BANNERS.filter((b) => b.placement === "shop");
 
   return (
-    <PageTransition className="mx-auto max-w-7xl px-4 py-8 sm:py-12 sm:px-6 lg:px-8 space-y-6">
-      {/* Editorial Header — Clean & Minimal */}
-      <div className="border-b border-border/70 pb-6 space-y-1.5">
-        <h1 className="font-serif text-2xl sm:text-3xl text-foreground font-normal">
-          Fragrance Collection
-        </h1>
-        <p className="text-xs sm:text-sm text-muted-foreground">
-          50ml Aroma Body Mists &amp; 85ml Victoria&apos;s Secret Perfumes • Cash on Delivery &amp; Leaflet Pin Delivery
-        </p>
-      </div>
+    <PageTransition className="mx-auto max-w-7xl px-3 sm:px-6 lg:px-8 py-2 sm:py-6 space-y-3 sm:space-y-5">
+      {/* Dynamic Auto-Sliding Promotional Banner Carousel (Admin Configurable) */}
+      <ShopBannerCarousel banners={shopBanners} />
 
-      {/* Clean Product Grid */}
+      {/* Clean Product Grid with Category Pills & Search at the very top */}
       <ProductGrid products={products} />
     </PageTransition>
   );

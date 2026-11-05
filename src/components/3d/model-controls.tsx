@@ -12,8 +12,8 @@ export function ModelControls({ theme = "light" }: ModelControlsProps) {
   const isMobile = useMediaQuery("(max-width: 768px)");
   const targetX = isMobile ? 0.08 : theme === "dark" ? 0.14 : 0.12;
   const targetY = isMobile
-    ? (theme === "dark" ? -0.18 : 0.04)
-    : (theme === "dark" ? -0.22 : 0.02);
+    ? (theme === "dark" ? -0.12 : 0.04)
+    : (theme === "dark" ? -0.22 : -0.02);
 
   return (
     <OrbitControls

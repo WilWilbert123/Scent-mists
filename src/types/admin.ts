@@ -58,6 +58,7 @@ export interface BannerItemConfig {
   ctaText: string;
   ctaHref: string;
   isActive: boolean;
-  placement: "announcement" | "editorial" | "collection";
+  placement: "announcement" | "editorial" | "collection" | "shop";
+  imageUrl?: string;
 }
 

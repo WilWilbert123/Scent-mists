@@ -18,37 +18,37 @@ export function HeroContent({ content }: HeroContentProps) {
   const { setIsCartOpen, totalItems } = useCart();
 
   return (
-    <div className="relative z-10 flex flex-col justify-center space-y-3 sm:space-y-6 lg:py-6">
+    <div className="relative z-10 flex flex-col justify-center space-y-2 sm:space-y-6 lg:py-6">
       {/* Brand Display Title */}
       <FadeIn delay={0.08} xOffset={-24} yOffset={0}>
-        <h1 className="font-serif text-3xl sm:text-5xl lg:text-[4.2rem] font-medium tracking-tight leading-[1.05] text-foreground text-center lg:text-left">
+        <h1 className="font-serif text-[1.7rem] sm:text-5xl lg:text-[4.2rem] font-medium tracking-tight leading-[1.05] text-foreground text-center lg:text-left">
           {content?.heroHeadline || "SCENTS & MISTS"}
         </h1>
       </FadeIn>
 
       {/* Tagline */}
       <FadeIn delay={0.14} xOffset={-24} yOffset={0}>
-        <p className="font-serif text-base sm:text-xl lg:text-2xl italic font-normal tracking-wide text-foreground/90 text-center lg:text-left">
-          {content?.heroSubheadline || "Authentic Body Mists & Designer Perfumes"}
+        <p className="font-serif text-sm sm:text-xl lg:text-2xl italic font-normal tracking-wide text-foreground/90 text-center lg:text-left">
+          {content?.heroSubheadline || "Timeless Elegance. Lasting Impression."}
         </p>
       </FadeIn>
 
-      {/* Hairline Divider */}
+      {/* Hairline Divider - Clean subtle spacing on desktop */}
       <FadeIn delay={0.18} xOffset={-24} yOffset={0}>
-        <div className="h-px w-16 sm:w-20 bg-accent/60 mx-auto lg:mx-0" aria-hidden="true" />
+        <div className="hidden sm:block h-px w-16 sm:w-20 bg-accent/60 mx-auto lg:mx-0" aria-hidden="true" />
       </FadeIn>
 
       {/* Description & Highlights */}
       <FadeIn delay={0.22} xOffset={-24} yOffset={0}>
-        <div className="space-y-4 max-w-lg mx-auto lg:mx-0 text-center lg:text-left">
-          <p className="text-xs sm:text-base text-foreground/80 leading-relaxed">
+        <div className="max-w-sm sm:max-w-lg mx-auto lg:mx-0 text-center lg:text-left">
+          <p className="text-xs sm:text-base text-foreground/80 leading-relaxed font-sans">
             {content?.heroDescription ||
-              "Discover our collection of 19 Aroma Body Mists (50ml) and 13 Victoria's Secret Perfumes (85ml). Pin your exact delivery location on our interactive map for smooth doorstep delivery."}
+              "Fine botanical Eau de Parfum composed with wild cherry blossom, steamed white tea, and mountain cedarwood."}
           </p>
         </div>
       </FadeIn>
 
-      {/* Action Buttons - Moved to drawer on mobile, shown here on tablet & desktop */}
+      {/* Action Buttons - Shown on desktop/tablet, hidden on mobile so mobile visitors use the Shop bottom tab */}
       <FadeIn delay={0.28} xOffset={-24} yOffset={0}>
         <div className="hidden md:flex sm:flex-row items-stretch sm:items-center justify-center lg:justify-start gap-2.5 sm:gap-3 pt-2">
           <Button
@@ -56,7 +56,7 @@ export function HeroContent({ content }: HeroContentProps) {
             size="lg"
             className="bg-primary text-primary-foreground hover:bg-accent px-7 py-3 text-xs uppercase tracking-wider font-semibold rounded-lg shadow-md cursor-pointer"
           >
-            <Link href="#catalog">
+            <Link href="/shop">
               <span>Explore Perfumes</span>
               <ArrowRight className="h-4 w-4 ml-1.5" />
             </Link>

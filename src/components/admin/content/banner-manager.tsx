@@ -2,8 +2,9 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { Plus, Trash2, Save, Database, ExternalLink } from "lucide-react";
+import { Plus, Trash2, Save, Database, ExternalLink, ImageIcon } from "lucide-react";
 import type { BannerItemConfig } from "@/types/admin";
 import { updateBannersContentAction } from "@/actions/content.actions";
 import { createSupabaseBrowserClient } from "@/lib/supabase/client";
@@ -58,11 +59,12 @@ export function BannerManager({ initialBanners, updatedAt }: BannerManagerProps)
       {
         id: `banner-${Date.now()}`,
         title: "New Showcase Banner",
-        subtitle: "Explore our high-altitude botanical perfume archive.",
-        ctaText: "Discover More",
-        ctaHref: "/collections",
+        subtitle: "Luxury fragrance curation • Fast delivery.",
+        ctaText: "Shop Collection",
+        ctaHref: "/shop",
+        imageUrl: "/images/lifestyle/fragrance-collection.webp",
         isActive: true,
-        placement: "editorial",
+        placement: "shop",
       },
     ]);
   };
@@ -110,6 +112,14 @@ export function BannerManager({ initialBanners, updatedAt }: BannerManagerProps)
 
         <div className="flex items-center gap-2.5 self-start sm:self-center">
           <Link
+            href="/shop"
+            target="_blank"
+            className="inline-flex items-center gap-1.5 border border-border bg-surface-elevated px-3 py-1 text-xs font-medium text-foreground transition-colors hover:border-accent"
+          >
+            <span>Preview Shop Carousel</span>
+            <ExternalLink className="h-3 w-3" aria-hidden="true" />
+          </Link>
+          <Link
             href="/collections"
             target="_blank"
             className="inline-flex items-center gap-1.5 border border-border bg-surface-elevated px-3 py-1 text-xs font-medium text-foreground transition-colors hover:border-accent"
@@ -145,8 +155,9 @@ export function BannerManager({ initialBanners, updatedAt }: BannerManagerProps)
                     )
                   }
                   aria-label="Banner placement"
-                  className="h-8 w-44 text-xs"
+                  className="h-8 w-48 text-xs"
                 >
+                  <option value="shop">Placement: Shop Page Carousel</option>
                   <option value="announcement">Placement: Announcement</option>
                   <option value="editorial">Placement: Editorial Callout</option>
                   <option value="collection">Placement: Collection Page</option>
@@ -176,6 +187,30 @@ export function BannerManager({ initialBanners, updatedAt }: BannerManagerProps)
             </div>
 
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <div className="space-y-1 sm:col-span-2">
+                <label className="text-xs uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
+                  <ImageIcon className="h-3.5 w-3.5 text-accent" />
+                  <span>Banner Image (Panoramic aspect ratio for Shop carousel)</span>
+                </label>
+                <Input
+                  value={banner.imageUrl || ""}
+                  placeholder="/images/lifestyle/fragrance-collection.webp or https://..."
+                  onChange={(e) =>
+                    handleUpdate(banner.id, "imageUrl", e.target.value)
+                  }
+                />
+                {banner.imageUrl && (
+                  <div className="relative mt-2 aspect-[22/7] max-h-32 w-full overflow-hidden rounded-lg border border-border bg-surface">
+                    <Image
+                      src={banner.imageUrl}
+                      alt={banner.title}
+                      fill
+                      unoptimized
+                      className="object-cover"
+                    />
+                  </div>
+                )}
+              </div>
               <div className="space-y-1">
                 <label className="block text-xs uppercase tracking-wider text-muted-foreground">
                   Banner Title

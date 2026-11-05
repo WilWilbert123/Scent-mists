@@ -99,47 +99,53 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       product.status === "out_of_stock" ||
       (typeof product.stock === "number" && product.stock <= 0)
     ) {
-      toast.error(`"${product.name}" is currently Out of Stock.`);
+      toast.error(`"${product.name}" is currently Out of Stock.`, {
+        id: `cart-stock-${product.id}`,
+      });
       return;
     }
 
-    setItems((prev) => {
-      const existingIndex = prev.findIndex(
-        (item) => item.product.id === product.id
-      );
-      const maxStock = typeof product.stock === "number" ? product.stock : 99;
+    const maxStock = typeof product.stock === "number" ? product.stock : 99;
+    const existingItem = items.find((item) => item.product.id === product.id);
 
-      if (existingIndex > -1) {
-        const currentQty = prev[existingIndex].quantity;
-        const newQty = Math.min(currentQty + quantity, maxStock);
-        if (newQty === currentQty) {
-          toast.warning(`Maximum available stock reached (${maxStock} items).`);
-          return prev;
-        }
-
-        const updated = [...prev];
-        updated[existingIndex] = {
-          ...updated[existingIndex],
-          quantity: newQty,
-        };
-        toast.success(`Updated "${product.name}" quantity (${newQty} in cart).`);
-        return updated;
-      } else {
-        const initialQty = Math.min(quantity, maxStock);
-        const newItem: CartItem = {
-          product,
-          quantity: initialQty,
-          selectedSize: product.volume,
-        };
-        toast.success(`Added "${product.name}" to cart.`);
-        return [...prev, newItem];
+    if (existingItem) {
+      const currentQty = existingItem.quantity;
+      const newQty = Math.min(currentQty + quantity, maxStock);
+      if (newQty === currentQty) {
+        toast.warning(`Maximum available stock reached (${maxStock} items).`, {
+          id: `cart-max-${product.id}`,
+        });
+        return;
       }
-    });
+
+      setItems((prev) =>
+        prev.map((item) =>
+          item.product.id === product.id ? { ...item, quantity: newQty } : item
+        )
+      );
+      toast.success(`Updated "${product.name}" quantity (${newQty} in cart).`, {
+        id: `cart-${product.id}`,
+      });
+    } else {
+      const initialQty = Math.min(quantity, maxStock);
+      const newItem: CartItem = {
+        product,
+        quantity: initialQty,
+        selectedSize: product.volume,
+      };
+
+      setItems((prev) => [...prev, newItem]);
+      toast.success(`Added "${product.name}" to cart.`, {
+        id: `cart-${product.id}`,
+      });
+    }
   };
 
   const removeItem = (productId: string) => {
     setItems((prev) => prev.filter((item) => item.product.id !== productId));
-    toast.info("Item removed from cart.");
+    toast.info("Item removed from cart.", {
+      id: `cart-remove-${productId}`,
+    });
   };
 
   const updateQuantity = (productId: string, quantity: number) => {

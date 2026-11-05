@@ -8,7 +8,6 @@ import { ShoppingBag } from "lucide-react";
 import { PUBLIC_NAV_ITEMS } from "@/data/navigation";
 import { BRAND_NAME } from "@/lib/constants";
 import { ThemeToggle } from "./theme-toggle";
-import { MobileNavigation } from "./mobile-navigation";
 import { CartDrawer } from "@/components/cart/cart-drawer";
 import { useCart } from "@/context/cart-context";
 import { createSupabaseBrowserClient } from "@/lib/supabase/client";
@@ -142,7 +141,6 @@ export function Navbar({
             </button>
 
             <ThemeToggle />
-            <MobileNavigation />
           </div>
         </div>
       </header>
