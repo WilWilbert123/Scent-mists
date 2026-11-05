@@ -18,7 +18,7 @@ interface SupabaseContentClient {
         maybeSingle: () => Promise<{ data: { content_value: unknown } | null; error: unknown }>;
       };
     };
-    upsert: (values: Record<string, unknown>) => Promise<{ error: unknown }>;
+    upsert: (values: Record<string, unknown>, options?: { onConflict?: string }) => Promise<{ error: unknown }>;
   };
 }
 
@@ -63,8 +63,8 @@ function normalizeProduct(p: Partial<Product>): Product {
     volume_display: p.volume_display || (p.volume === "85ml" ? "85 ml / 2.9 fl. oz." : "50 ml / 1.7 fl. oz."),
     category: p.category || (p.volume === "85ml" ? "perfume" : "mist"),
     gender: p.gender || "female",
-    price: typeof p.price === "number" ? p.price : 199,
-    original_price: typeof p.original_price === "number" ? p.original_price : (p.price ? Math.round(p.price * 1.25) : 250),
+    price: typeof p.price === "number" ? p.price : (p.volume === "85ml" ? 200 : 135),
+    original_price: typeof p.original_price === "number" ? p.original_price : (p.volume === "85ml" ? 250 : 180),
     stock,
     status,
     sold_count: typeof p.sold_count === "number" ? p.sold_count : 0,
@@ -117,11 +117,14 @@ export async function getMasterCatalog(): Promise<Product[]> {
         // If not initialized in Supabase yet, seed it with SAMPLE_PRODUCTS
         await client
           .from("site_content")
-          .upsert({
-            content_key: "catalog_products",
-            content_value: SAMPLE_PRODUCTS,
-            updated_at: new Date().toISOString(),
-          });
+          .upsert(
+            {
+              content_key: "catalog_products",
+              content_value: SAMPLE_PRODUCTS,
+              updated_at: new Date().toISOString(),
+            },
+            { onConflict: "content_key" }
+          );
       }
     } catch {
       // ignore
@@ -148,11 +151,14 @@ export async function saveMasterCatalog(products: Product[]): Promise<boolean> {
         const client = supabase as unknown as SupabaseContentClient;
         await client
           .from("site_content")
-          .upsert({
-            content_key: "catalog_products",
-            content_value: normalized,
-            updated_at: new Date().toISOString(),
-          });
+          .upsert(
+            {
+              content_key: "catalog_products",
+              content_value: normalized,
+              updated_at: new Date().toISOString(),
+            },
+            { onConflict: "content_key" }
+          );
       }
     } catch (e) {
       console.error("Failed to save catalog to Supabase:", e);

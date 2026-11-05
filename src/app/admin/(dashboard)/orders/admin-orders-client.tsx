@@ -240,7 +240,7 @@ export function AdminOrdersClient({ initialOrders }: AdminOrdersClientProps) {
         </div>
 
         {/* Status Filter Badges */}
-        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0">
+        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0 scrollbar-none no-scrollbar [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {[
             { id: "all", label: "All" },
             { id: "pending", label: "Pending" },

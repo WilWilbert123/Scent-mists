@@ -49,3 +49,20 @@
   white-space: nowrap !important;
 }
 
+@layer utilities {
+  /* Completely hide scrollbars while maintaining full scrollability */
+  .scrollbar-none,
+  .no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+
+  .scrollbar-none::-webkit-scrollbar,
+  .no-scrollbar::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera, iOS Safari, Android Chrome */
+    width: 0;
+    height: 0;
+  }
+}
+
+

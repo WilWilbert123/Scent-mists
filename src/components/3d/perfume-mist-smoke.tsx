@@ -133,6 +133,7 @@ export function PerfumeMistSmoke({ theme }: PerfumeMistSmokeProps) {
     <group
       ref={groupRef}
       position={[baseX, baseY, 0]}
+      scale={0.76}
       renderOrder={80}
     >
       {puffs.map((p, idx) => (

@@ -20,14 +20,14 @@ export function ProductGallery({
 
   return (
     <div className="space-y-4">
-      <div className="relative aspect-[4/5] w-full overflow-hidden border border-border bg-surface">
+      <div className="relative aspect-[4/5] max-w-sm sm:max-w-none mx-auto w-full overflow-hidden rounded-xl border border-border bg-surface">
         <Image
           src={activeImage}
           alt={`${name} presentation view`}
           fill
           unoptimized
           sizes="(max-width: 1024px) 100vw, 50vw"
-          className="object-cover"
+          className="object-contain p-3 sm:p-5"
           priority
         />
       </div>

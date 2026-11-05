@@ -50,20 +50,20 @@ export function MobileNavigation() {
 
       {isOpen && (
               <>
-                {/* Full-Screen Frosted Blurred Backdrop (Eliminates transparency) */}
-                <div
-                  className="fixed inset-0 top-[56px] sm:top-[64px] z-40 bg-black/55 backdrop-blur-md transition-opacity duration-300"
-                  onClick={() => setIsOpen(false)}
-                  aria-hidden="true"
-                />
+        {/* Full-Screen Frosted Blurred Backdrop (Eliminates transparency) */}
+        <div
+          className="fixed inset-0 top-[56px] sm:top-[64px] z-40 bg-black/70 backdrop-blur-xl transition-opacity duration-300"
+          onClick={() => setIsOpen(false)}
+          aria-hidden="true"
+        />
 
-          {/* Drawer Menu Panel with Frosted Glass & Heavy Blur (Not Transparent) */}
-      <div
-        id="mobile-primary-nav"
-        role="dialog"
-        aria-label={`${BRAND_NAME} mobile menu`}
-        className="fixed inset-x-0 top-[56px] sm:top-[64px] z-50 border-b border-border/80 bg-[#FAF5EE]/95 dark:bg-[#1C1817]/95 backdrop-blur-2xl px-6 py-6 shadow-2xl transition-all duration-200"
-      >
+        {/* Drawer Menu Panel: Solid Opaque Luxury Background with Deep Blur (Zero Transparency) */}
+        <div
+          id="mobile-primary-nav"
+          role="dialog"
+          aria-label={`${BRAND_NAME} mobile menu`}
+          className="fixed inset-x-0 top-[56px] sm:top-[64px] z-50 border-b border-border/80 bg-[#FAF5EE] dark:bg-[#1A1615] px-6 py-6 shadow-2xl transition-all duration-200"
+        >
         <nav aria-label="Mobile Primary">
           <ul className="flex flex-col space-y-2">
             {PUBLIC_NAV_ITEMS.map((item) => {
