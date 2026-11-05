@@ -29,11 +29,18 @@ export default async function MarketingLayout({
         linkText={homepageContent.announcementLinkText}
         linkHref={homepageContent.announcementLinkHref}
       />
-      <Navbar />
+      <Navbar
+        logoUrl={homepageContent.headerLogoUrl}
+        brandName={homepageContent.headerBrandName}
+      />
       <main id="main-content" tabIndex={-1} className="flex-1">
         {children}
       </main>
-      <Footer />
+      <Footer
+        logoUrl={homepageContent.footerLogoUrl || homepageContent.headerLogoUrl}
+        brandName={homepageContent.headerBrandName}
+        description={homepageContent.footerDescription}
+      />
     </div>
   );
 }

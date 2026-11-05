@@ -17,14 +17,14 @@ export interface ProductCardProps {
 
 export function ProductCard({ product, className }: ProductCardProps) {
   const { addItem } = useCart();
-  const fallbackImage = `/images/perfumes/${product.slug}.webp`;
+  const fallbackImage = "/images/products/sakura-mountain-mist.webp";
   const [imgSrc, setImgSrc] = React.useState(
     product.image_url || fallbackImage
   );
 
   React.useEffect(() => {
-    setImgSrc(product.image_url || `/images/perfumes/${product.slug}.webp`);
-  }, [product.image_url, product.slug]);
+    setImgSrc(product.image_url || fallbackImage);
+  }, [product.image_url, fallbackImage]);
 
   const isOutOfStock =
     product.status === "out_of_stock" || (typeof product.stock === "number" && product.stock <= 0);

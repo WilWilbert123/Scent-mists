@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
@@ -11,11 +11,65 @@ import { ThemeToggle } from "./theme-toggle";
 import { MobileNavigation } from "./mobile-navigation";
 import { CartDrawer } from "@/components/cart/cart-drawer";
 import { useCart } from "@/context/cart-context";
+import { createSupabaseBrowserClient } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
 
-export function Navbar() {
+interface NavbarProps {
+  logoUrl?: string;
+  brandName?: string;
+}
+
+export function Navbar({
+  logoUrl: initialLogo = "/images/logo/scentmistslogo.png",
+  brandName: initialBrand = BRAND_NAME,
+}: NavbarProps) {
   const pathname = usePathname();
   const { totalItems, setIsCartOpen } = useCart();
+  const [logoUrl, setLogoUrl] = useState<string>(initialLogo);
+  const [brandName, setBrandName] = useState<string>(initialBrand);
+
+  useEffect(() => {
+    setLogoUrl(initialLogo);
+  }, [initialLogo]);
+
+  useEffect(() => {
+    setBrandName(initialBrand);
+  }, [initialBrand]);
+
+  // Real-time synchronization: listen for admin logo/brand identity updates
+  useEffect(() => {
+    const supabase = createSupabaseBrowserClient();
+    if (!supabase) return;
+
+    const channel = supabase
+      .channel("navbar-brand-realtime")
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "site_content",
+          filter: "content_key=eq.homepage",
+        },
+        (payload) => {
+          const newRow = payload.new as { content_value?: Record<string, unknown> } | undefined;
+          const val = newRow?.content_value;
+          if (val && typeof val === "object") {
+            if (typeof val.headerLogoUrl === "string" && val.headerLogoUrl.trim()) {
+              setLogoUrl(val.headerLogoUrl);
+            }
+            if (typeof val.headerBrandName === "string" && val.headerBrandName.trim()) {
+              setBrandName(val.headerBrandName);
+            }
+          }
+        }
+      )
+      .subscribe();
+
+    return () => {
+      void supabase.removeChannel(channel);
+    };
+  }, []);
 
   return (
     <>
@@ -24,13 +78,13 @@ export function Navbar() {
           {/* Brand Logo & Wordmark (Logo-only on mobile, Wordmark on sm+) */}
           <Link
             href="/"
-            aria-label={BRAND_NAME}
+            aria-label={brandName}
             className="inline-flex items-center gap-2.5 transition-opacity hover:opacity-85"
           >
             <span className="relative h-8 w-8 sm:h-8 sm:w-8 shrink-0">
               <Image
-                src="/images/logo/scentmistslogo.png"
-                alt={`${BRAND_NAME} emblem`}
+                src={logoUrl || "/images/logo/scentmistslogo.png"}
+                alt={`${brandName} emblem`}
                 fill
                 priority
                 sizes="32px"
@@ -38,7 +92,7 @@ export function Navbar() {
               />
             </span>
             <span className="hidden sm:inline font-serif text-lg sm:text-xl tracking-[0.18em] text-foreground font-medium">
-              {BRAND_NAME}
+              {brandName}
             </span>
           </Link>
 

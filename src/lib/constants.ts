@@ -39,6 +39,11 @@ export const DEFAULT_HOMEPAGE_CONTENT: HomepageContentConfig = {
   brandIntroHeadline: "Fine Botanical Perfumery, Composed to Endure",
   brandIntroBody:
     "Every SCENTS & MISTS creation unites high-purity botanical extracts, balanced Eau and Extrait de Parfum concentrations, and architectural crystal presentation—crafted for effortless daily wear and lasting impression.",
+  headerLogoUrl: "/images/logo/scentmistslogo.png",
+  headerBrandName: "SCENTS & MISTS",
+  footerLogoUrl: "/images/logo/scentmistslogo.png",
+  footerDescription:
+    "Authentic 50ml Aroma Body Mists and 85ml Victoria's Secret Perfumes. Pin your location for accurate door-to-door delivery.",
 };
 
 export const DEFAULT_BRAND_STORY_CONTENT: BrandStoryContentConfig = {

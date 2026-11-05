@@ -299,6 +299,7 @@ export function AuditLogTable({ initialLogs }: AuditLogTableProps) {
 
         <ExportButton
           filename="scents-mists-audit-logs"
+          sheetName="Audit Logs"
           headers={[
             "Log ID",
             "Action",
@@ -309,7 +310,7 @@ export function AuditLogTable({ initialLogs }: AuditLogTableProps) {
             "Timestamp",
           ]}
           rows={exportRows}
-          label="Export Audit CSV"
+          label="Export Audit Logs"
         />
       </TableToolbar>
 

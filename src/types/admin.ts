@@ -34,6 +34,10 @@ export interface HomepageContentConfig {
   featuredFragranceSlug: string;
   brandIntroHeadline: string;
   brandIntroBody: string;
+  headerLogoUrl?: string;
+  headerBrandName?: string;
+  footerLogoUrl?: string;
+  footerDescription?: string;
 }
 
 export interface BrandStoryContentConfig {

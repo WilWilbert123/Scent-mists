@@ -308,6 +308,7 @@ export function VisitorTable({ records }: VisitorTableProps) {
         />
         <ExportButton
           filename="scents-mists-visitors"
+          sheetName="Visitors"
           headers={[
             "Event ID",
             "Anonymous Visitor ID",
@@ -319,6 +320,7 @@ export function VisitorTable({ records }: VisitorTableProps) {
             "Timestamp",
           ]}
           rows={exportRows}
+          label="Export Visitors"
         />
       </TableToolbar>
 
