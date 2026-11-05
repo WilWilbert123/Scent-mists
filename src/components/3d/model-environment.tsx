@@ -2,6 +2,7 @@
 
 import React from "react";
 import { ContactShadows, Environment, Lightformer } from "@react-three/drei";
+import { useMediaQuery } from "@/hooks/use-media-query";
 
 interface ModelEnvironmentProps {
   theme: "light" | "dark";
@@ -13,7 +14,10 @@ interface ModelEnvironmentProps {
  *////////
 export function ModelEnvironment({ theme }: ModelEnvironmentProps) {
   const isDark = theme === "dark";
-  const shadowY = isDark ? -1.26 : -1.02;
+  const isMobile = useMediaQuery("(max-width: 768px)");
+  const shadowY = isDark
+    ? (isMobile ? -1.17 : -1.52)
+    : (isMobile ? -0.96 : -1.33);
 
   return (
     <group>

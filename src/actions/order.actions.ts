@@ -310,6 +310,15 @@ export async function getOrderByIdAction(orderId: string): Promise<Order | null>
   );
 }
 
+export async function getOrdersByNumbersAction(orderNumbers: string[]): Promise<Order[]> {
+  if (!orderNumbers || orderNumbers.length === 0) return [];
+  const orders = await getOrdersAction();
+  const set = new Set(orderNumbers.map((n) => n.trim().toLowerCase()));
+  return orders.filter(
+    (o) => set.has(o.order_number.toLowerCase()) || set.has(o.id.toLowerCase())
+  );
+}
+
 export async function searchOrdersAction(query: string): Promise<Order[]> {
   const clean = (query || "").trim().toLowerCase();
   if (!clean) return [];

@@ -4,6 +4,7 @@ import React, { useMemo, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { usePerfumeLabelTexture } from "./model-materials";
+import { useMediaQuery } from "@/hooks/use-media-query";
 
 interface PerfumeModelProps {
   theme: "light" | "dark";
@@ -48,12 +49,12 @@ export function PerfumeModel({ theme }: PerfumeModelProps) {
   const waterMeniscusRef = useRef<THREE.Mesh>(null);
   const labelTexture = usePerfumeLabelTexture(theme);
   const isDark = theme === "dark";
+  const isMobile = useMediaQuery("(max-width: 768px)");
 
-  // Base position aligned with background stone ledge
-  // Set to -0.18 in light mode so the crystal stopper cap has generous headroom and never gets cut off
+  // Base position aligned with background stone ledge with balanced headroom so cap and base never clip
   const basePosition: [number, number, number] = isDark
-    ? [0.14, -0.42, 0]
-    : [0.12, -0.18, 0];
+    ? [isMobile ? 0.12 : 0.14, isMobile ? -0.34 : -0.52, 0]
+    : [isMobile ? 0.10 : 0.12, isMobile ? -0.16 : -0.32, 0];
 
   // Fresh effervescent micro-bubbles inside the fresh perfume water chamber
   const bubbles = useMemo(() => {
@@ -222,7 +223,7 @@ export function PerfumeModel({ theme }: PerfumeModelProps) {
       ref={groupRef}
       position={basePosition}
       rotation={[0, -0.02, 0]}
-      scale={0.96}
+      scale={isMobile ? 0.92 : 1.16}
     >
       {/* ============================================================== */}
       {/* 1. FRESH PERFUME WATER & ELIXIR (INTERNAL FLUID CHAMBER)       */}

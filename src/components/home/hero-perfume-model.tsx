@@ -14,7 +14,7 @@ const DynamicPerfumeScene = dynamic(
 
 export function HeroPerfumeModel() {
   return (
-    <div className="relative z-10 w-full">
+    <div className="relative z-10 w-full h-full flex items-center justify-center">
       <DynamicPerfumeScene />
     </div>
   );

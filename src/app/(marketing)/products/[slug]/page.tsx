@@ -4,13 +4,8 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { ArrowLeft } from "lucide-react";
 import { constructMetadata } from "@/lib/metadata";
-import {
-  getPublicProductBySlugAction,
-  getPublicProductsAction,
-} from "@/actions/product.actions";
+import { getPublicProductBySlugAction } from "@/actions/product.actions";
 import { ProductDetails } from "@/components/products/product-details";
-import { RelatedProducts } from "@/components/products/related-products";
-import { EnquiryForm } from "@/components/forms/enquiry-form";
 import { PageTransition } from "@/components/animations/page-transition";
 import { generateFragranceShowcaseJsonLd } from "@/lib/seo";
 
@@ -38,10 +33,7 @@ export default async function ProductShowcaseDetailPage({
   params,
 }: ProductPageProps) {
   const { slug } = await params;
-  const [product, allProducts] = await Promise.all([
-    getPublicProductBySlugAction(slug),
-    getPublicProductsAction(),
-  ]);
+  const product = await getPublicProductBySlugAction(slug);
 
   if (!product) {
     notFound();
@@ -55,11 +47,11 @@ export default async function ProductShowcaseDetailPage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <PageTransition className="mx-auto max-w-7xl px-4 pt-3 pb-12 sm:pt-6 sm:pb-16 lg:px-8 space-y-6 sm:space-y-12 lg:space-y-16">
+      <PageTransition className="mx-auto max-w-7xl px-3 sm:px-6 lg:px-8 pt-2 pb-6 sm:pt-6 sm:pb-16 space-y-2.5 sm:space-y-6">
         <div>
           <Link
             href="/shop"
-            className="inline-flex items-center gap-1.5 text-xs uppercase tracking-[0.18em] text-muted-foreground hover:text-foreground transition-colors py-1"
+            className="inline-flex items-center gap-1.5 text-[11px] sm:text-xs uppercase tracking-[0.16em] text-muted-foreground hover:text-foreground transition-colors py-1 font-mono font-medium"
           >
             <ArrowLeft className="h-3.5 w-3.5" aria-hidden="true" />
             <span>Back to Fragrance Showcase</span>
@@ -67,27 +59,6 @@ export default async function ProductShowcaseDetailPage({
         </div>
 
         <ProductDetails product={product} />
-
-        {/* Direct Fragrance Enquiry Section */}
-        <section aria-labelledby="fragrance-enquiry-heading" className="border-t border-border pt-10 sm:pt-16">
-          <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 items-start">
-            <div className="lg:col-span-5 space-y-3">
-              <p className="eyebrow-label text-accent">Private Concierge</p>
-              <h2 id="fragrance-enquiry-heading" className="heading-section text-foreground">
-                Enquire About {product.name}
-              </h2>
-              <p className="text-sm leading-relaxed text-muted-foreground">
-                Submit an enquiry to request complimentary scent blotters, private
-                salon consultations, or availability details for {product.name}.
-              </p>
-            </div>
-            <div className="lg:col-span-7">
-              <EnquiryForm fragranceName={product.name} />
-            </div>
-          </div>
-        </section>
-
-        <RelatedProducts products={allProducts} currentSlug={product.slug} />
       </PageTransition>
     </>
   );

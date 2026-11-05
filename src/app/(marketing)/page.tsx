@@ -25,8 +25,11 @@ export default async function HomePage() {
       <HeroSection content={homepageContent} />
 
 
-      {/* Main Catalog Showcase */}
-      <section id="catalog" className="mx-auto max-w-7xl px-4 py-8 sm:py-14 sm:px-6 lg:px-8 space-y-6">
+      {/* Main Catalog Showcase - Desktop Only (on mobile, customers browse via the Shop bottom tab) */}
+      <section
+        id="catalog"
+        className="hidden md:block mx-auto max-w-7xl px-4 py-8 sm:py-14 sm:px-6 lg:px-8 space-y-6"
+      >
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2 border-b border-border/70 pb-4">
           <div>
             <h2 className="font-serif text-2xl sm:text-3xl text-foreground font-normal">

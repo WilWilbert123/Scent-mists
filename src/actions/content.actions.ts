@@ -362,6 +362,8 @@ export async function getBannersContentAction(): Promise<BannerItemConfig[]> {
   }
 }
 
+export const getBannersAction = getBannersContentAction;
+
 export async function updateBannersContentAction(
   banners: BannerItemConfig[]
 ): Promise<{ success: boolean; error?: string }> {

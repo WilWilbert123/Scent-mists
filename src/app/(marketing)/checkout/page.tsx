@@ -103,6 +103,14 @@ export default function CheckoutPage() {
         setCompletedOrder(res.order);
         clearCart();
         try {
+          const storedOrdersRaw = localStorage.getItem("scent_mists_customer_orders");
+          const existingList: string[] = storedOrdersRaw ? JSON.parse(storedOrdersRaw) : [];
+          const updatedList = [
+            res.order.order_number,
+            ...existingList.filter((num) => num !== res.order?.order_number),
+          ];
+          localStorage.setItem("scent_mists_customer_orders", JSON.stringify(updatedList));
+
           localStorage.setItem(
             "scent_mists_last_order",
             JSON.stringify({

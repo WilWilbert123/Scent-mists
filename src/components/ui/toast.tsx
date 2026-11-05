@@ -9,11 +9,13 @@ export function AppToastProvider() {
   return (
     <SonnerToaster
       theme={theme}
-      position="bottom-right"
+      position="top-center"
+      duration={2200}
+      visibleToasts={1}
       toastOptions={{
         classNames: {
           toast:
-            "border border-border bg-surface-elevated text-foreground font-sans rounded-xs shadow-lg",
+            "border border-border bg-surface-elevated text-foreground font-sans rounded-xl shadow-xl",
           title: "text-sm font-medium text-foreground",
           description: "text-xs text-muted-foreground",
         },

@@ -4,6 +4,7 @@ import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { ScrollProgress } from "@/components/layout/scroll-progress";
 import { VisitorTracker } from "@/components/layout/visitor-tracker";
+import { MobileBottomBar } from "@/components/layout/mobile-bottom-bar";
 import { getHomepageContentAction } from "@/actions/content.actions";
 
 export default async function MarketingLayout({
@@ -33,7 +34,7 @@ export default async function MarketingLayout({
         logoUrl={homepageContent.headerLogoUrl}
         brandName={homepageContent.headerBrandName}
       />
-      <main id="main-content" tabIndex={-1} className="flex-1">
+      <main id="main-content" tabIndex={-1} className="flex-1 pb-14 md:pb-0">
         {children}
       </main>
       <Footer
@@ -41,6 +42,7 @@ export default async function MarketingLayout({
         brandName={homepageContent.headerBrandName}
         description={homepageContent.footerDescription}
       />
+      <MobileBottomBar />
     </div>
   );
 }

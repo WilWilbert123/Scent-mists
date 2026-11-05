@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -34,6 +34,17 @@ export function CartDrawer({ onOpenCheckout }: CartDrawerProps) {
     getEffectivePrice,
   } = useCart();
 
+  useEffect(() => {
+    if (isCartOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isCartOpen]);
+
   if (!isCartOpen) return null;
 
   const isFreeDeliveryEnabled = Boolean(deliverySettings?.freeDeliveryPromoEnabled);
@@ -50,18 +61,18 @@ export function CartDrawer({ onOpenCheckout }: CartDrawerProps) {
     deliverySettings?.successText || "🎉 Congratulations! You qualify for FREE Delivery!";
 
   return (
-    <div className="fixed inset-0 z-[60] flex justify-end">
-      {/* Backdrop */}
+    <div className="fixed inset-0 z-[60] flex flex-col md:flex-row md:justify-end">
+      {/* Backdrop (Desktop Slide-over Only) */}
       <div
-        className="fixed inset-0 bg-black/60 backdrop-blur-xs transition-opacity duration-300"
+        className="hidden md:block fixed inset-0 bg-black/60 backdrop-blur-xs transition-opacity duration-300"
         onClick={() => setIsCartOpen(false)}
         aria-hidden="true"
       />
 
-      {/* Slide-over Drawer */}
-      <div className="relative z-50 flex h-full w-full max-w-md flex-col bg-surface-elevated text-foreground shadow-2xl border-l border-border transition-transform duration-300">
+      {/* Cart Container: Full screen on mobile, elegant slide-over drawer on desktop */}
+      <div className="relative z-50 flex h-full h-dvh w-full md:max-w-md flex-col bg-surface-elevated text-foreground shadow-2xl md:border-l border-border transition-transform duration-300">
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-border px-5 py-4">
+        <div className="flex items-center justify-between border-b border-border px-4 sm:px-5 py-3.5 sm:py-4">
           <div className="flex items-center gap-2.5">
             <ShoppingBag className="h-5 w-5 text-accent" />
             <h2 className="font-serif text-lg font-medium tracking-wide">
@@ -232,7 +243,7 @@ export function CartDrawer({ onOpenCheckout }: CartDrawerProps) {
 
         {/* Footer Summary & Checkout CTA */}
         {items.length > 0 && (
-          <div className="border-t border-border bg-surface p-5 space-y-3.5">
+          <div className="border-t border-border bg-surface p-4 sm:p-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] space-y-3.5">
             <div className="space-y-1.5 text-xs">
               <div className="flex justify-between text-muted-foreground">
                 <span>Subtotal ({totalItems} items)</span>
