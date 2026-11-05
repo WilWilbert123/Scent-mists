@@ -110,8 +110,8 @@ export function ProductGrid({ products }: ProductGridProps) {
     <div className="space-y-6">
       {/* Category Tabs & Controls */}
       <div className="space-y-3">
-        {/* Category Pills (Touch scroll on mobile) */}
-        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
+        {/* Category Pills (Touch scroll on mobile with hidden scrollbar) */}
+        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none no-scrollbar [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {TABS.map((tab) => {
             const isActive = activeTab === tab.id;
             return (
