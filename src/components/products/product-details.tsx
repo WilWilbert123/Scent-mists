@@ -8,6 +8,7 @@ import {
   Plus,
   Minus,
   CheckCircle2,
+  Sparkles,
 } from "lucide-react";
 import type { Product } from "@/types/product";
 import { ProductGallery } from "./product-gallery";
@@ -21,7 +22,7 @@ interface ProductDetailsProps {
 
 export function ProductDetails({ product }: ProductDetailsProps) {
   const router = useRouter();
-  const { addItem } = useCart();
+  const { addItem, getEffectivePrice, flashSaleCampaign } = useCart();
   const [quantity, setQuantity] = useState(1);
 
   const isOutOfStock =
@@ -30,9 +31,18 @@ export function ProductDetails({ product }: ProductDetailsProps) {
     product.status === "low_stock" || (typeof product.stock === "number" && product.stock > 0 && product.stock <= 10);
   const stockCount = typeof product.stock === "number" ? product.stock : 0;
 
-  const price = product.price || 199;
-  const originalPrice = product.original_price || Math.round(price * 1.25);
-  const discountPercent = Math.round(((originalPrice - price) / originalPrice) * 100);
+  const effective = getEffectivePrice
+    ? getEffectivePrice(product)
+    : {
+        price: product.price || 199,
+        originalPrice: product.original_price || Math.round((product.price || 199) * 1.25),
+        discountPercent: 0,
+        discountBadge: "",
+        isFlashSale: false,
+        savings: 0,
+      };
+
+  const { price, originalPrice, discountPercent, isFlashSale, discountBadge, savings } = effective;
 
   const handleAddToCart = () => {
     addItem(product, quantity);
@@ -94,9 +104,23 @@ export function ProductDetails({ product }: ProductDetailsProps) {
           </div>
 
           {/* Pricing Box */}
-          <div className="rounded-xl border border-border bg-surface p-5 space-y-2">
+          <div className="rounded-xl border border-border bg-surface p-5 space-y-3">
+            {isFlashSale && (
+              <div className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-amber-500/15 via-rose-500/15 to-transparent border border-amber-500/30 px-3.5 py-2 text-xs">
+                <Sparkles className="h-4 w-4 text-amber-500 shrink-0" />
+                <div>
+                  <span className="font-bold text-amber-600 dark:text-amber-400">
+                    ⚡ {flashSaleCampaign?.name || "Flash Sale"} Active!
+                  </span>{" "}
+                  <span className="text-muted-foreground">
+                    Promotional {discountBadge} discount applied. You save ₱{savings.toLocaleString()}!
+                  </span>
+                </div>
+              </div>
+            )}
+
             <div className="flex items-baseline gap-3">
-              <span className="font-mono text-3xl font-bold text-accent">
+              <span className={cn("font-mono text-3xl font-bold", isFlashSale ? "text-rose-500" : "text-accent")}>
                 ₱{price.toLocaleString()}
               </span>
               {originalPrice > price && (
@@ -104,8 +128,15 @@ export function ProductDetails({ product }: ProductDetailsProps) {
                   <span className="font-mono text-base text-muted-foreground line-through">
                     ₱{originalPrice.toLocaleString()}
                   </span>
-                  <span className="rounded-full bg-accent/20 px-2 py-0.5 text-xs font-bold font-mono text-accent">
-                    -{discountPercent}% OFF
+                  <span
+                    className={cn(
+                      "rounded-full px-2.5 py-0.5 text-xs font-bold font-mono",
+                      isFlashSale
+                        ? "bg-rose-500/20 text-rose-500 border border-rose-500/30"
+                        : "bg-accent/20 text-accent"
+                    )}
+                  >
+                    {isFlashSale ? `⚡ ${discountBadge} FLASH SALE` : `-${discountPercent}% OFF`}
                   </span>
                 </>
               )}

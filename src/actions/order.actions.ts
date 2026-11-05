@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { createSupabaseServerClient, isSupabaseConfigured } from "@/lib/supabase/server";
 import { createSupabaseServiceClient } from "@/lib/supabase/admin";
 import type { Order, OrderStatus, CreateOrderInput } from "@/types/order";
+import { getCartDeliverySettingsAction } from "./delivery-settings.actions";
 import { getMasterCatalog, saveMasterCatalog } from "./product.actions";
 import fs from "node:fs";
 import path from "node:path";
@@ -129,8 +130,16 @@ export async function createOrderAction(
       (sum, item) => sum + item.price * item.quantity,
       0
     );
-    // Free delivery on orders ₱500 and above; otherwise flat ₱60
-    const delivery_fee = subtotal >= 500 ? 0 : 60;
+
+    // Dynamic Courier Delivery Fee & Threshold loaded from Admin Settings
+    const deliverySettings = await getCartDeliverySettingsAction();
+    const baseDeliveryFee = deliverySettings.baseDeliveryFee ?? 60;
+    const isFreeEligible = Boolean(
+      deliverySettings.freeDeliveryPromoEnabled &&
+      subtotal >= (deliverySettings.threshold ?? 500)
+    );
+    const delivery_fee = isFreeEligible ? 0 : baseDeliveryFee;
+    const discount_amount = isFreeEligible ? baseDeliveryFee : 0;
     const total_amount = subtotal + delivery_fee;
 
     const orderId = `order_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
@@ -153,7 +162,7 @@ export async function createOrderAction(
       items: input.items,
       subtotal,
       delivery_fee,
-      discount_amount: delivery_fee === 0 ? 60 : 0,
+      discount_amount,
       total_amount,
       payment_method: input.payment_method || "cod",
       notes: input.notes?.trim() || undefined,
@@ -198,26 +207,6 @@ export async function createOrderAction(
       console.warn("Could not auto-decrement stock:", stockErr);
     }
 
-    // 3. Mirror to Supabase enquiries table for admin notification
-    if (isSupabaseConfigured()) {
-      try {
-        const supabase = createSupabaseServiceClient() ?? (await createSupabaseServerClient());
-        if (supabase) {
-          const client = supabase as unknown as SupabaseContentClient;
-          await client.from("enquiries").insert({
-            full_name: newOrder.customer_name,
-            email: newOrder.email || "orders@scentmists.com",
-            phone: newOrder.phone,
-            subject: `[NEW ORDER] ${newOrder.order_number} - ₱${newOrder.total_amount.toLocaleString()}`,
-            message: `Delivery Address: ${newOrder.delivery_address}\nLandmark: ${newOrder.landmark}\nLocation Pin: ${newOrder.delivery_location.lat}, ${newOrder.delivery_location.lng}\nPayment: ${newOrder.payment_method.toUpperCase()}\nItems: ${newOrder.items.map((i) => `${i.quantity}x ${i.name} (₱${i.price})`).join(", ")}\nTotal: ₱${newOrder.total_amount}`,
-            status: "NEW",
-          });
-        }
-      } catch (enqErr) {
-        console.warn("Could not mirror order to enquiries:", enqErr);
-      }
-    }
-
     revalidatePath("/admin");
     revalidatePath("/admin/orders");
     revalidatePath("/orders");
@@ -258,6 +247,53 @@ export async function updateOrderStatusAction(
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : "Failed to update order status.";
     return { success: false, error: message };
+  }
+}
+
+export async function bulkUpdateOrderStatusAction(
+  orderIds: string[],
+  newStatus: OrderStatus
+): Promise<{ success: boolean; updatedCount: number; error?: string }> {
+  try {
+    if (!orderIds || orderIds.length === 0) {
+      return { success: true, updatedCount: 0 };
+    }
+    const orders = await getOrdersAction();
+    const idSet = new Set(orderIds.map((id) => (id || "").trim().toLowerCase()));
+
+    let updatedCount = 0;
+    const now = new Date().toISOString();
+    for (const order of orders) {
+      if (
+        idSet.has(order.id.toLowerCase()) ||
+        idSet.has(order.order_number.toLowerCase())
+      ) {
+        order.status = newStatus;
+        order.updated_at = now;
+        updatedCount++;
+      }
+    }
+
+    if (updatedCount > 0) {
+      await saveOrders(orders);
+      revalidatePath("/admin");
+      revalidatePath("/admin/orders");
+      revalidatePath("/orders");
+      for (const order of orders) {
+        if (
+          idSet.has(order.id.toLowerCase()) ||
+          idSet.has(order.order_number.toLowerCase())
+        ) {
+          revalidatePath(`/orders/${order.order_number}`);
+          revalidatePath(`/orders/${order.id}`);
+        }
+      }
+    }
+
+    return { success: true, updatedCount };
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : "Failed to bulk update orders.";
+    return { success: false, updatedCount: 0, error: message };
   }
 }
 

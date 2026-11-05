@@ -1,13 +1,29 @@
 "use client";
 
-import React, { createContext, useContext, useEffect, useState, useCallback } from "react";
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  useCallback,
+  useMemo,
+} from "react";
 import type { CartItem, CartState } from "@/types/cart";
 import type { Product } from "@/types/product";
 import {
   type CartDeliverySettings,
+  type FlashSaleCampaign,
   DEFAULT_CART_DELIVERY_SETTINGS,
+  DEFAULT_FLASH_SALE_CAMPAIGN,
 } from "@/types/delivery-settings";
-import { getCartDeliverySettingsAction } from "@/actions/delivery-settings.actions";
+import {
+  getCartDeliverySettingsAction,
+  getFlashSaleCampaignAction,
+} from "@/actions/delivery-settings.actions";
+import {
+  getProductEffectivePrice,
+  type EffectivePriceResult,
+} from "@/lib/promotions";
 import { toast } from "@/components/ui/toast";
 
 const CartContext = createContext<CartState | undefined>(undefined);
@@ -21,19 +37,28 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const [deliverySettings, setDeliverySettings] = useState<CartDeliverySettings>(
     DEFAULT_CART_DELIVERY_SETTINGS
   );
+  const [flashSaleCampaign, setFlashSaleCampaign] = useState<FlashSaleCampaign>(
+    DEFAULT_FLASH_SALE_CAMPAIGN
+  );
 
-  const refreshDeliverySettings = useCallback(async () => {
+  const refreshSettings = useCallback(async () => {
     try {
-      const res = await getCartDeliverySettingsAction();
-      if (res) {
-        setDeliverySettings(res);
+      const [delRes, fsRes] = await Promise.all([
+        getCartDeliverySettingsAction(),
+        getFlashSaleCampaignAction(),
+      ]);
+      if (delRes) {
+        setDeliverySettings(delRes);
+      }
+      if (fsRes) {
+        setFlashSaleCampaign(fsRes);
       }
     } catch {
-      // fallback
+      // fallback to defaults
     }
   }, []);
 
-  // Load from localStorage & fetch delivery settings on mount
+  // Load from localStorage & fetch settings on mount
   useEffect(() => {
     setIsMounted(true);
     try {
@@ -48,8 +73,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       // ignore
     }
 
-    refreshDeliverySettings();
-  }, [refreshDeliverySettings]);
+    refreshSettings();
+  }, [refreshSettings]);
 
   // Save to localStorage whenever items change
   useEffect(() => {
@@ -62,14 +87,26 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     }
   }, [items, isMounted]);
 
+  const getEffectivePrice = useCallback(
+    (product: Product): EffectivePriceResult => {
+      return getProductEffectivePrice(product, flashSaleCampaign);
+    },
+    [flashSaleCampaign]
+  );
+
   const addItem = (product: Product, quantity = 1) => {
-    if (product.status === "out_of_stock" || (typeof product.stock === "number" && product.stock <= 0)) {
+    if (
+      product.status === "out_of_stock" ||
+      (typeof product.stock === "number" && product.stock <= 0)
+    ) {
       toast.error(`"${product.name}" is currently Out of Stock.`);
       return;
     }
 
     setItems((prev) => {
-      const existingIndex = prev.findIndex((item) => item.product.id === product.id);
+      const existingIndex = prev.findIndex(
+        (item) => item.product.id === product.id
+      );
       const maxStock = typeof product.stock === "number" ? product.stock : 99;
 
       if (existingIndex > -1) {
@@ -114,7 +151,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     setItems((prev) =>
       prev.map((item) => {
         if (item.product.id === productId) {
-          const maxStock = typeof item.product.stock === "number" ? item.product.stock : 99;
+          const maxStock =
+            typeof item.product.stock === "number" ? item.product.stock : 99;
           const cappedQty = Math.min(quantity, maxStock);
           return { ...item, quantity: cappedQty };
         }
@@ -127,8 +165,27 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     setItems([]);
   };
 
-  const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
-  const subtotal = items.reduce((sum, item) => sum + (item.product.price || 199) * item.quantity, 0);
+  const totalItems = useMemo(
+    () => items.reduce((sum, item) => sum + item.quantity, 0),
+    [items]
+  );
+
+  // Subtotal dynamically calculated with active flash sale campaign effective price
+  const subtotal = useMemo(() => {
+    return items.reduce((sum, item) => {
+      const effective = getEffectivePrice(item.product);
+      return sum + effective.price * item.quantity;
+    }, 0);
+  }, [items, getEffectivePrice]);
+
+  // Delivery fee dynamically computed based on admin's base fee and free delivery threshold
+  const baseFee = deliverySettings.baseDeliveryFee ?? 60;
+  const isFreeDeliveryQualified = Boolean(
+    deliverySettings.freeDeliveryPromoEnabled &&
+      subtotal >= (deliverySettings.threshold ?? 500)
+  );
+  const deliveryFee = isFreeDeliveryQualified ? 0 : baseFee;
+  const grandTotal = subtotal + deliveryFee;
 
   return (
     <CartContext.Provider
@@ -143,7 +200,13 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         isCartOpen,
         setIsCartOpen,
         deliverySettings,
-        refreshDeliverySettings,
+        flashSaleCampaign,
+        getEffectivePrice,
+        deliveryFee,
+        isFreeDeliveryQualified,
+        grandTotal,
+        refreshDeliverySettings: refreshSettings,
+        refreshSettings,
       }}
     >
       {children}

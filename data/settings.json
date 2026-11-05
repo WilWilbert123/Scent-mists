@@ -1,7 +1,17 @@
 {
+  "baseDeliveryFee": 60,
   "freeDeliveryPromoEnabled": false,
   "threshold": 500,
   "promoText": "Add ₱{amount} more for FREE Delivery",
-  "successText": "🎉 Congratulations! You qualify for FREE Delivery!"
+  "successText": "🎉 Congratulations! You qualify for FREE Delivery!",
+  "flashSale": {
+    "enabled": false,
+    "name": "Exclusive Flash Sale",
+    "discountType": "percentage",
+    "discountValue": 20,
+    "startDate": "",
+    "endDate": "",
+    "scope": "all",
+    "bannerText": "⚡ FLASH SALE LIVE: Special promotional prices applied to our signature collection!"
+  }
 }
-

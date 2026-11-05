@@ -1,1 +1,80 @@
-[]
+[
+  {
+    "id": "order_1793857438536_2ay6y",
+    "email": "johnwilbertgamis2022@gmail.com",
+    "items": [
+      {
+        "sku": "CCK02",
+        "name": "CK - Eternity (CCK02)",
+        "brand": "Calvin Klein",
+        "price": 135,
+        "volume": "50ml",
+        "quantity": 1,
+        "image_url": "/images/perfumes/aroma-body-mist-50ml-ck-eternity.webp",
+        "product_id": "03c0b6b7-4364-4c27-8564-771ecbcbac06"
+      },
+      {
+        "sku": "BVL-MIB-50",
+        "name": "Bvlgari - Bvlgari Man Black",
+        "brand": "Bvlgari",
+        "price": 135,
+        "volume": "50ml",
+        "quantity": 1,
+        "image_url": "/images/perfumes/aroma-body-mist-50ml-bvlgari-man-in-black.webp",
+        "product_id": "37af2354-d605-4ebd-8aeb-40779f50d3c0"
+      }
+    ],
+    "phone": "09380836756",
+    "status": "pending",
+    "landmark": "None",
+    "subtotal": 270,
+    "created_at": "2026-11-05T05:43:58.536Z",
+    "updated_at": "2026-11-05T05:43:58.536Z",
+    "delivery_fee": 60,
+    "order_number": "SCENT-2026-9039",
+    "total_amount": 330,
+    "customer_name": "John wilbert Gamis",
+    "payment_method": "cod",
+    "discount_amount": 0,
+    "delivery_address": "Irosin Sorsogon",
+    "delivery_location": {
+      "lat": 12.7038417,
+      "lng": 124.0320966,
+      "address_text": "Irosin, Sorsogon, Bicol Region, 4707, Philippines"
+    }
+  },
+  {
+    "id": "order_1793857295941_ay478",
+    "email": "johnwilbertgamis2022@gmail.com",
+    "items": [
+      {
+        "sku": "CL-HAP-50",
+        "name": "Clinique - Happy",
+        "brand": "Clinique",
+        "price": 135,
+        "volume": "50ml",
+        "quantity": 1,
+        "image_url": "https://xpguejvrmwkchzblzsvx.supabase.co/storage/v1/object/public/product-images/uploads/1793854328980-lookph-70020239-front-zoom_50047002-nrplstno-zoo.avif",
+        "product_id": "22c52323-40d3-4cfd-ac71-7336d84da03c"
+      }
+    ],
+    "phone": "09380836756",
+    "status": "delivered",
+    "landmark": "None",
+    "subtotal": 135,
+    "created_at": "2026-11-05T05:41:35.941Z",
+    "updated_at": "2026-11-05T05:43:10.124Z",
+    "delivery_fee": 60,
+    "order_number": "SCENT-2026-1698",
+    "total_amount": 195,
+    "customer_name": "John wilbert Gamis",
+    "payment_method": "cod",
+    "discount_amount": 0,
+    "delivery_address": "Irosin Sorsogon",
+    "delivery_location": {
+      "lat": 12.7038417,
+      "lng": 124.0320966,
+      "address_text": "Irosin, Sorsogon, Bicol Region, 4707, Philippines"
+    }
+  }
+]

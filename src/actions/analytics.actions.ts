@@ -1,5 +1,6 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import { subDays, startOfDay, format, parseISO } from "date-fns";
 import { createSupabaseServerClient, isSupabaseConfigured } from "@/lib/supabase/server";
 import { createSupabaseServiceClient, verifyServerAdmin } from "@/lib/supabase/admin";
@@ -314,4 +315,48 @@ export async function getVisitorLogsAction({
     isDatabaseConnected: true,
   };
 }
+
+/**
+ * Resets/prunes test visitor analytics records from Supabase.
+ * Admin-only action to allow starting with fresh, genuine customer traffic.
+ */
+export async function resetVisitorAnalyticsAction(): Promise<{
+  success: boolean;
+  error?: string;
+}> {
+  if (!isSupabaseConfigured()) {
+    return { success: false, error: "Database not configured." };
+  }
+
+  const auth = await verifyServerAdmin();
+  if (!auth.authorized) {
+    return { success: false, error: "Unauthorized: Admin access required." };
+  }
+
+  const supabase = createSupabaseServiceClient() ?? (await createSupabaseServerClient());
+  if (!supabase) {
+    return { success: false, error: "Database client unavailable." };
+  }
+
+  try {
+    const { error } = await supabase
+      .from("visitor_analytics")
+      .delete()
+      .neq("anonymous_visitor_id", "___NEVER_MATCH___");
+
+    if (error) {
+      return { success: false, error: error.message };
+    }
+
+    revalidatePath("/admin");
+    revalidatePath("/admin/analytics");
+    revalidatePath("/admin/visitors");
+
+    return { success: true };
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : "Failed to reset analytics.";
+    return { success: false, error: message };
+  }
+}
+
 

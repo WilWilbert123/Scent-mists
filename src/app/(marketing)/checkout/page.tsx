@@ -20,7 +20,17 @@ import type { DeliveryLocation, PaymentMethod, Order } from "@/types/order";
 import { toast } from "@/components/ui/toast";
 
 export default function CheckoutPage() {
-  const { items, subtotal, totalItems, clearCart } = useCart();
+  const {
+    items,
+    subtotal,
+    totalItems,
+    deliveryFee,
+    deliverySettings,
+    isFreeDeliveryQualified,
+    grandTotal,
+    clearCart,
+    getEffectivePrice,
+  } = useCart();
 
   // Form State
   const [customerName, setCustomerName] = useState("");
@@ -40,9 +50,6 @@ export default function CheckoutPage() {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [completedOrder, setCompletedOrder] = useState<Order | null>(null);
-
-  const deliveryFee = subtotal >= 500 ? 0 : 60;
-  const grandTotal = subtotal + deliveryFee;
 
   const handlePlaceOrder = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -66,16 +73,19 @@ export default function CheckoutPage() {
 
     setIsSubmitting(true);
     try {
-      const orderItems = items.map((i) => ({
-        product_id: i.product.id,
-        name: i.product.name,
-        brand: i.product.brand,
-        volume: i.product.volume || "50ml",
-        sku: i.product.sku,
-        price: i.product.price || 199,
-        quantity: i.quantity,
-        image_url: i.product.image_url,
-      }));
+      const orderItems = items.map((i) => {
+        const eff = getEffectivePrice(i.product);
+        return {
+          product_id: i.product.id,
+          name: i.product.name,
+          brand: i.product.brand,
+          volume: i.product.volume || "50ml",
+          sku: i.product.sku,
+          price: eff.price,
+          quantity: i.quantity,
+          image_url: i.product.image_url,
+        };
+      });
 
       const res = await createOrderAction({
         customer_name: customerName,
@@ -499,32 +509,47 @@ export default function CheckoutPage() {
 
             {/* Item list */}
             <div className="max-h-72 overflow-y-auto space-y-3 divide-y divide-border/60 pr-1">
-              {items.map(({ product, quantity }) => (
-                <div key={product.id} className="pt-3 first:pt-0 flex items-center gap-3">
-                  <div className="min-w-0 flex-1">
-                    <p className="text-[10px] font-mono uppercase text-accent font-semibold truncate">
-                      {product.brand}
-                    </p>
-                    <h3 className="text-xs font-medium text-foreground truncate">
-                      {product.name}
-                    </h3>
-                    <p className="text-[10px] text-muted-foreground font-mono">
-                      {quantity} x ₱{(product.price || 199).toLocaleString()} • {product.volume || "50ml"}
-                    </p>
-                  </div>
+              {items.map(({ product, quantity }) => {
+                const eff = getEffectivePrice(product);
+                return (
+                  <div key={product.id} className="pt-3 first:pt-0 flex items-center gap-3">
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-1.5 flex-wrap">
+                        <p className="text-[10px] font-mono uppercase text-accent font-semibold truncate">
+                          {product.brand}
+                        </p>
+                        {eff.isFlashSale && (
+                          <span className="text-[9px] font-bold font-mono bg-rose-500/15 text-rose-500 border border-rose-500/30 px-1 py-0.2 rounded">
+                            ⚡ {eff.discountBadge}
+                          </span>
+                        )}
+                      </div>
+                      <h3 className="text-xs font-medium text-foreground truncate">
+                        {product.name}
+                      </h3>
+                      <p className="text-[10px] text-muted-foreground font-mono">
+                        {quantity} x ₱{eff.price.toLocaleString()} • {product.volume || "50ml"}
+                        {eff.originalPrice > eff.price && (
+                          <span className="line-through ml-1 text-muted-foreground/70">
+                            ₱{eff.originalPrice.toLocaleString()}
+                          </span>
+                        )}
+                      </p>
+                    </div>
 
-                  <span className="font-mono text-xs font-semibold text-foreground">
-                    ₱{((product.price || 199) * quantity).toLocaleString()}
-                  </span>
-                </div>
-              ))}
+                    <span className={`font-mono text-xs font-semibold ${eff.isFlashSale ? "text-rose-500" : "text-foreground"}`}>
+                      ₱{(eff.price * quantity).toLocaleString()}
+                    </span>
+                  </div>
+                );
+              })}
             </div>
 
             {/* Price Calculations */}
             <div className="border-t border-border pt-4 space-y-2 text-xs">
               <div className="flex justify-between text-muted-foreground">
                 <span>Subtotal</span>
-                <span className="font-mono text-foreground">
+                <span className="font-mono text-foreground font-medium">
                   ₱{subtotal.toLocaleString()}
                 </span>
               </div>
@@ -532,14 +557,14 @@ export default function CheckoutPage() {
               <div className="flex justify-between text-muted-foreground">
                 <span className="flex items-center gap-1">
                   <span>Courier Delivery Fee</span>
-                  {subtotal >= 500 && (
+                  {isFreeDeliveryQualified && (
                     <span className="text-[10px] bg-emerald-500/10 text-emerald-500 px-1.5 py-0.2 rounded font-semibold">
-                      FREE ₱500+
+                      FREE (₱{(deliverySettings?.threshold ?? 500).toLocaleString()}+)
                     </span>
                   )}
                 </span>
                 <span className="font-mono">
-                  {deliveryFee === 0 ? (
+                  {isFreeDeliveryQualified ? (
                     <span className="text-emerald-500 font-bold">FREE</span>
                   ) : (
                     <span>₱{deliveryFee.toLocaleString()}</span>
