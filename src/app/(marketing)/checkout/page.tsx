@@ -11,6 +11,7 @@ import {
   ShoppingBag,
   ShieldCheck,
   Loader2,
+  Truck,
 } from "lucide-react";
 import { useCart } from "@/context/cart-context";
 import { LeafletDeliveryMap } from "@/components/checkout/leaflet-delivery-map";
@@ -91,6 +92,18 @@ export default function CheckoutPage() {
       if (res.success && res.order) {
         setCompletedOrder(res.order);
         clearCart();
+        try {
+          localStorage.setItem(
+            "scent_mists_last_order",
+            JSON.stringify({
+              id: res.order.id,
+              order_number: res.order.order_number,
+              created_at: res.order.created_at,
+            })
+          );
+        } catch {
+          // ignore
+        }
         toast.success(`Order ${res.order.order_number} successfully placed!`);
       } else {
         toast.error(res.error || "Failed to submit order. Please try again.");
@@ -193,16 +206,17 @@ export default function CheckoutPage() {
 
           <div className="flex flex-col sm:flex-row gap-3 justify-center pt-2">
             <Link
-              href="/shop"
-              className="inline-flex items-center justify-center rounded-xl bg-primary px-6 py-3 text-xs uppercase tracking-widest text-primary-foreground hover:bg-accent transition-colors font-medium"
+              href={`/orders/${completedOrder.order_number}`}
+              className="inline-flex items-center justify-center gap-2 rounded-xl bg-accent px-6 py-3.5 text-xs uppercase tracking-widest text-accent-foreground hover:opacity-90 transition-opacity font-bold shadow-lg"
             >
-              Back to Fragrances
+              <Truck className="h-4 w-4" />
+              <span>Track Order Live (Shopee / Lazada View)</span>
             </Link>
             <Link
-              href="/admin/orders"
-              className="inline-flex items-center justify-center rounded-xl border border-border bg-surface px-6 py-3 text-xs uppercase tracking-widest text-foreground hover:border-accent hover:text-accent transition-colors font-medium"
+              href="/shop"
+              className="inline-flex items-center justify-center rounded-xl border border-border bg-surface px-6 py-3.5 text-xs uppercase tracking-widest text-foreground hover:border-accent hover:text-accent transition-colors font-medium"
             >
-              View in Admin Dashboard
+              Back to Fragrances
             </Link>
           </div>
         </div>

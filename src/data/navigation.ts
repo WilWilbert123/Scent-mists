@@ -9,6 +9,7 @@ export interface NavItem {
 export const PUBLIC_NAV_ITEMS: NavItem[] = [
   { label: "Home", href: "/" },
   { label: "Shop", href: "/shop" },
+  { label: "Track Order", href: "/orders" },
   { label: "Contact", href: "/contact" },
 ];
 
@@ -20,6 +21,7 @@ export const FOOTER_NAV_GROUPS = {
   ],
   house: [
     { label: "Shop", href: "/shop" },
+    { label: "Track Order", href: "/orders" },
     { label: "Contact", href: "/contact" },
   ],
   legal: [

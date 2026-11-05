@@ -18,7 +18,7 @@ interface SupabaseContentClient {
         maybeSingle: () => Promise<{ data: { content_value: unknown } | null; error: unknown }>;
       };
     };
-    upsert: (values: Record<string, unknown>) => Promise<{ error: unknown }>;
+    upsert: (values: Record<string, unknown>, options?: { onConflict?: string }) => Promise<{ error: unknown }>;
     insert: (values: Record<string, unknown>) => Promise<{ error: unknown }>;
   };
 }
@@ -86,11 +86,17 @@ export async function saveOrders(orders: Order[]): Promise<void> {
       const supabase = createSupabaseServiceClient() ?? (await createSupabaseServerClient());
       if (supabase) {
         const client = supabase as unknown as SupabaseContentClient;
-        await client.from("site_content").upsert({
-          content_key: "orders_list",
-          content_value: orders,
-          updated_at: new Date().toISOString(),
-        });
+        const { error: upsertErr } = await client.from("site_content").upsert(
+          {
+            content_key: "orders_list",
+            content_value: orders,
+            updated_at: new Date().toISOString(),
+          },
+          { onConflict: "content_key" }
+        );
+        if (upsertErr) {
+          console.error("Failed to save orders to Supabase site_content:", upsertErr);
+        }
       }
     } catch (e) {
       console.error("Failed to save orders to Supabase:", e);
@@ -99,6 +105,7 @@ export async function saveOrders(orders: Order[]): Promise<void> {
 
   revalidatePath("/admin");
   revalidatePath("/admin/orders");
+  revalidatePath("/orders");
 }
 
 export async function createOrderAction(
@@ -203,13 +210,18 @@ export async function createOrderAction(
             phone: newOrder.phone,
             subject: `[NEW ORDER] ${newOrder.order_number} - ₱${newOrder.total_amount.toLocaleString()}`,
             message: `Delivery Address: ${newOrder.delivery_address}\nLandmark: ${newOrder.landmark}\nLocation Pin: ${newOrder.delivery_location.lat}, ${newOrder.delivery_location.lng}\nPayment: ${newOrder.payment_method.toUpperCase()}\nItems: ${newOrder.items.map((i) => `${i.quantity}x ${i.name} (₱${i.price})`).join(", ")}\nTotal: ₱${newOrder.total_amount}`,
-            status: "pending",
+            status: "NEW",
           });
         }
       } catch (enqErr) {
         console.warn("Could not mirror order to enquiries:", enqErr);
       }
     }
+
+    revalidatePath("/admin");
+    revalidatePath("/admin/orders");
+    revalidatePath("/orders");
+    revalidatePath(`/orders/${newOrder.order_number}`);
 
     return { success: true, order: newOrder };
   } catch (err: unknown) {
@@ -224,7 +236,10 @@ export async function updateOrderStatusAction(
 ): Promise<{ success: boolean; error?: string }> {
   try {
     const orders = await getOrdersAction();
-    const index = orders.findIndex((o) => o.id === orderId);
+    const clean = (orderId || "").trim().toLowerCase();
+    const index = orders.findIndex(
+      (o) => o.id.toLowerCase() === clean || o.order_number.toLowerCase() === clean
+    );
     if (index === -1) {
       return { success: false, error: "Order not found." };
     }
@@ -232,6 +247,12 @@ export async function updateOrderStatusAction(
     orders[index].status = newStatus;
     orders[index].updated_at = new Date().toISOString();
     await saveOrders(orders);
+
+    revalidatePath("/admin");
+    revalidatePath("/admin/orders");
+    revalidatePath("/orders");
+    revalidatePath(`/orders/${orders[index].order_number}`);
+    revalidatePath(`/orders/${orders[index].id}`);
 
     return { success: true };
   } catch (err: unknown) {
@@ -241,6 +262,26 @@ export async function updateOrderStatusAction(
 }
 
 export async function getOrderByIdAction(orderId: string): Promise<Order | null> {
+  if (!orderId) return null;
   const orders = await getOrdersAction();
-  return orders.find((o) => o.id === orderId || o.order_number === orderId) || null;
+  const clean = orderId.trim().toLowerCase();
+  return (
+    orders.find(
+      (o) =>
+        o.id.toLowerCase() === clean ||
+        o.order_number.toLowerCase() === clean
+    ) || null
+  );
+}
+
+export async function searchOrdersAction(query: string): Promise<Order[]> {
+  const clean = (query || "").trim().toLowerCase();
+  if (!clean) return [];
+  const orders = await getOrdersAction();
+  return orders.filter(
+    (o) =>
+      o.order_number.toLowerCase().includes(clean) ||
+      o.phone.includes(clean) ||
+      o.customer_name.toLowerCase().includes(clean)
+  );
 }

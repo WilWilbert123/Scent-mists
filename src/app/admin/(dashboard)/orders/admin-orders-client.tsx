@@ -68,7 +68,7 @@ const STATUS_CONFIG: Record<
 
 function OrderItemThumbnail({ src, alt }: { src?: string; alt: string }) {
   const [imgSrc, setImgSrc] = useState(
-    src || "/images/perfumes/aroma-body-mist-50ml-clinique-happy.webp"
+    src || "/images/products/sakura-mountain-mist.webp"
   );
 
   return (
@@ -80,7 +80,7 @@ function OrderItemThumbnail({ src, alt }: { src?: string; alt: string }) {
         sizes="32px"
         className="object-cover"
         onError={() =>
-          setImgSrc("/images/perfumes/aroma-body-mist-50ml-clinique-happy.webp")
+          setImgSrc("/images/products/sakura-mountain-mist.webp")
         }
       />
     </div>
@@ -595,7 +595,17 @@ export function AdminOrdersClient({ initialOrders }: AdminOrdersClientProps) {
               </div>
             </div>
 
-            <div className="flex justify-end gap-2 pt-2">
+            <div className="flex items-center justify-between gap-2 pt-2 border-t border-border">
+              <a
+                href={`/orders/${selectedOrder.order_number}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 px-3 py-2 text-xs text-accent hover:underline font-medium"
+              >
+                <ExternalLink className="h-3.5 w-3.5" />
+                <span>Customer Live Tracking Page</span>
+              </a>
+
               <button
                 type="button"
                 onClick={() => setSelectedOrder(null)}
