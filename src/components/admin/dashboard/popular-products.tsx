@@ -15,13 +15,16 @@ interface PopularProductsProps {
 }
 
 export function PopularProducts({ fragrances }: PopularProductsProps) {
+  // Show only top 3 as requested
+  const topFragrances = (fragrances || []).slice(0, 3);
+
   return (
     <Card className="h-full">
       <CardHeader className="flex flex-row items-center justify-between">
         <div>
           <CardTitle>Fragrance Showcase Performance</CardTitle>
           <CardDescription>
-            Live Supabase catalog fragrances ranked by recorded page views
+            Top 3 catalog fragrances ranked by recorded page views
           </CardDescription>
         </div>
         <Link
@@ -32,18 +35,18 @@ export function PopularProducts({ fragrances }: PopularProductsProps) {
           <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
         </Link>
       </CardHeader>
-      <CardContent>
-        {fragrances.length === 0 ? (
+      <CardContent className="space-y-3">
+        {topFragrances.length === 0 ? (
           <EmptyState
             title="No Fragrances in Database"
             description="Add fragrances in the Products section to track their live page view performance."
           />
         ) : (
           <ul className="divide-y divide-border">
-            {fragrances.map((item, idx) => (
+            {topFragrances.map((item, idx) => (
               <li
                 key={item.slug}
-                className="flex items-center justify-between gap-4 py-3.5 text-sm"
+                className="flex items-center justify-between gap-4 py-3 text-sm"
               >
                 <div className="flex items-center gap-3 min-w-0">
                   <span className="font-serif text-sm text-muted-foreground w-5 shrink-0">
@@ -82,8 +85,20 @@ export function PopularProducts({ fragrances }: PopularProductsProps) {
             ))}
           </ul>
         )}
+
+        {fragrances.length > 3 && (
+          <div className="pt-2 border-t border-border flex items-center justify-between text-xs text-muted-foreground">
+            <span>Showing top 3 of {fragrances.length} fragrances</span>
+            <Link
+              href="/admin/products"
+              className="text-accent hover:underline font-medium inline-flex items-center gap-1"
+            >
+              <span>Manage All ({fragrances.length})</span>
+              <ArrowRight className="h-3 w-3" />
+            </Link>
+          </div>
+        )}
       </CardContent>
     </Card>
   );
 }
-

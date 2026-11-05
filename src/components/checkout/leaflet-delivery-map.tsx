@@ -161,8 +161,8 @@ export function LeafletDeliveryMap({
   }, [currentLat, currentLng, handlePositionChange]);
 
   // Search Address / Landmark
-  const handleSearch = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSearch = async (e?: React.SyntheticEvent) => {
+    e?.preventDefault();
     if (!searchQuery.trim() || !mapInstanceRef.current || !markerRef.current) return;
 
     setIsSearching(true);
@@ -234,23 +234,30 @@ export function LeafletDeliveryMap({
     <div className={`space-y-3 ${className}`}>
       {/* Search & Location Controls */}
       <div className="flex flex-col sm:flex-row gap-2">
-        <form onSubmit={handleSearch} className="relative flex-1">
+        <div className="relative flex-1">
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                e.preventDefault();
+                handleSearch(e);
+              }
+            }}
             placeholder="Search barangay, street, subdivision, or landmark..."
             className="w-full pl-9 pr-20 py-2.5 text-xs bg-surface border border-border rounded-lg text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-accent"
           />
           <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
           <button
-            type="submit"
+            type="button"
+            onClick={handleSearch}
             disabled={isSearching}
             className="absolute right-1.5 top-1.5 px-3 py-1.5 bg-secondary text-foreground hover:bg-accent hover:text-accent-foreground text-xs font-medium rounded-md transition-colors"
           >
             {isSearching ? <Loader2 className="h-3 w-3 animate-spin" /> : "Search"}
           </button>
-        </form>
+        </div>
 
         <button
           type="button"
