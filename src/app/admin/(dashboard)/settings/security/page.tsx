@@ -2,10 +2,14 @@ import React from "react";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { SecuritySettings } from "@/components/admin/settings/security-settings";
+import { AdminAccountsManager } from "@/components/admin/settings/admin-accounts-manager";
+import { getAdminAccountsListAction } from "@/actions/settings.actions";
 
-export default function AdminSecuritySettingsPage() {
+export default async function AdminSecuritySettingsPage() {
+  const { admins, currentAdminId } = await getAdminAccountsListAction();
+
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <div>
         <Link
           href="/admin/settings"
@@ -16,7 +20,21 @@ export default function AdminSecuritySettingsPage() {
         </Link>
       </div>
 
+      <div className="space-y-2">
+        <h1 className="font-serif text-3xl text-foreground">
+          Security &amp; Administrator Management
+        </h1>
+        <p className="text-xs text-muted-foreground">
+          Update your administrator credentials, manage executive team accounts, and enforce password verification checks.
+        </p>
+      </div>
+
       <SecuritySettings />
+
+      <AdminAccountsManager
+        initialAdmins={admins}
+        currentAdminId={currentAdminId}
+      />
     </div>
   );
 }

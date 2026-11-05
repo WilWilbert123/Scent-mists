@@ -18,6 +18,7 @@ import { formatDisplayDateTime } from "@/lib/format-date";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { StatCard } from "@/components/admin/dashboard/stat-card";
+import { ExportButton } from "@/components/admin/shared/export-button";
 
 interface ContentOverviewHubProps {
   overview: SiteContentOverview;
@@ -168,6 +169,59 @@ export function ContentOverviewHub({ overview }: ContentOverviewHubProps) {
         </div>
 
         <div className="flex items-center gap-2.5 self-start sm:self-center">
+          <ExportButton
+            filename="scents-mists-site-content"
+            sheetName="Content"
+            headers={[
+              "Module / Section",
+              "Primary Title",
+              "Subtitle / Category",
+              "Status",
+              "Detail / Description",
+              "Storage Source",
+              "Last Synced",
+            ]}
+            rows={[
+              [
+                "Homepage Hero",
+                overview.homepage.value.heroHeadline,
+                overview.homepage.value.heroSubheadline,
+                "Published",
+                overview.homepage.value.heroDescription?.slice(0, 80) + "...",
+                overview.homepage.persistedInDatabase ? "Supabase (Live)" : "Default Fallback",
+                overview.homepage.updatedAt ? new Date(overview.homepage.updatedAt).toLocaleString() : "—",
+              ],
+              [
+                "Announcement Bar",
+                overview.homepage.value.announcementText || "—",
+                overview.homepage.value.announcementLinkHref || "—",
+                overview.homepage.value.announcementEnabled ? "Enabled" : "Disabled",
+                overview.homepage.value.announcementLinkText || "—",
+                overview.homepage.persistedInDatabase ? "Supabase (Live)" : "Default Fallback",
+                overview.homepage.updatedAt ? new Date(overview.homepage.updatedAt).toLocaleString() : "—",
+              ],
+              [
+                "Brand Story",
+                overview.brandStory.value.headline,
+                overview.brandStory.value.craftsmanshipTitle,
+                "Published",
+                overview.brandStory.value.leadParagraph?.slice(0, 80) + "...",
+                overview.brandStory.persistedInDatabase ? "Supabase (Live)" : "Default Fallback",
+                overview.brandStory.updatedAt ? new Date(overview.brandStory.updatedAt).toLocaleString() : "—",
+              ],
+              ...overview.banners.value.map((b, idx) => [
+                `Banner #${idx + 1} (${b.placement})`,
+                b.title,
+                b.subtitle || "—",
+                b.isActive ? "Active" : "Inactive",
+                b.ctaHref ? `${b.ctaText || "Link"}: ${b.ctaHref}` : "—",
+                overview.banners.persistedInDatabase ? "Supabase (Live)" : "Default Fallback",
+                overview.banners.updatedAt ? new Date(overview.banners.updatedAt).toLocaleString() : "—",
+              ]),
+            ]}
+            label="Export Content"
+          />
+
           <button
             type="button"
             onClick={handleManualRefresh}

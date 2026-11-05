@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import type { Order, OrderStatus } from "@/types/order";
 import { getOrdersAction, updateOrderStatusAction } from "@/actions/order.actions";
+import { ExportButton } from "@/components/admin/shared/export-button";
 import { toast } from "@/components/ui/toast";
 import { cn } from "@/lib/utils";
 
@@ -155,6 +156,35 @@ export function AdminOrdersClient({ initialOrders }: AdminOrdersClientProps) {
     }
   };
 
+  const exportRows = filteredOrders.map((o) => {
+    const itemsSummary = (o.items || [])
+      .map((i) => `${i.name || "Fragrance"} (${i.volume || "50ml"}) x${i.quantity || 1}`)
+      .join("; ");
+
+    return [
+      o.order_number || o.id,
+      new Date(o.created_at).toLocaleString("en-US", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+      }),
+      o.customer_name || "—",
+      o.phone || "—",
+      o.email || "—",
+      o.delivery_address || "—",
+      STATUS_CONFIG[o.status]?.label || o.status,
+      o.payment_method === "cod" ? "Cash on Delivery" : o.payment_method?.toUpperCase() || "COD",
+      o.subtotal || o.total_amount,
+      o.delivery_fee || 0,
+      o.discount_amount || 0,
+      o.total_amount,
+      itemsSummary || "—",
+      o.notes || "—",
+    ];
+  });
+
   return (
     <div className="space-y-6">
       {/* 1. Stat Summary Cards */}
@@ -215,15 +245,40 @@ export function AdminOrdersClient({ initialOrders }: AdminOrdersClientProps) {
           </span>
         </div>
 
-        <button
-          type="button"
-          onClick={() => refreshOrders(false)}
-          disabled={isRefreshing}
-          className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 text-xs bg-surface border border-border hover:border-accent text-foreground hover:text-accent rounded-lg transition-colors font-medium disabled:opacity-50 cursor-pointer"
-        >
-          <RefreshCw className={cn("h-3.5 w-3.5", isRefreshing && "animate-spin text-accent")} />
-          <span>{isRefreshing ? "Syncing..." : "Refresh Feed"}</span>
-        </button>
+        <div className="flex items-center gap-2">
+          <ExportButton
+            filename="scents-mists-customer-orders"
+            sheetName="Orders"
+            headers={[
+              "Order #",
+              "Date & Time",
+              "Customer Name",
+              "Phone",
+              "Email",
+              "Delivery Address",
+              "Order Status",
+              "Payment Method",
+              "Subtotal (PHP)",
+              "Delivery Fee (PHP)",
+              "Discount (PHP)",
+              "Total Amount (PHP)",
+              "Items Purchased",
+              "Customer Notes",
+            ]}
+            rows={exportRows}
+            label="Export Orders"
+          />
+
+          <button
+            type="button"
+            onClick={() => refreshOrders(false)}
+            disabled={isRefreshing}
+            className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 text-xs bg-surface border border-border hover:border-accent text-foreground hover:text-accent rounded-lg transition-colors font-medium disabled:opacity-50 cursor-pointer h-8"
+          >
+            <RefreshCw className={cn("h-3.5 w-3.5", isRefreshing && "animate-spin text-accent")} />
+            <span>{isRefreshing ? "Syncing..." : "Refresh Feed"}</span>
+          </button>
+        </div>
       </div>
 
       {/* 3. Search & Status Filter Badges */}

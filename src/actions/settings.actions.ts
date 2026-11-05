@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { createClient } from "@supabase/supabase-js";
 import { createSupabaseServerClient, isSupabaseConfigured } from "@/lib/supabase/server";
 import {
   createSupabaseServiceClient,
@@ -8,6 +9,7 @@ import {
   verifyServerAdmin,
 } from "@/lib/supabase/admin";
 import type { AdminProfile, AuditLogEntry } from "@/types/admin";
+import { logger } from "@/lib/logger";
 
 export async function getAdminProfileAndLogsAction(): Promise<{
   admin: AdminProfile | null;
@@ -471,5 +473,322 @@ export async function cleanSupabaseTableAction(
     success: true,
     deletedCount: countBefore,
   };
+}
+
+export interface CreateAdminAccountInput {
+  username: string;
+  email: string;
+  newPassword: string;
+  confirmPassword: string;
+  currentAdminPassword: string;
+}
+
+export async function getAdminAccountsListAction(): Promise<{
+  admins: AdminProfile[];
+  currentAdminId: string | null;
+}> {
+  const auth = await verifyServerAdmin();
+  if (!auth.authorized || !auth.admin) {
+    return { admins: [], currentAdminId: null };
+  }
+
+  const supabase =
+    createSupabaseServiceClient() ?? (await createSupabaseServerClient());
+  if (!supabase) {
+    return { admins: [auth.admin], currentAdminId: auth.admin.id };
+  }
+
+  const { data, error } = await supabase
+    .from("admin_profiles")
+    .select("*")
+    .order("created_at", { ascending: true });
+
+  if (error || !data || data.length === 0) {
+    return { admins: [auth.admin], currentAdminId: auth.admin.id };
+  }
+
+  return {
+    admins: data as AdminProfile[],
+    currentAdminId: auth.admin.id,
+  };
+}
+
+export async function createAnotherAdminAction(
+  input: CreateAdminAccountInput
+): Promise<{
+  success: boolean;
+  error?: string;
+  newAdmin?: AdminProfile;
+}> {
+  // 1. Verify current session is an admin
+  const auth = await verifyServerAdmin();
+  if (!auth.authorized || !auth.admin) {
+    return {
+      success: false,
+      error:
+        "Unauthorized operation. Only logged-in administrators can create admin accounts.",
+    };
+  }
+
+  // 2. Validate inputs
+  const username = input.username.trim();
+  const email = input.email.trim().toLowerCase();
+  const newPassword = input.newPassword;
+  const confirmPassword = input.confirmPassword;
+  const currentAdminPassword = input.currentAdminPassword;
+
+  if (username.length < 2) {
+    return {
+      success: false,
+      error: "Username / Full Name must be at least 2 characters.",
+    };
+  }
+
+  if (!email || !email.includes("@")) {
+    return {
+      success: false,
+      error: "Please enter a valid administrator email address.",
+    };
+  }
+
+  if (!newPassword || newPassword.length < 8) {
+    return {
+      success: false,
+      error: "New password must be at least 8 characters long.",
+    };
+  }
+
+  if (newPassword !== confirmPassword) {
+    return {
+      success: false,
+      error: "New password and Confirm Password do not match.",
+    };
+  }
+
+  if (!currentAdminPassword) {
+    return {
+      success: false,
+      error:
+        "Current administrator password is required for security verification.",
+    };
+  }
+
+  // 3. SECURITY VERIFICATION: Verify the current admin's password!
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  if (!supabaseUrl || !supabaseAnonKey) {
+    return {
+      success: false,
+      error: "Supabase authentication configuration is missing.",
+    };
+  }
+
+  const anonClient = createClient(supabaseUrl, supabaseAnonKey, {
+    auth: { persistSession: false, autoRefreshToken: false },
+  });
+
+  const { data: verifyData, error: verifyError } =
+    await anonClient.auth.signInWithPassword({
+      email: auth.admin.email,
+      password: currentAdminPassword,
+    });
+
+  if (verifyError || !verifyData.user) {
+    logger.warn(
+      "Admin account creation blocked: incorrect authorizing admin password",
+      {
+        attempted_by: auth.admin.email,
+        target_email: email,
+      }
+    );
+    return {
+      success: false,
+      error:
+        "Incorrect current admin password. Authorization failed — your administrator password was not recognized, so the new admin account cannot be created.",
+    };
+  }
+
+  // 4. Check if an admin with this email or username already exists
+  const serviceClient = createSupabaseServiceClient();
+  if (!serviceClient) {
+    return {
+      success: false,
+      error:
+        "Supabase service role client is not available. Please verify SUPABASE_SERVICE_ROLE_KEY.",
+    };
+  }
+
+  const { data: existingProfiles } = await serviceClient
+    .from("admin_profiles")
+    .select("id, email, full_name");
+
+  const duplicate = (existingProfiles ?? []).find(
+    (p: { email?: string; full_name?: string }) =>
+      p.email?.toLowerCase() === email ||
+      p.full_name?.toLowerCase() === username.toLowerCase()
+  );
+
+  if (duplicate) {
+    return {
+      success: false,
+      error: `An administrator with this email (${email}) or username (${username}) already exists.`,
+    };
+  }
+
+  // 5. Create new user in Supabase Auth via Admin API
+  const { data: createdAuthUser, error: createAuthError } =
+    await serviceClient.auth.admin.createUser({
+      email,
+      password: newPassword,
+      email_confirm: true,
+      user_metadata: {
+        full_name: username,
+        role: "ADMIN",
+      },
+    });
+
+  if (createAuthError || !createdAuthUser.user) {
+    return {
+      success: false,
+      error:
+        createAuthError?.message ||
+        "Failed to create new user credentials in Supabase Auth.",
+    };
+  }
+
+  const newAdminId = createdAuthUser.user.id;
+  const now = new Date().toISOString();
+
+  // 6. Insert new profile into public.admin_profiles
+  const newProfileRecord: AdminProfile = {
+    id: newAdminId,
+    email,
+    full_name: username,
+    role: "ADMIN",
+    created_at: now,
+    updated_at: now,
+  };
+
+  const { error: profileInsertError } = await (
+    serviceClient.from("admin_profiles") as unknown as {
+      upsert: (
+        values: Record<string, unknown>,
+        opts?: { onConflict?: string }
+      ) => Promise<{ error: { message: string } | null }>;
+    }
+  ).upsert(newProfileRecord as unknown as Record<string, unknown>, {
+    onConflict: "id",
+  });
+
+  if (profileInsertError) {
+    return {
+      success: false,
+      error: `Auth user created, but failed to insert into admin_profiles: ${profileInsertError.message}`,
+    };
+  }
+
+  // 7. Record an immutable audit log
+  await recordAuditLog({
+    adminUserId: auth.admin.id,
+    action: "ADMIN_ACCOUNT_CREATED",
+    resourceType: "admin_profiles",
+    resourceId: newAdminId,
+    metadata: {
+      authorized_by_admin: auth.admin.email,
+      created_admin_email: email,
+      created_admin_name: username,
+      role: "ADMIN",
+    },
+  });
+
+  revalidatePath("/admin/settings");
+  revalidatePath("/admin/settings/security");
+  revalidatePath("/admin/settings/profile");
+  revalidatePath("/admin/audit-logs");
+
+  return {
+    success: true,
+    newAdmin: newProfileRecord,
+  };
+}
+
+export async function deleteAdminAccountAction(
+  targetAdminId: string,
+  currentAdminPassword: string
+): Promise<{ success: boolean; error?: string }> {
+  const auth = await verifyServerAdmin();
+  if (!auth.authorized || !auth.admin) {
+    return {
+      success: false,
+      error: "Unauthorized operation.",
+    };
+  }
+
+  if (targetAdminId === auth.admin.id) {
+    return {
+      success: false,
+      error: "Security protection: You cannot delete your own active administrator account.",
+    };
+  }
+
+  if (!currentAdminPassword) {
+    return {
+      success: false,
+      error: "Current administrator password is required to authorize deletion.",
+    };
+  }
+
+  // Verify current admin password
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  if (!supabaseUrl || !supabaseAnonKey) {
+    return { success: false, error: "Supabase configuration missing." };
+  }
+
+  const anonClient = createClient(supabaseUrl, supabaseAnonKey, {
+    auth: { persistSession: false, autoRefreshToken: false },
+  });
+
+  const { data: verifyData, error: verifyError } =
+    await anonClient.auth.signInWithPassword({
+      email: auth.admin.email,
+      password: currentAdminPassword,
+    });
+
+  if (verifyError || !verifyData.user) {
+    return {
+      success: false,
+      error: "Incorrect current admin password. Authorization failed.",
+    };
+  }
+
+  const serviceClient = createSupabaseServiceClient();
+  if (!serviceClient) {
+    return { success: false, error: "Supabase service client unavailable." };
+  }
+
+  // Delete from admin_profiles
+  await serviceClient.from("admin_profiles").delete().eq("id", targetAdminId);
+
+  // Delete from auth.users
+  await serviceClient.auth.admin.deleteUser(targetAdminId);
+
+  // Audit log
+  await recordAuditLog({
+    adminUserId: auth.admin.id,
+    action: "ADMIN_ACCOUNT_DELETED",
+    resourceType: "admin_profiles",
+    resourceId: targetAdminId,
+    metadata: {
+      authorized_by_admin: auth.admin.email,
+      deleted_admin_id: targetAdminId,
+    },
+  });
+
+  revalidatePath("/admin/settings");
+  revalidatePath("/admin/settings/security");
+  revalidatePath("/admin/audit-logs");
+
+  return { success: true };
 }
 

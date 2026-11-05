@@ -4,6 +4,7 @@ import { User, Shield, Palette, ArrowRight, Database } from "lucide-react";
 import {
   getAdminProfileAndLogsAction,
   getSupabaseDatabaseDiagnosticsAction,
+  getAdminAccountsListAction,
 } from "@/actions/settings.actions";
 import { getCartDeliverySettingsAction } from "@/actions/delivery-settings.actions";
 import { formatDisplayDateTime } from "@/lib/format-date";
@@ -11,12 +12,19 @@ import { Badge } from "@/components/ui/badge";
 import { StatCard } from "@/components/admin/dashboard/stat-card";
 import { DatabaseStorageManager } from "@/components/admin/settings/database-storage-manager";
 import { CartDeliveryPromoManager } from "@/components/admin/settings/cart-delivery-promo-manager";
+import { AdminAccountsManager } from "@/components/admin/settings/admin-accounts-manager";
 
 export default async function AdminSettingsIndexPage() {
-  const [{ admin, auditLogs }, diagnostics, cartDeliverySettings] = await Promise.all([
+  const [
+    { admin, auditLogs },
+    diagnostics,
+    cartDeliverySettings,
+    adminAccounts,
+  ] = await Promise.all([
     getAdminProfileAndLogsAction(),
     getSupabaseDatabaseDiagnosticsAction(),
     getCartDeliverySettingsAction(),
+    getAdminAccountsListAction(),
   ]);
 
   const sections = [
@@ -31,12 +39,12 @@ export default async function AdminSettingsIndexPage() {
         : "Connected to Supabase Auth",
     },
     {
-      title: "Account Security",
+      title: "Account Security & Team",
       description:
-        "Update your Supabase Auth administrator password and review session protection.",
+        "Update your administrator password and provision or manage executive team accounts.",
       href: "/admin/settings/security",
       icon: Shield,
-      meta: `Role: ${admin?.role || "ADMIN"} • ${auditLogs.length} audit events recorded`,
+      meta: `Role: ${admin?.role || "ADMIN"} • ${adminAccounts.admins.length} active administrators`,
     },
     {
       title: "Appearance & Theme",
@@ -136,6 +144,12 @@ export default async function AdminSettingsIndexPage() {
           );
         })}
       </div>
+
+      {/* Administrator Accounts & Access Control (Add another admin with password check) */}
+      <AdminAccountsManager
+        initialAdmins={adminAccounts.admins}
+        currentAdminId={adminAccounts.currentAdminId}
+      />
 
       {/* Cart & Delivery Promo Settings (Admin Controlled) */}
       <CartDeliveryPromoManager initialSettings={cartDeliverySettings} />

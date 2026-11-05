@@ -120,41 +120,52 @@ export function usePerfumeLabelTexture(theme: "light" | "dark") {
 }
 
 /**
- * Procedural soft radial mist/smoke puff texture for ethereal perfume vapour.
+ * Procedural ultra-soft radial mist/smoke puff texture for ethereal perfume vapour.
+ * Features a generous 100% transparent safety margin all around the perimeter
+ * to guarantee zero hard clipping lines or edge artifacts when rotating or scaling.
  */
 export function useSmokeTexture() {
   return useMemo(() => {
     if (typeof document === "undefined") return null;
     const canvas = document.createElement("canvas");
-    canvas.width = 256;
-    canvas.height = 256;
+    canvas.width = 512;
+    canvas.height = 512;
     const ctx = canvas.getContext("2d");
     if (!ctx) return null;
 
-    // Ethereal multi-stop feathered cloud puff
-    const grad = ctx.createRadialGradient(128, 128, 0, 128, 128, 128);
-    grad.addColorStop(0, "rgba(255, 255, 255, 0.85)");
-    grad.addColorStop(0.25, "rgba(252, 248, 244, 0.55)");
-    grad.addColorStop(0.55, "rgba(245, 238, 232, 0.22)");
-    grad.addColorStop(0.8, "rgba(240, 230, 224, 0.06)");
-    grad.addColorStop(1, "rgba(255, 255, 255, 0)");
+    // Center coordinates
+    const cx = 256;
+    const cy = 256;
+    // Maximum outer radius is 195px, leaving a wide 61px pure 0-alpha border
+    const maxR = 195;
+
+    // Ethereal multi-stop feathered cloud puff with smooth cubic fade to absolute 0
+    const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, maxR);
+    grad.addColorStop(0.0, "rgba(255, 255, 255, 0.75)");
+    grad.addColorStop(0.20, "rgba(252, 248, 244, 0.50)");
+    grad.addColorStop(0.45, "rgba(246, 240, 234, 0.22)");
+    grad.addColorStop(0.70, "rgba(242, 234, 228, 0.06)");
+    grad.addColorStop(0.88, "rgba(240, 230, 224, 0.01)");
+    grad.addColorStop(1.0, "rgba(255, 255, 255, 0.0)");
 
     ctx.fillStyle = grad;
     ctx.beginPath();
-    ctx.arc(128, 128, 128, 0, Math.PI * 2);
+    ctx.arc(cx, cy, maxR, 0, Math.PI * 2);
     ctx.fill();
 
-    // Soft organic wisp puffs around the center
+    // Soft organic interior cloud puffs strictly within the safe inner zone
     const puffs = [
-      [110, 105, 70, 0.18],
-      [145, 115, 65, 0.16],
-      [125, 145, 75, 0.15],
-      [95, 135, 55, 0.12],
+      [230, 225, 95, 0.16],
+      [285, 240, 90, 0.14],
+      [250, 285, 100, 0.13],
+      [215, 270, 80, 0.10],
     ];
     for (const [px, py, pr, pAlpha] of puffs) {
       const pGrad = ctx.createRadialGradient(px, py, 0, px, py, pr);
-      pGrad.addColorStop(0, `rgba(255, 255, 255, ${pAlpha})`);
-      pGrad.addColorStop(1, "rgba(255, 255, 255, 0)");
+      pGrad.addColorStop(0.0, `rgba(255, 255, 255, ${pAlpha})`);
+      pGrad.addColorStop(0.55, `rgba(255, 255, 255, ${pAlpha * 0.4})`);
+      pGrad.addColorStop(0.85, "rgba(255, 255, 255, 0.01)");
+      pGrad.addColorStop(1.0, "rgba(255, 255, 255, 0.0)");
       ctx.fillStyle = pGrad;
       ctx.beginPath();
       ctx.arc(px, py, pr, 0, Math.PI * 2);

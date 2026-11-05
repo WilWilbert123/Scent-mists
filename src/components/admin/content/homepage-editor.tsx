@@ -113,6 +113,121 @@ export function HomepageEditor({
         </div>
       </div>
 
+      {/* Brand Identity & Logo Configuration (Real-Time Live Sync) */}
+      <div className="space-y-5 border-b border-border pb-6">
+        <div>
+          <h3 className="font-serif text-xl text-foreground">
+            Brand Logo &amp; Identity (Real-Time Sync)
+          </h3>
+          <p className="text-xs text-muted-foreground mt-1">
+            Update the header logo, brand name, and footer details. Any changes save directly to Supabase and update across the live website in real-time.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+          {/* Header Logo */}
+          <div className="space-y-2">
+            <label
+              htmlFor="hp-header-logo"
+              className="block text-xs uppercase tracking-[0.14em] text-foreground font-medium"
+            >
+              Header Logo URL
+            </label>
+            <Input
+              id="hp-header-logo"
+              value={content.headerLogoUrl || ""}
+              placeholder="/images/logo/scentmistslogo.png"
+              onChange={(e) => handleChange("headerLogoUrl", e.target.value)}
+            />
+            <div className="flex items-center gap-3 pt-1">
+              <span className="text-[11px] text-muted-foreground">Preview:</span>
+              <div className="relative h-10 w-10 rounded border border-border bg-surface p-1">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={content.headerLogoUrl || "/images/logo/scentmistslogo.png"}
+                  alt="Header Logo Preview"
+                  className="h-full w-full object-contain"
+                />
+              </div>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                className="text-[11px] h-7"
+                onClick={() => handleChange("headerLogoUrl", "/images/logo/scentmistslogo.png")}
+              >
+                Reset Default
+              </Button>
+            </div>
+          </div>
+
+          {/* Brand Wordmark Display Name */}
+          <div className="space-y-2">
+            <label
+              htmlFor="hp-brand-name"
+              className="block text-xs uppercase tracking-[0.14em] text-foreground font-medium"
+            >
+              Brand Display Name
+            </label>
+            <Input
+              id="hp-brand-name"
+              value={content.headerBrandName || ""}
+              placeholder="SCENTS & MISTS"
+              onChange={(e) => handleChange("headerBrandName", e.target.value)}
+            />
+            <p className="text-[11px] text-muted-foreground">
+              Displayed in the header wordmark, title tags, and footer credits.
+            </p>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+          {/* Footer Logo */}
+          <div className="space-y-2">
+            <label
+              htmlFor="hp-footer-logo"
+              className="block text-xs uppercase tracking-[0.14em] text-foreground font-medium"
+            >
+              Footer Logo URL (Optional)
+            </label>
+            <Input
+              id="hp-footer-logo"
+              value={content.footerLogoUrl || ""}
+              placeholder="Leave blank to use Header Logo"
+              onChange={(e) => handleChange("footerLogoUrl", e.target.value)}
+            />
+            <div className="flex items-center gap-3 pt-1">
+              <span className="text-[11px] text-muted-foreground">Preview:</span>
+              <div className="relative h-10 w-10 rounded border border-border bg-surface p-1">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={content.footerLogoUrl || content.headerLogoUrl || "/images/logo/scentmistslogo.png"}
+                  alt="Footer Logo Preview"
+                  className="h-full w-full object-contain"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Footer Description */}
+          <div className="space-y-2">
+            <label
+              htmlFor="hp-footer-desc"
+              className="block text-xs uppercase tracking-[0.14em] text-foreground font-medium"
+            >
+              Footer About / Story Description
+            </label>
+            <Textarea
+              id="hp-footer-desc"
+              rows={3}
+              value={content.footerDescription || ""}
+              placeholder="Artisanal fragrances crafted with the finest natural botanicals and oils."
+              onChange={(e) => handleChange("footerDescription", e.target.value)}
+            />
+          </div>
+        </div>
+      </div>
+
       {/* Announcement Bar Settings */}
       <div className="space-y-4 border-b border-border pb-6">
         <div className="flex items-center justify-between">

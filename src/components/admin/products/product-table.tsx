@@ -27,6 +27,9 @@ import { cn } from "@/lib/utils";
 import { StatCard } from "@/components/admin/dashboard/stat-card";
 import { DataTable } from "@/components/admin/shared/data-table";
 import { TableToolbar } from "@/components/admin/shared/table-toolbar";
+import { ExportButton } from "@/components/admin/shared/export-button";
+import { ProductMassUploadDialog } from "./product-mass-upload-dialog";
+import { ProductImageUpload } from "./product-image-upload";
 import { ConfirmDialog } from "@/components/admin/shared/confirm-dialog";
 import { toast } from "@/components/ui/toast";
 
@@ -81,6 +84,7 @@ export function ProductTable({ initialProducts }: ProductTableProps) {
     status: "in_stock" as ProductStatus,
     volume: "50ml" as ProductVolume,
     gender: "female" as ProductGender,
+    image_url: "",
     is_main_male: false,
     is_main_female: false,
     is_featured: false,
@@ -102,6 +106,7 @@ export function ProductTable({ initialProducts }: ProductTableProps) {
       status: prod.status || "in_stock",
       volume: (prod.volume as ProductVolume) || "50ml",
       gender: (prod.gender as ProductGender) || "female",
+      image_url: prod.image_url || "",
       is_main_male: Boolean(prod.is_main_male),
       is_main_female: Boolean(prod.is_main_female),
       is_featured: Boolean(prod.is_featured),
@@ -128,6 +133,7 @@ export function ProductTable({ initialProducts }: ProductTableProps) {
         status: editForm.status,
         volume: editForm.volume,
         gender: editForm.gender,
+        image_url: editForm.image_url.trim() || editingProduct.image_url,
         is_main_male: editForm.is_main_male,
         is_main_female: editForm.is_main_female,
         is_featured: editForm.is_featured,
@@ -187,6 +193,25 @@ export function ProductTable({ initialProducts }: ProductTableProps) {
         p.slug.toLowerCase().includes(q)
     );
   }, [products, searchQuery]);
+
+  const exportRows = useMemo(() => {
+    return filteredProducts.map((p) => [
+      p.sku || "—",
+      p.name,
+      p.brand || "SCENTS & MISTS",
+      p.volume || "50ml",
+      p.price || 199,
+      p.original_price || 250,
+      p.stock ?? 20,
+      p.status === "in_stock" ? "In Stock" : p.status === "low_stock" ? "Low Stock" : "Out of Stock",
+      p.is_main_male ? "Male Main" : p.is_main_female ? "Female Main" : p.gender || "Unisex",
+      p.rating || 5.0,
+      p.rating_count || 0,
+      p.sold_count || 0,
+      p.is_featured ? "Yes" : "No",
+      new Date(p.created_at).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" }),
+    ]);
+  }, [filteredProducts]);
 
   const handleConfirmDelete = async () => {
     if (!deleteTarget) return;
@@ -491,7 +516,34 @@ export function ProductTable({ initialProducts }: ProductTableProps) {
         searchQuery={searchQuery}
         onSearchChange={setSearchQuery}
         searchPlaceholder="Search by perfume name, brand (VS, Bvlgari, Clinique), SKU (CVS03)..."
-      />
+      >
+        <ProductMassUploadDialog
+          existingProducts={products}
+          onSuccess={handleManualRefresh}
+        />
+        <ExportButton
+          filename="scents-mists-products-catalog"
+          sheetName="Products"
+          headers={[
+            "SKU",
+            "Product Name",
+            "Brand",
+            "Volume",
+            "Price (PHP)",
+            "Original Price (PHP)",
+            "Stock",
+            "Inventory Status",
+            "Gender / Category",
+            "Rating",
+            "Review Count",
+            "Units Sold",
+            "Is Featured",
+            "Created At",
+          ]}
+          rows={exportRows}
+          label="Export Products"
+        />
+      </TableToolbar>
 
       <DataTable
         columns={columns}
@@ -781,6 +833,15 @@ export function ProductTable({ initialProducts }: ProductTableProps) {
                     className="w-full px-3 py-2 text-xs bg-surface border border-border rounded-lg text-foreground focus:outline-none focus:ring-1 focus:ring-accent"
                   />
                 </div>
+              </div>
+
+              {/* Product Visual / Supabase Storage Upload */}
+              <div className="pt-2 border-t border-border">
+                <ProductImageUpload
+                  value={editForm.image_url}
+                  onChange={(url) => setEditForm({ ...editForm, image_url: url })}
+                  label="Showcase Visual (Upload New or Choose from Supabase)"
+                />
               </div>
 
               {/* Modal Footer Buttons */}

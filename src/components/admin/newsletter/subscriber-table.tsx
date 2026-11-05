@@ -377,9 +377,10 @@ export function SubscriberTable({ initialSubscribers }: SubscriberTableProps) {
 
         <ExportButton
           filename="scents-mists-subscribers"
+          sheetName="Subscribers"
           headers={["ID", "Email", "Status", "Subscribed At"]}
           rows={exportRows}
-          label="Export Subscribers CSV"
+          label="Export Subscribers"
         />
       </TableToolbar>
 

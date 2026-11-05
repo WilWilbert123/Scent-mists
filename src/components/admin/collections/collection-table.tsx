@@ -21,6 +21,7 @@ import { Button } from "@/components/ui/button";
 import { StatCard } from "@/components/admin/dashboard/stat-card";
 import { DataTable } from "@/components/admin/shared/data-table";
 import { TableToolbar } from "@/components/admin/shared/table-toolbar";
+import { ExportButton } from "@/components/admin/shared/export-button";
 import { ConfirmDialog } from "@/components/admin/shared/confirm-dialog";
 import { toast } from "@/components/ui/toast";
 import { getFromIndexedDB, saveToIndexedDB } from "@/lib/indexed-db";
@@ -155,6 +156,18 @@ export function CollectionTable({ initialCollections }: CollectionTableProps) {
         c.name.toLowerCase().includes(q) || c.slug.toLowerCase().includes(q)
     );
   }, [collections, searchQuery]);
+
+  const exportRows = useMemo(() => {
+    return filtered.map((c) => [
+      c.name,
+      c.slug,
+      c.subtitle || "—",
+      c.description || "—",
+      Array.isArray(c.product_slugs) ? c.product_slugs.length : 0,
+      c.is_published ? "Published" : "Draft",
+      new Date(c.updated_at).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" }),
+    ]);
+  }, [filtered]);
 
   const handleTogglePublished = useCallback(async (col: Collection) => {
     const nextState = !col.is_published;
@@ -382,7 +395,23 @@ export function CollectionTable({ initialCollections }: CollectionTableProps) {
         searchQuery={searchQuery}
         onSearchChange={setSearchQuery}
         searchPlaceholder="Search collections..."
-      />
+      >
+        <ExportButton
+          filename="scents-mists-collections"
+          sheetName="Collections"
+          headers={[
+            "Collection Name",
+            "Slug",
+            "Subtitle",
+            "Description",
+            "Fragrance Count",
+            "Status",
+            "Last Updated",
+          ]}
+          rows={exportRows}
+          label="Export Collections"
+        />
+      </TableToolbar>
 
       {editTarget && (
         <form

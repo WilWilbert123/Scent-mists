@@ -1,10 +1,75 @@
-import React from "react";
+"use client";
+
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { BRAND_NAME } from "@/lib/constants";
+import { createSupabaseBrowserClient } from "@/lib/supabase/client";
 
-export function Footer() {
+interface FooterProps {
+  logoUrl?: string;
+  brandName?: string;
+  description?: string;
+}
+
+export function Footer({
+  logoUrl: initialLogo = "/images/logo/scentmistslogo.png",
+  brandName: initialBrand = BRAND_NAME,
+  description: initialDesc = "Authentic 50ml Aroma Body Mists and 85ml Victoria's Secret Perfumes. Pin your location for accurate door-to-door delivery.",
+}: FooterProps) {
   const currentYear = new Date().getFullYear();
+  const [logoUrl, setLogoUrl] = useState<string>(initialLogo);
+  const [brandName, setBrandName] = useState<string>(initialBrand);
+  const [description, setDescription] = useState<string>(initialDesc);
+
+  useEffect(() => {
+    setLogoUrl(initialLogo);
+  }, [initialLogo]);
+
+  useEffect(() => {
+    setBrandName(initialBrand);
+  }, [initialBrand]);
+
+  useEffect(() => {
+    setDescription(initialDesc);
+  }, [initialDesc]);
+
+  // Real-time synchronization: listen for admin logo/brand identity updates
+  useEffect(() => {
+    const supabase = createSupabaseBrowserClient();
+    if (!supabase) return;
+
+    const channel = supabase
+      .channel("footer-brand-realtime")
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "site_content",
+          filter: "content_key=eq.homepage",
+        },
+        (payload) => {
+          const newRow = payload.new as { content_value?: Record<string, unknown> } | undefined;
+          const val = newRow?.content_value;
+          if (val && typeof val === "object") {
+            const logo = (val.footerLogoUrl as string) || (val.headerLogoUrl as string);
+            if (logo && logo.trim()) setLogoUrl(logo);
+            if (typeof val.headerBrandName === "string" && val.headerBrandName.trim()) {
+              setBrandName(val.headerBrandName);
+            }
+            if (typeof val.footerDescription === "string" && val.footerDescription.trim()) {
+              setDescription(val.footerDescription);
+            }
+          }
+        }
+      )
+      .subscribe();
+
+    return () => {
+      void supabase.removeChannel(channel);
+    };
+  }, []);
 
   return (
     <footer className="border-t border-border bg-surface text-foreground">
@@ -18,18 +83,17 @@ export function Footer() {
             >
               <span className="relative h-7 w-7 shrink-0">
                 <Image
-                  src="/images/logo/scentmistslogo.png"
-                  alt={`${BRAND_NAME} emblem`}
+                  src={logoUrl || "/images/logo/scentmistslogo.png"}
+                  alt={`${brandName} emblem`}
                   fill
                   sizes="28px"
                   className="object-contain"
                 />
               </span>
-              <span>{BRAND_NAME}</span>
+              <span>{brandName}</span>
             </Link>
             <p className="max-w-sm text-xs leading-relaxed text-muted-foreground">
-              Authentic 50ml Aroma Body Mists and 85ml Victoria&apos;s Secret Perfumes.
-              Pin your location for accurate door-to-door delivery.
+              {description}
             </p>
           </div>
 

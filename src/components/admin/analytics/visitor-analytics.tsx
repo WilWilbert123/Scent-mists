@@ -38,9 +38,10 @@ export function VisitorAnalytics({ stats }: VisitorAnalyticsProps) {
         </div>
         <ExportButton
           filename="scents-mists-page-analytics"
+          sheetName="Page Analytics"
           headers={["Page Path", "Total Page Views", "Unique Visitors"]}
           rows={csvRows}
-          label="Export Page Analytics CSV"
+          label="Export Analytics"
         />
       </div>
 

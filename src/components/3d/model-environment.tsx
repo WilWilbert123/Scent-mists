@@ -13,7 +13,7 @@ interface ModelEnvironmentProps {
  *////////
 export function ModelEnvironment({ theme }: ModelEnvironmentProps) {
   const isDark = theme === "dark";
-  const shadowY = isDark ? -1.45 : -1.27;
+  const shadowY = isDark ? -1.26 : -1.02;
 
   return (
     <group>

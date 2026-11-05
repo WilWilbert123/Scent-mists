@@ -125,6 +125,10 @@ export const homepageContentSchema = z.object({
   featuredFragranceSlug: z.string().trim().min(2).max(120),
   brandIntroHeadline: z.string().trim().min(4).max(160),
   brandIntroBody: z.string().trim().min(10).max(1200),
+  headerLogoUrl: z.string().trim().max(500).optional().default("/images/logo/scentmistslogo.png"),
+  headerBrandName: z.string().trim().max(100).optional().default("SCENTS & MISTS"),
+  footerLogoUrl: z.string().trim().max(500).optional().default("/images/logo/scentmistslogo.png"),
+  footerDescription: z.string().trim().max(600).optional().default("Authentic 50ml Aroma Body Mists and 85ml Victoria's Secret Perfumes. Pin your location for accurate door-to-door delivery."),
 });
 
 export const brandStoryContentSchema = z.object({

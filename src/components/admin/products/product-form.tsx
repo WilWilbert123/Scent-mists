@@ -105,10 +105,15 @@ export function ProductForm({ initialProduct, mode }: ProductFormProps) {
         .map((s) => s.trim())
         .filter(Boolean),
       image_url: imageUrl.trim(),
-      gallery: galleryText
-        .split(",")
-        .map((s) => s.trim())
-        .filter(Boolean),
+      gallery: Array.from(
+        new Set([
+          imageUrl.trim(),
+          ...galleryText
+            .split(",")
+            .map((s) => s.trim())
+            .filter(Boolean),
+        ])
+      ).filter(Boolean),
       collection_id: initialProduct?.collection_id ?? null,
       is_featured: isFeatured,
       is_published: isPublished,

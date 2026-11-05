@@ -362,6 +362,7 @@ export function EnquiryTable({ initialEnquiries }: EnquiryTableProps) {
         />
         <ExportButton
           filename="scents-mists-enquiries"
+          sheetName="Enquiries"
           headers={[
             "ID",
             "Full Name",
@@ -374,6 +375,7 @@ export function EnquiryTable({ initialEnquiries }: EnquiryTableProps) {
             "Created At",
           ]}
           rows={exportRows}
+          label="Export Enquiries"
         />
       </TableToolbar>
 
