@@ -51,8 +51,8 @@ export function PerfumeModel({ theme }: PerfumeModelProps) {
 
   // Base position aligned with background stone ledge
   const basePosition: [number, number, number] = isDark
-    ? [0.14, -0.62, 0]
-    : [0.12, -0.22, 0];
+    ? [0.14, -0.46, 0]
+    : [0.12, -0.10, 0];
 
   // Fresh effervescent micro-bubbles inside the fresh perfume water chamber
   const bubbles = useMemo(() => {
@@ -221,7 +221,7 @@ export function PerfumeModel({ theme }: PerfumeModelProps) {
       ref={groupRef}
       position={basePosition}
       rotation={[0, -0.02, 0]}
-      scale={0.78}
+      scale={0.96}
     >
       {/* ============================================================== */}
       {/* 1. FRESH PERFUME WATER & ELIXIR (INTERNAL FLUID CHAMBER)       */}

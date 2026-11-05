@@ -13,7 +13,7 @@ interface ModelEnvironmentProps {
  *////////
 export function ModelEnvironment({ theme }: ModelEnvironmentProps) {
   const isDark = theme === "dark";
-  const shadowY = isDark ? -1.42 : -1.24;
+  const shadowY = isDark ? -1.45 : -1.27;
 
   return (
     <group>
@@ -80,7 +80,7 @@ export function ModelEnvironment({ theme }: ModelEnvironmentProps) {
       <ContactShadows
         position={[0.16, shadowY, 0]}
         opacity={isDark ? 0.68 : 0.38}
-        scale={2.8}
+        scale={3.4}
         blur={1.8}
         far={1.4}
         color={isDark ? "#050404" : "#4A3538"}

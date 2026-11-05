@@ -67,13 +67,13 @@ export function PerfumeScene() {
     <SceneErrorBoundary fallback={<PerfumeModelFallback />}>
       <Suspense fallback={<PerfumeModelLoader />}>
         <div
-          className="relative h-[380px] sm:h-[480px] lg:h-[620px] w-full select-none"
+          className="relative h-[430px] sm:h-[520px] lg:h-[650px] w-full select-none"
           aria-label="Interactive 3D SCENTS & MISTS perfume flacon. Drag to rotate."
           role="img"
         >
           <Canvas
             dpr={isMobile ? [1, 1.25] : [1, 2]}
-            camera={{ position: [0.14, -0.05, 4.85], fov: 38 }}
+            camera={{ position: [0.12, -0.02, isMobile ? 4.15 : 4.35], fov: 36 }}
             gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
           >
             <ModelLighting theme={theme} />
