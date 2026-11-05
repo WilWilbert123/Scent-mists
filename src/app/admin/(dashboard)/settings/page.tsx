@@ -6,12 +6,15 @@ import {
   getSupabaseDatabaseDiagnosticsAction,
   getAdminAccountsListAction,
 } from "@/actions/settings.actions";
-import { getCartDeliverySettingsAction } from "@/actions/delivery-settings.actions";
+import {
+  getCartDeliverySettingsAction,
+  getFlashSaleCampaignAction,
+} from "@/actions/delivery-settings.actions";
 import { formatDisplayDateTime } from "@/lib/format-date";
 import { Badge } from "@/components/ui/badge";
 import { StatCard } from "@/components/admin/dashboard/stat-card";
 import { DatabaseStorageManager } from "@/components/admin/settings/database-storage-manager";
-import { CartDeliveryPromoManager } from "@/components/admin/settings/cart-delivery-promo-manager";
+import { DeliveryAndPromoManager } from "@/components/admin/settings/delivery-and-promo-manager";
 import { AdminAccountsManager } from "@/components/admin/settings/admin-accounts-manager";
 
 export default async function AdminSettingsIndexPage() {
@@ -19,11 +22,13 @@ export default async function AdminSettingsIndexPage() {
     { admin, auditLogs },
     diagnostics,
     cartDeliverySettings,
+    flashSaleCampaign,
     adminAccounts,
   ] = await Promise.all([
     getAdminProfileAndLogsAction(),
     getSupabaseDatabaseDiagnosticsAction(),
     getCartDeliverySettingsAction(),
+    getFlashSaleCampaignAction(),
     getAdminAccountsListAction(),
   ]);
 
@@ -151,8 +156,11 @@ export default async function AdminSettingsIndexPage() {
         currentAdminId={adminAccounts.currentAdminId}
       />
 
-      {/* Cart & Delivery Promo Settings (Admin Controlled) */}
-      <CartDeliveryPromoManager initialSettings={cartDeliverySettings} />
+      {/* Delivery Fee, Free Shipping & Scheduled Flash Sale Promo Engine */}
+      <DeliveryAndPromoManager
+        initialDeliverySettings={cartDeliverySettings}
+        initialFlashSale={flashSaleCampaign}
+      />
 
       {/* Live Supabase Tables & Storage Maintenance */}
       <DatabaseStorageManager initialDiagnostics={diagnostics} />

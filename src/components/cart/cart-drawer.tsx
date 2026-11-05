@@ -28,6 +28,10 @@ export function CartDrawer({ onOpenCheckout }: CartDrawerProps) {
     isCartOpen,
     setIsCartOpen,
     deliverySettings,
+    deliveryFee,
+    isFreeDeliveryQualified,
+    grandTotal,
+    getEffectivePrice,
   } = useCart();
 
   if (!isCartOpen) return null;
@@ -128,89 +132,101 @@ export function CartDrawer({ onOpenCheckout }: CartDrawerProps) {
               </button>
             </div>
           ) : (
-            items.map(({ product, quantity }) => (
-              <div key={product.id} className="py-4 flex gap-4 items-start">
-                {/* Product Image */}
-                <div className="relative h-20 w-16 shrink-0 overflow-hidden rounded-lg border border-border bg-surface">
-                  <Image
-                    src={product.image_url}
-                    alt={product.name}
-                    fill
-                    sizes="64px"
-                    className="object-cover"
-                  />
-                </div>
+            items.map(({ product, quantity }) => {
+              const effective = getEffectivePrice(product);
+              const { price, originalPrice, isFlashSale, discountBadge } = effective;
 
-                {/* Info */}
-                <div className="flex-1 min-w-0 space-y-1">
-                  <div className="flex items-start justify-between gap-2">
-                    <div>
-                      <span className="text-[10px] font-mono uppercase tracking-wider text-accent font-semibold">
-                        {product.brand || "SCENTS & MISTS"}
-                      </span>
-                      <h4 className="text-xs font-semibold text-foreground truncate">
-                        {product.name}
-                      </h4>
+              return (
+                <div key={product.id} className="py-4 flex gap-4 items-start">
+                  {/* Product Image */}
+                  <div className="relative h-20 w-16 shrink-0 overflow-hidden rounded-lg border border-border bg-surface">
+                    <Image
+                      src={product.image_url}
+                      alt={product.name}
+                      fill
+                      sizes="64px"
+                      className="object-cover"
+                    />
+                  </div>
+
+                  {/* Info */}
+                  <div className="flex-1 min-w-0 space-y-1">
+                    <div className="flex items-start justify-between gap-2">
+                      <div>
+                        <div className="flex items-center gap-1.5 flex-wrap">
+                          <span className="text-[10px] font-mono uppercase tracking-wider text-accent font-semibold">
+                            {product.brand || "SCENTS & MISTS"}
+                          </span>
+                          {isFlashSale && (
+                            <span className="text-[9px] font-bold font-mono bg-rose-500/15 text-rose-500 border border-rose-500/30 px-1 py-0.2 rounded">
+                              ⚡ {discountBadge}
+                            </span>
+                          )}
+                        </div>
+                        <h4 className="text-xs font-semibold text-foreground truncate">
+                          {product.name}
+                        </h4>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => removeItem(product.id)}
+                        className="text-muted-foreground hover:text-red-500 p-1 transition-colors cursor-pointer"
+                        title="Remove from cart"
+                      >
+                        <Trash2 className="h-3.5 w-3.5" />
+                      </button>
                     </div>
-                    <button
-                      type="button"
-                      onClick={() => removeItem(product.id)}
-                      className="text-muted-foreground hover:text-red-500 p-1 transition-colors cursor-pointer"
-                      title="Remove from cart"
-                    >
-                      <Trash2 className="h-3.5 w-3.5" />
-                    </button>
-                  </div>
 
-                  <div className="flex items-center gap-2 text-[10px] text-muted-foreground font-mono">
-                    <span className="border border-border/80 px-1.5 py-0.5 rounded">
-                      {product.volume || "50ml"}
-                    </span>
-                    {product.sku && (
-                      <span className="text-muted-foreground/80">
-                        {product.sku}
+                    <div className="flex items-center gap-2 text-[10px] text-muted-foreground font-mono">
+                      <span className="border border-border/80 px-1.5 py-0.5 rounded">
+                        {product.volume || "50ml"}
                       </span>
-                    )}
-                  </div>
-
-                  {/* Price & Quantity Controls */}
-                  <div className="flex items-center justify-between pt-1">
-                    <div className="flex items-baseline gap-1.5">
-                      <span className="text-xs font-bold text-foreground">
-                        ₱{(product.price || 199).toLocaleString()}
-                      </span>
-                      {product.original_price && (
-                        <span className="text-[10px] text-muted-foreground line-through">
-                          ₱{product.original_price.toLocaleString()}
+                      {product.sku && (
+                        <span className="text-muted-foreground/80">
+                          {product.sku}
                         </span>
                       )}
                     </div>
 
-                    <div className="flex items-center border border-border rounded-lg bg-surface">
-                      <button
-                        type="button"
-                        onClick={() => updateQuantity(product.id, quantity - 1)}
-                        className="px-2 py-1 text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
-                        aria-label="Decrease quantity"
-                      >
-                        <Minus className="h-3 w-3" />
-                      </button>
-                      <span className="px-2 text-xs font-mono font-medium text-foreground">
-                        {quantity}
-                      </span>
-                      <button
-                        type="button"
-                        onClick={() => updateQuantity(product.id, quantity + 1)}
-                        className="px-2 py-1 text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
-                        aria-label="Increase quantity"
-                      >
-                        <Plus className="h-3 w-3" />
-                      </button>
+                    {/* Price & Quantity Controls */}
+                    <div className="flex items-center justify-between pt-1">
+                      <div className="flex items-baseline gap-1.5">
+                        <span className={`text-xs font-bold ${isFlashSale ? "text-rose-500 font-mono" : "text-foreground"}`}>
+                          ₱{price.toLocaleString()}
+                        </span>
+                        {originalPrice > price && (
+                          <span className="text-[10px] text-muted-foreground line-through font-mono">
+                            ₱{originalPrice.toLocaleString()}
+                          </span>
+                        )}
+                      </div>
+
+                      <div className="flex items-center border border-border rounded-lg bg-surface">
+                        <button
+                          type="button"
+                          onClick={() => updateQuantity(product.id, quantity - 1)}
+                          className="px-2 py-1 text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+                          aria-label="Decrease quantity"
+                        >
+                          <Minus className="h-3 w-3" />
+                        </button>
+                        <span className="px-2 text-xs font-mono font-medium text-foreground">
+                          {quantity}
+                        </span>
+                        <button
+                          type="button"
+                          onClick={() => updateQuantity(product.id, quantity + 1)}
+                          className="px-2 py-1 text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+                          aria-label="Increase quantity"
+                        >
+                          <Plus className="h-3 w-3" />
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            ))
+              );
+            })
           )}
         </div>
 
@@ -220,24 +236,24 @@ export function CartDrawer({ onOpenCheckout }: CartDrawerProps) {
             <div className="space-y-1.5 text-xs">
               <div className="flex justify-between text-muted-foreground">
                 <span>Subtotal ({totalItems} items)</span>
-                <span className="font-mono text-foreground">
+                <span className="font-mono text-foreground font-medium">
                   ₱{subtotal.toLocaleString()}
                 </span>
               </div>
               <div className="flex justify-between text-muted-foreground">
                 <span>Estimated Delivery Fee</span>
                 <span className="font-mono">
-                  {remainingForFreeShipping === 0 ? (
+                  {isFreeDeliveryQualified ? (
                     <span className="text-emerald-500 font-semibold">FREE</span>
                   ) : (
-                    <span>₱60.00</span>
+                    <span>₱{deliveryFee.toLocaleString()}</span>
                   )}
                 </span>
               </div>
               <div className="flex justify-between border-t border-border/70 pt-2 text-sm font-bold text-foreground">
                 <span>Estimated Total</span>
                 <span className="font-mono text-base text-accent">
-                  ₱{(subtotal + (remainingForFreeShipping === 0 ? 0 : 60)).toLocaleString()}
+                  ₱{grandTotal.toLocaleString()}
                 </span>
               </div>
             </div>

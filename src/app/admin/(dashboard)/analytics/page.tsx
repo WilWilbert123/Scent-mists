@@ -31,7 +31,7 @@ export default async function AdminAnalyticsPage({
         </Suspense>
       </div>
 
-      <VisitorAnalytics stats={stats} />
+      <VisitorAnalytics initialStats={stats} days={days} />
     </div>
   );
 }

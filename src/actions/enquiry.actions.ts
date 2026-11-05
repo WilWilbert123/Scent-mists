@@ -254,3 +254,47 @@ export async function deleteEnquiryAction(id: string): Promise<{
   return { success: true };
 }
 
+/**
+ * Purges duplicate "[NEW ORDER]" mirrored alerts from the enquiries table.
+ * Orders are already fully managed in /admin/orders.
+ */
+export async function purgeOrderAlertsAction(): Promise<{
+  success: boolean;
+  count: number;
+  error?: string;
+}> {
+  const auth = await verifyServerAdmin();
+  if (!auth.authorized || !auth.admin) {
+    return { success: false, count: 0, error: auth.error || "Unauthorized admin operation." };
+  }
+
+  const supabase = createSupabaseServiceClient() ?? (await createSupabaseServerClient());
+  if (!supabase) {
+    return { success: false, count: 0, error: "Supabase client unavailable." };
+  }
+
+  const { data, error } = await supabase
+    .from("enquiries")
+    .delete()
+    .ilike("subject", "[NEW ORDER]%")
+    .select("id");
+
+  if (error) {
+    return { success: false, count: 0, error: error.message };
+  }
+
+  await recordAuditLog({
+    adminUserId: auth.admin.id,
+    action: "ENQUIRY_DELETED",
+    resourceType: "enquiries",
+    resourceId: "batch_order_alerts",
+    metadata: { purgedCount: data?.length || 0 },
+  });
+
+  revalidatePath("/admin");
+  revalidatePath("/admin/enquiries");
+
+  return { success: true, count: data?.length || 0 };
+}
+
+
