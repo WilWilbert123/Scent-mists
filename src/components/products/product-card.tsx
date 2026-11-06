@@ -55,15 +55,15 @@ export function ProductCard({ product, className }: ProductCardProps) {
   return (
     <article
       className={cn(
-        "group relative flex flex-col justify-between rounded-lg sm:rounded-xl border border-border/70 bg-surface-elevated transition-all duration-300 hover:border-accent/50 hover:shadow-lg overflow-hidden",
+        "group relative flex flex-col justify-between rounded-xl sm:rounded-2xl border border-border/80 bg-surface-elevated transition-all duration-300 hover:border-accent/60 hover:shadow-luxury overflow-hidden",
         className
       )}
     >
-      {/* Product Image Stage: aspect-square on mobile to reduce height, aspect-[4/5] on larger screens */}
-      <div className="relative aspect-square sm:aspect-[4/5] w-full overflow-hidden bg-surface">
+      {/* Product Image Stage: Clean aspect-square on mobile, 4/5 portrait ratio on desktop for majestic presentation */}
+      <div className="relative aspect-square sm:aspect-[4/5] w-full overflow-hidden bg-gradient-to-b from-[#FAF7F2] to-[#F1ECE4] dark:from-[#1D1B19] dark:to-[#161413]">
         <Link
           href={`/products/${product.slug}`}
-          className="relative block h-full w-full"
+          className="relative block h-full w-full cursor-pointer"
           aria-label={`View ${product.name}`}
         >
           <Image
@@ -72,38 +72,38 @@ export function ProductCard({ product, className }: ProductCardProps) {
             fill
             unoptimized
             onError={() => setImgSrc(fallbackImage)}
-            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-            className="object-cover object-center transition-transform duration-500 ease-out group-hover:scale-105"
+            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 33vw"
+            className="object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
           />
         </Link>
 
-        {/* Minimal Tags on Image: Blurred white background for high legibility on any image */}
-        <div className="absolute left-1.5 top-1.5 sm:left-2 sm:top-2 z-10 flex flex-wrap gap-1 pointer-events-none">
-          <span className="rounded bg-white/90 backdrop-blur-md px-1.5 py-0.5 text-[8px] sm:text-[9px] font-mono font-bold text-zinc-900 border border-white/60 shadow-xs">
+        {/* Sophisticated Frosted Glass Tags on Image */}
+        <div className="absolute left-2.5 top-2.5 sm:left-3.5 sm:top-3.5 z-10 flex flex-wrap gap-1.5 pointer-events-none">
+          <span className="rounded-md bg-black/60 backdrop-blur-md px-2.5 py-0.5 text-[9px] sm:text-[10px] font-mono font-medium text-white border border-white/10 shadow-xs">
             {product.volume || "50ml"}
           </span>
           {product.is_main_male && (
-            <span className="rounded bg-blue-600/95 text-white px-1.5 py-0.5 text-[8px] sm:text-[9px] font-medium tracking-wide shadow-xs">
+            <span className="rounded-md bg-slate-900/80 backdrop-blur-md text-slate-100 border border-slate-700/50 px-2.5 py-0.5 text-[9px] sm:text-[10px] font-medium tracking-wide shadow-xs">
               Male
             </span>
           )}
           {product.is_main_female && (
-            <span className="rounded bg-pink-600/95 text-white px-1.5 py-0.5 text-[8px] sm:text-[9px] font-medium tracking-wide shadow-xs">
+            <span className="rounded-md bg-rose-950/70 backdrop-blur-md text-rose-200 border border-rose-500/20 px-2.5 py-0.5 text-[9px] sm:text-[10px] font-medium tracking-wide shadow-xs">
               Female
             </span>
           )}
         </div>
 
-        {/* Discount Pill / Flash Sale Pill */}
+        {/* Sleek Discount Badge */}
         {isFlashSale ? (
-          <div className="absolute right-1.5 top-1.5 sm:right-2 sm:top-2 z-10 pointer-events-none">
-            <span className="rounded bg-gradient-to-r from-amber-500 to-rose-600 text-white px-1 sm:px-1.5 py-0.5 text-[8px] sm:text-[9px] font-bold font-mono shadow-md animate-pulse">
+          <div className="absolute right-2.5 top-2.5 sm:right-3.5 sm:top-3.5 z-10 pointer-events-none">
+            <span className="rounded-md bg-gradient-to-r from-amber-500 to-rose-600 text-white px-2.5 py-0.5 text-[9px] sm:text-[10px] font-bold font-mono shadow-md animate-pulse">
               ⚡ {discountBadge}
             </span>
           </div>
         ) : discountPercent > 0 ? (
-          <div className="absolute right-1.5 top-1.5 sm:right-2 sm:top-2 z-10 pointer-events-none">
-            <span className="rounded bg-accent text-accent-foreground px-1 sm:px-1.5 py-0.5 text-[8px] sm:text-[9px] font-bold font-mono shadow-xs">
+          <div className="absolute right-2.5 top-2.5 sm:right-3.5 sm:top-3.5 z-10 pointer-events-none">
+            <span className="rounded-md bg-accent text-accent-foreground px-2.5 py-0.5 text-[9px] sm:text-[10px] font-bold font-mono shadow-xs">
               -{discountPercent}%
             </span>
           </div>
@@ -112,41 +112,42 @@ export function ProductCard({ product, className }: ProductCardProps) {
         {/* Out of Stock Overlay */}
         {isOutOfStock && (
           <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/60 backdrop-blur-xs">
-            <span className="rounded bg-red-600 px-2 sm:px-2.5 py-0.5 sm:py-1 text-[9px] sm:text-[10px] font-bold uppercase tracking-wider text-white">
+            <span className="rounded-md bg-red-600 px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-white">
               Out of Stock
             </span>
           </div>
         )}
       </div>
 
-      {/* Clean Info Section: Tightened padding on mobile to reduce height */}
-      <div className="flex flex-1 flex-col justify-between p-2.5 sm:p-4 space-y-1.5 sm:space-y-2.5">
-        <div className="space-y-0.5 sm:space-y-1">
+      {/* Spacious, Clean Info Section */}
+      <div className="flex flex-1 flex-col justify-between p-3.5 sm:p-5 lg:p-6 space-y-3 sm:space-y-4">
+        <div className="space-y-1.5 sm:space-y-2">
           {/* Brand */}
-          <p className="text-[9px] sm:text-[10px] font-mono uppercase tracking-wider text-accent font-semibold truncate leading-none">
+          <p className="text-[10px] sm:text-xs font-mono uppercase tracking-[0.22em] text-accent font-semibold truncate leading-none">
             {product.brand || "SCENTS & MISTS"}
           </p>
 
           {/* Perfume Name */}
-          <h3 className="font-serif text-xs sm:text-base font-medium text-foreground leading-snug line-clamp-1">
+          <h3 className="font-serif text-sm sm:text-lg lg:text-xl font-normal text-foreground group-hover:text-accent transition-colors line-clamp-1 leading-snug">
             <Link
               href={`/products/${product.slug}`}
-              className="hover:text-accent transition-colors"
+              className="cursor-pointer"
             >
               {product.name}
             </Link>
           </h3>
 
-          {/* Rating & Stock in One Clean Minimal Line (Real Data Only) */}
-          <div className="flex items-center justify-between text-[9px] sm:text-[11px] pt-0.5">
+          {/* Live Status & Volume/Rating Line */}
+          <div className="flex items-center justify-between text-[11px] sm:text-xs pt-0.5">
             {product.rating_count && product.rating_count > 0 ? (
-              <div className="flex items-center gap-1 text-amber-500 font-mono">
-                <Star className="h-2.5 w-2.5 sm:h-3 sm:w-3 fill-current" />
-                <span className="font-semibold">{product.rating}</span>
+              <div className="flex items-center gap-1.5 text-amber-500 font-mono">
+                <Star className="h-3.5 w-3.5 fill-current" />
+                <span className="font-semibold text-xs sm:text-sm">{product.rating}</span>
+                <span className="text-muted-foreground/70 text-[11px]">({product.rating_count})</span>
               </div>
             ) : (
-              <span className="font-mono text-muted-foreground">
-                {(product.sold_count ?? 0) > 0 ? `${product.sold_count} sold` : "0 reviews"}
+              <span className="font-mono text-[11px] sm:text-xs text-muted-foreground/80">
+                {(product.sold_count ?? 0) > 0 ? `${product.sold_count} sold` : "0 sold"}
               </span>
             )}
 
@@ -155,24 +156,27 @@ export function ProductCard({ product, className }: ProductCardProps) {
             ) : isLowStock ? (
               <span className="text-amber-500 font-medium">Few Left</span>
             ) : (
-              <span className="text-emerald-500 font-medium">In Stock</span>
+              <div className="flex items-center gap-1.5">
+                <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+                <span className="text-emerald-600 dark:text-emerald-400 font-medium">In Stock</span>
+              </div>
             )}
           </div>
         </div>
 
         {/* Price & Add to Cart Button */}
-        <div className="space-y-1.5 sm:space-y-2 pt-1 sm:pt-1.5 border-t border-border/50">
-          <div className="flex items-baseline gap-1.5">
+        <div className="space-y-3 pt-3 sm:pt-4 border-t border-border/60">
+          <div className="flex items-baseline gap-2.5">
             <span
               className={cn(
-                "font-mono text-xs sm:text-base font-bold",
+                "font-mono text-base sm:text-2xl font-bold tracking-tight",
                 isFlashSale ? "text-rose-500" : "text-foreground"
               )}
             >
               ₱{price.toLocaleString()}
             </span>
             {originalPrice > price && (
-              <span className="font-mono text-[9px] sm:text-[10px] text-muted-foreground line-through">
+              <span className="font-mono text-xs sm:text-sm text-muted-foreground line-through">
                 ₱{originalPrice.toLocaleString()}
               </span>
             )}
@@ -183,11 +187,11 @@ export function ProductCard({ product, className }: ProductCardProps) {
             disabled={isOutOfStock}
             onClick={handleAddToCart}
             className={cn(
-              "w-full flex items-center justify-center gap-1 sm:gap-1.5 rounded-md sm:rounded-lg bg-primary py-1.5 sm:py-2 px-2 sm:px-3 text-[10px] sm:text-[11px] font-medium uppercase tracking-wider text-primary-foreground hover:bg-accent transition-colors cursor-pointer",
-              isOutOfStock && "opacity-40 cursor-not-allowed hover:bg-primary"
+              "w-full flex items-center justify-center gap-2 rounded-xl bg-foreground text-background py-3 sm:py-3.5 px-4 text-xs sm:text-[13px] font-semibold uppercase tracking-wider hover:bg-accent hover:text-white transition-all cursor-pointer shadow-xs active:scale-[0.98]",
+              isOutOfStock && "opacity-40 cursor-not-allowed hover:bg-foreground hover:text-background active:scale-100"
             )}
           >
-            <ShoppingBag className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
+            <ShoppingBag className="h-4 w-4" />
             <span>Add to Cart</span>
           </button>
         </div>

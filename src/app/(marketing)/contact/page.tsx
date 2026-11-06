@@ -1,19 +1,19 @@
 import React from "react";
 import type { Metadata } from "next";
-import { MessageSquare, Sparkles, ShieldCheck } from "lucide-react";
+import { MessageSquare, Compass, ShieldCheck } from "lucide-react";
 import { constructMetadata } from "@/lib/metadata";
-import { ContactForm } from "@/components/forms/contact-form";
+import { ConciergeTabs } from "@/components/chat/concierge-tabs";
 import { PageTransition } from "@/components/animations/page-transition";
 
 export const metadata: Metadata = constructMetadata({
-  title: "Contact & Enquiries",
+  title: "Atelier Concierge & Live Chat",
   description:
-    "Submit a fragrance enquiry to SCENTS & MISTS.",
+    "Direct live chat with the SCENTS & MISTS seller and concierge enquiries.",
   path: "/contact",
 });
 
 interface ContactPageProps {
-  searchParams: Promise<{ fragrance?: string }>;
+  searchParams: Promise<{ fragrance?: string; tab?: string }>;
 }
 
 export default async function ContactPage({ searchParams }: ContactPageProps) {
@@ -21,49 +21,44 @@ export default async function ContactPage({ searchParams }: ContactPageProps) {
   const defaultSubject = resolvedParams.fragrance
     ? `Fragrance Enquiry: ${resolvedParams.fragrance}`
     : "";
+  const initialTab = resolvedParams.tab === "enquiry" ? "enquiry" : "chat";
 
   return (
     <PageTransition className="mx-auto max-w-7xl px-3 sm:px-6 lg:px-8 py-3 sm:py-16 space-y-3 sm:space-y-10">
       {/* Header — compact on mobile */}
-      <div className="border-b border-border/70 pb-2.5 sm:pb-8 max-w-3xl space-y-0.5 sm:space-y-2">
-        <span className="font-mono text-[9px] sm:text-xs font-bold uppercase tracking-wider text-accent">
-          Concierge Enquiries
-        </span>
-        <h1 className="font-serif text-lg sm:text-3xl text-foreground font-normal">
-          Contact SCENTS &amp; MISTS
+      <div className="border-b border-border/70 pb-2 sm:pb-6 max-w-3xl space-y-1">
+        <h1 className="font-serif text-xl sm:text-3xl text-foreground font-normal">
+          Concierge &amp; Live Chat
         </h1>
-        <p className="text-[11px] sm:text-sm text-muted-foreground leading-snug">
-          Questions regarding our fragrances, custom requests, or delivery? Submit your message below for direct assistance.
+        <p className="hidden sm:block text-xs sm:text-sm text-muted-foreground leading-relaxed">
+          Connect directly with our fragrance specialists for recommendations, stock availability, and delivery assistance.
         </p>
       </div>
 
       <div className="grid grid-cols-1 gap-6 lg:gap-12 lg:grid-cols-12 items-start">
-        {/* Left: Desktop only guide (hidden on mobile so form fits on one screen without scrolling) */}
+        {/* Left: Desktop only guide */}
         <div className="hidden lg:block lg:col-span-5 space-y-6">
           <div className="rounded-2xl border border-border bg-surface-elevated p-8 space-y-6">
             <h2 className="font-serif text-2xl text-foreground">
-              How Enquiries Work
+              Atelier Support Services
             </h2>
             <div className="space-y-5 text-sm">
               <div className="flex items-start gap-3">
                 <MessageSquare className="h-4 w-4 text-accent mt-0.5 shrink-0" aria-hidden="true" />
                 <div>
-                  <p className="font-medium text-foreground">Direct Online Submission</p>
+                  <p className="font-medium text-foreground">Real-Time Seller Chat</p>
                   <p className="text-sm text-muted-foreground leading-relaxed">
-                    Every message submitted through this form is recorded
-                    directly in the SCENTS &amp; MISTS administrator portal for
-                    review and follow-up.
+                    Chat directly with our boutique specialists. Inquiries on scent notes, stock status, and COD orders are answered immediately.
                   </p>
                 </div>
               </div>
 
               <div className="flex items-start gap-3">
-                <Sparkles className="h-4 w-4 text-accent mt-0.5 shrink-0" aria-hidden="true" />
+                <Compass className="h-4 w-4 text-accent mt-0.5 shrink-0" aria-hidden="true" />
                 <div>
-                  <p className="font-medium text-foreground">Fragrance &amp; Collection Guidance</p>
+                  <p className="font-medium text-foreground">Personalized Scent Advice</p>
                   <p className="text-sm text-muted-foreground leading-relaxed">
-                    Include the fragrance name or collection in your subject line
-                    if you are enquiring about a specific scent profile.
+                    Not sure between 50ml Aroma Mists or 85ml Victoria&apos;s Secret perfumes? Our concierge can guide you based on your occasion or preference.
                   </p>
                 </div>
               </div>
@@ -73,19 +68,17 @@ export default async function ContactPage({ searchParams }: ContactPageProps) {
           <div className="rounded-2xl border border-border bg-surface p-6 space-y-2 text-xs text-muted-foreground">
             <div className="flex items-center gap-2 text-foreground font-medium">
               <ShieldCheck className="h-4 w-4 text-accent" aria-hidden="true" />
-              <span>Data Privacy Assurance</span>
+              <span>Direct House Confidentiality</span>
             </div>
             <p className="leading-relaxed">
-              Your enquiry is transmitted securely and accessible only to
-              verified SCENTS &amp; MISTS administrators. We never sell or share
-              your contact details.
+              Every message and enquiry is handled confidentially and synced directly to verified SCENTS &amp; MISTS administrators.
             </p>
           </div>
         </div>
 
-        {/* Right: Contact Form (Full width on mobile, col-span-7 on desktop) */}
+        {/* Right: Concierge Tabs (Chat with Seller default tab + Enquiry Ticket tab) */}
         <div className="lg:col-span-7">
-          <ContactForm defaultSubject={defaultSubject} />
+          <ConciergeTabs defaultSubject={defaultSubject} initialTab={initialTab} />
         </div>
       </div>
     </PageTransition>

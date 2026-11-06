@@ -1,0 +1,24 @@
+[
+  {
+    "id": "thread_1793950550354_q7b561",
+    "status": "active",
+    "messages": [
+      {
+        "id": "msg_welcome_intro",
+        "text": "Hi! Welcome to SCENTS & MISTS. How can we help you today?",
+        "sender": "seller",
+        "status": "read",
+        "threadId": "thread_1793950550354_q7b561",
+        "timestamp": "2026-11-06T07:35:51.265Z",
+        "senderName": "SCENTS & MISTS"
+      }
+    ],
+    "createdAt": "2026-11-06T07:35:51.265Z",
+    "updatedAt": "2026-11-06T07:35:51.265Z",
+    "customerName": "Guest Client",
+    "lastMessageText": "Hi! Welcome to SCENTS & MISTS. How can we help you today?",
+    "lastMessageSender": "seller",
+    "unreadByAdminCount": 0,
+    "unreadByCustomerCount": 0
+  }
+]

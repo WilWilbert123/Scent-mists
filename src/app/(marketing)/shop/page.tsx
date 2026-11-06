@@ -33,7 +33,7 @@ export default async function ShopShowcasePage() {
       : DEFAULT_BANNERS.filter((b) => b.placement === "shop");
 
   return (
-    <PageTransition className="mx-auto max-w-7xl px-3 sm:px-6 lg:px-8 py-2 sm:py-6 space-y-3 sm:space-y-5">
+    <PageTransition className="mx-auto max-w-[1440px] px-3 sm:px-6 lg:px-10 xl:px-12 py-2 sm:py-8 space-y-4 sm:space-y-8">
       {/* Dynamic Auto-Sliding Promotional Banner Carousel (Admin Configurable) */}
       <ShopBannerCarousel banners={shopBanners} />
 

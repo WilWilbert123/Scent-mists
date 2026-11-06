@@ -6,20 +6,18 @@ import { usePathname } from "next/navigation";
 import {
   Home,
   Store,
+  Compass,
   Package,
-  ShoppingBag,
   MessageSquare,
 } from "lucide-react";
-import { useCart } from "@/context/cart-context";
 import { getOrdersByNumbersAction } from "@/actions/order.actions";
 import { cn } from "@/lib/utils";
 
 export function MobileBottomBar() {
   const pathname = usePathname();
-  const { totalItems, setIsCartOpen } = useCart();
   const [hasActiveOrder, setHasActiveOrder] = useState(false);
 
-  // Check if customer has active in-process orders on this device
+  // Check if customer has active in-process orders on this device (decoupled from pathname for instant tab switching)
   useEffect(() => {
     let isMounted = true;
     async function checkActiveOrders() {
@@ -53,17 +51,17 @@ export function MobileBottomBar() {
           }
         }
       } catch {
-        // ignore
+        // ignore background errors
       }
     }
 
     checkActiveOrders();
-    const interval = setInterval(checkActiveOrders, 15000); // sync every 15s
+    const interval = setInterval(checkActiveOrders, 30000); // lightweight background sync every 30s
     return () => {
       isMounted = false;
       clearInterval(interval);
     };
-  }, [pathname]);
+  }, []);
 
   const navItems = [
     {
@@ -82,7 +80,13 @@ export function MobileBottomBar() {
         pathname.startsWith("/collections"),
     },
     {
-      label: "My Orders",
+      label: "Guide",
+      href: "/fragrance-guide",
+      icon: Compass,
+      isActive: pathname.startsWith("/fragrance-guide"),
+    },
+    {
+      label: "Orders",
       href: "/orders",
       icon: Package,
       isActive: pathname.startsWith("/orders"),
@@ -101,100 +105,43 @@ export function MobileBottomBar() {
       aria-label="Mobile Bottom Navigation"
       className="md:hidden fixed bottom-0 inset-x-0 z-40 border-t border-zinc-200/90 dark:border-zinc-800/90 bg-white dark:bg-[#121212] shadow-[0_-4px_20px_rgba(0,0,0,0.06)] pb-[max(0.5rem,env(safe-area-inset-bottom))] transition-colors"
     >
-      <div className="flex h-14 items-center justify-around px-2">
-        {/* Tab 1: Home */}
-        <Link
-          href={navItems[0].href}
-          className={cn(
-            "flex flex-1 flex-col items-center justify-center py-1 transition-all rounded-lg select-none",
-            navItems[0].isActive
-              ? "text-accent font-semibold"
-              : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
-          )}
-        >
-          <Home className="h-5 w-5" aria-hidden="true" />
-          <span className="text-[10px] mt-0.5 tracking-wider uppercase font-mono font-medium">
-            {navItems[0].label}
-          </span>
-        </Link>
-
-        {/* Tab 2: Shop */}
-        <Link
-          href={navItems[1].href}
-          className={cn(
-            "flex flex-1 flex-col items-center justify-center py-1 transition-all rounded-lg select-none",
-            navItems[1].isActive
-              ? "text-accent font-semibold"
-              : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
-          )}
-        >
-          <Store className="h-5 w-5" aria-hidden="true" />
-          <span className="text-[10px] mt-0.5 tracking-wider uppercase font-mono font-medium">
-            {navItems[1].label}
-          </span>
-        </Link>
-
-        {/* Tab 3: Cart (Direct Action Drawer Button with Live Counter Badge) */}
-        <button
-          type="button"
-          onClick={() => setIsCartOpen(true)}
-          className="relative flex flex-1 flex-col items-center justify-center py-1 text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 transition-all cursor-pointer rounded-lg select-none"
-          aria-label={`Open Cart (${totalItems} items)`}
-        >
-          <div className="relative">
-            <ShoppingBag className="h-5 w-5" aria-hidden="true" />
-            {totalItems > 0 && (
-              <span className="absolute -top-1.5 -right-2.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-accent text-accent-foreground px-1 text-[9px] font-bold font-mono shadow-xs">
-                {totalItems}
+      <div className="flex h-14 items-center justify-around px-1">
+        {navItems.map((item) => {
+          const Icon = item.icon;
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              prefetch={true}
+              className={cn(
+                "relative flex flex-1 flex-col items-center justify-center py-1.5 transition-all select-none rounded-lg active:scale-95",
+                item.isActive
+                  ? "text-accent font-semibold"
+                  : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
+              )}
+            >
+              <div className="relative">
+                <Icon
+                  className={cn(
+                    "h-5 w-5 transition-transform duration-200",
+                    item.isActive && "scale-110"
+                  )}
+                  aria-hidden="true"
+                />
+                {item.hasNotification && (
+                  <span className="absolute -top-1 -right-1 flex h-2.5 w-2.5">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                    <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500" />
+                  </span>
+                )}
+              </div>
+              <span className="text-[10px] mt-0.5 tracking-wider uppercase font-mono font-medium leading-none">
+                {item.label}
               </span>
-            )}
-          </div>
-          <span className="text-[10px] mt-0.5 tracking-wider uppercase font-mono font-medium">
-            Cart
-          </span>
-        </button>
-
-        {/* Tab 4: My Orders / Track with Active Pulse Badge */}
-        <Link
-          href={navItems[2].href}
-          className={cn(
-            "relative flex flex-1 flex-col items-center justify-center py-1 transition-all rounded-lg select-none",
-            navItems[2].isActive
-              ? "text-accent font-semibold"
-              : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
-          )}
-        >
-          <div className="relative">
-            <Package className="h-5 w-5" aria-hidden="true" />
-            {hasActiveOrder && (
-              <span className="absolute -top-1 -right-1 flex h-2.5 w-2.5">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500" />
-              </span>
-            )}
-          </div>
-          <span className="text-[10px] mt-0.5 tracking-wider uppercase font-mono font-medium">
-            {navItems[2].label}
-          </span>
-        </Link>
-
-        {/* Tab 5: Concierge / Contact */}
-        <Link
-          href={navItems[3].href}
-          className={cn(
-            "flex flex-1 flex-col items-center justify-center py-1 transition-all rounded-lg select-none",
-            navItems[3].isActive
-              ? "text-accent font-semibold"
-              : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
-          )}
-        >
-          <MessageSquare className="h-5 w-5" aria-hidden="true" />
-          <span className="text-[10px] mt-0.5 tracking-wider uppercase font-mono font-medium">
-            {navItems[3].label}
-          </span>
-        </Link>
+            </Link>
+          );
+        })}
       </div>
     </nav>
   );
 }
-

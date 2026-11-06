@@ -13,7 +13,7 @@ export function HeroSection({ content }: HeroSectionProps) {
   return (
     <section
       aria-label="Featured fragrance introduction"
-      className="relative h-[calc(100dvh-56px-56px)] sm:h-auto sm:min-h-[calc(100dvh-73px)] w-full overflow-hidden border-b border-border flex flex-col justify-between sm:justify-center items-center"
+      className="relative min-h-[calc(100dvh-56px-56px)] sm:h-auto sm:min-h-[calc(100dvh-73px)] w-full overflow-hidden border-b border-border flex flex-col justify-between sm:justify-center items-center"
     >
       <HeroBackground />
       <div className="relative mx-auto w-full max-w-7xl h-full flex flex-col justify-between sm:justify-center px-4 pt-2 pb-2 sm:py-14 sm:px-6 lg:px-8 lg:py-20">

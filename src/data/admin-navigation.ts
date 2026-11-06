@@ -4,6 +4,7 @@ export interface AdminNavItem {
   iconName:
     | "LayoutDashboard"
     | "ShoppingBag"
+    | "MessageCircle"
     | "BarChart3"
     | "Users"
     | "MessageSquare"
@@ -28,6 +29,12 @@ export const ADMIN_NAV_ITEMS: AdminNavItem[] = [
     href: "/admin/orders",
     iconName: "ShoppingBag",
     description: "Customer orders, Leaflet delivery map location, and status workflow",
+  },
+  {
+    label: "Live Chat",
+    href: "/admin/chat",
+    iconName: "MessageCircle",
+    description: "Real-time customer live chat conversations and seller replies",
   },
   {
     label: "Analytics",

@@ -34,7 +34,7 @@ export function PerfumeMistSmoke({ theme }: PerfumeMistSmokeProps) {
   const isDark = theme === "dark";
 
   // Base position aligned with flacon
-  const baseY = isDark ? -0.42 : -0.18;
+  const baseY = isDark ? -0.54 : -0.18;
   const baseX = isDark ? 0.14 : 0.12;
 
   // Initialize 14 delicate mist puffs with varied drift paths

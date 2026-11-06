@@ -12,6 +12,56 @@ import crypto from "node:crypto";
 
 const DATA_DIR = path.resolve(process.cwd(), "data");
 const LOCAL_CATALOG_FILE = path.join(DATA_DIR, "catalog.json");
+const ORDERS_FILE = path.join(DATA_DIR, "orders.json");
+
+/**
+ * Dynamically computes real-time sales for every fragrance across all valid orders in real-time.
+ */
+function getLiveProductSalesMap(): Record<string, number> {
+  const salesMap: Record<string, number> = {};
+  try {
+    if (fs.existsSync(ORDERS_FILE)) {
+      const data = fs.readFileSync(ORDERS_FILE, "utf-8");
+      const orders = JSON.parse(data);
+      if (Array.isArray(orders)) {
+        for (const order of orders) {
+          // Count all active, confirmed, preparing, out_for_delivery, and delivered orders
+          if (order && order.status !== "cancelled" && Array.isArray(order.items)) {
+            for (const item of order.items) {
+              const qty = Number(item.quantity) || 1;
+              if (item.product_id) {
+                salesMap[item.product_id] = (salesMap[item.product_id] || 0) + qty;
+              }
+              if (item.sku) {
+                salesMap[item.sku] = (salesMap[item.sku] || 0) + qty;
+              }
+              if (item.name) {
+                salesMap[item.name.toLowerCase().trim()] =
+                  (salesMap[item.name.toLowerCase().trim()] || 0) + qty;
+              }
+            }
+          }
+        }
+      }
+    }
+  } catch (err) {
+    console.warn("[getLiveProductSalesMap] Could not read orders:", err);
+  }
+  return salesMap;
+}
+
+function applyLiveSalesToCatalog(products: Product[]): Product[] {
+  const salesMap = getLiveProductSalesMap();
+  for (const product of products) {
+    const liveSales =
+      (product.id && salesMap[product.id]) ||
+      (product.sku && salesMap[product.sku]) ||
+      (product.name && salesMap[product.name.toLowerCase().trim()]) ||
+      0;
+    product.sold_count = Math.max(product.sold_count || 0, liveSales);
+  }
+  return products;
+}
 
 interface SupabaseContentClient {
   from: (table: string) => {
@@ -184,8 +234,9 @@ export async function getMasterCatalog(): Promise<Product[]> {
             });
           });
 
-          writeLocalCatalog(list);
-          return list;
+          const withSales = applyLiveSalesToCatalog(list);
+          writeLocalCatalog(withSales);
+          return withSales;
         }
 
         // 2. Fallback to site_content if products table has not returned data
@@ -203,8 +254,9 @@ export async function getMasterCatalog(): Promise<Product[]> {
           data.content_value.length > 0
         ) {
           const list = (data.content_value as Product[]).map(normalizeProduct);
-          writeLocalCatalog(list);
-          return list;
+          const withSales = applyLiveSalesToCatalog(list);
+          writeLocalCatalog(withSales);
+          return withSales;
         }
       }
     } catch {
@@ -213,12 +265,15 @@ export async function getMasterCatalog(): Promise<Product[]> {
   }
 
   if (local && local.length >= SAMPLE_PRODUCTS.length) {
-    return local;
+    const withSales = applyLiveSalesToCatalog(local);
+    writeLocalCatalog(withSales);
+    return withSales;
   }
 
   // Write default to local storage
-  writeLocalCatalog(SAMPLE_PRODUCTS);
-  return SAMPLE_PRODUCTS.map(normalizeProduct);
+  const defaultsWithSales = applyLiveSalesToCatalog(SAMPLE_PRODUCTS.map(normalizeProduct));
+  writeLocalCatalog(defaultsWithSales);
+  return defaultsWithSales;
 }
 
 export async function saveMasterCatalog(products: Product[]): Promise<boolean> {
@@ -358,36 +413,47 @@ export async function uploadProductImageAction(
       return { success: false, error: validation.error || "Invalid image file format or size." };
     }
 
-    const supabase = createSupabaseServiceClient();
-    if (!supabase) {
-      return {
-        success: false,
-        error: "Supabase service role is not configured on the server. Please check .env.local.",
-      };
-    }
-
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
     const filePath = `uploads/${validation.safeFilename}`;
 
-    const { error: uploadError } = await supabase.storage
-      .from(bucket)
-      .upload(filePath, buffer, {
-        contentType: file.type || "image/jpeg",
-        upsert: true,
-      });
+    const supabase = createSupabaseServiceClient();
+    if (supabase) {
+      const { error: uploadError } = await supabase.storage
+        .from(bucket)
+        .upload(filePath, buffer, {
+          contentType: file.type || "image/jpeg",
+          upsert: true,
+        });
 
-    if (uploadError) {
-      return { success: false, error: uploadError.message };
+      if (!uploadError) {
+        const { data: publicUrlData } = supabase.storage
+          .from(bucket)
+          .getPublicUrl(filePath);
+
+        return {
+          success: true,
+          url: publicUrlData.publicUrl,
+          filename: validation.safeFilename,
+        };
+      }
+
+      console.warn(
+        `[uploadProductImageAction] Supabase storage upload failed (${uploadError.message}), falling back to local file storage.`
+      );
     }
 
-    const { data: publicUrlData } = supabase.storage
-      .from(bucket)
-      .getPublicUrl(filePath);
+    // Resilient local file storage fallback (public/images/uploads)
+    const publicUploadsDir = path.resolve(process.cwd(), "public/images/uploads");
+    if (!fs.existsSync(publicUploadsDir)) {
+      fs.mkdirSync(publicUploadsDir, { recursive: true });
+    }
+    const localDiskPath = path.join(publicUploadsDir, validation.safeFilename);
+    fs.writeFileSync(localDiskPath, buffer);
 
     return {
       success: true,
-      url: publicUrlData.publicUrl,
+      url: `/images/uploads/${validation.safeFilename}`,
       filename: validation.safeFilename,
     };
   } catch (err: unknown) {

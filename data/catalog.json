@@ -1,7 +1,7 @@
 [
   {
     "id": "e25f2a12-a873-4ddd-8788-4af6213da798",
-    "name": "VS Perfume 85ml - Mango Temptation",
+    "name": "Victoria Secret Mango Temptation",
     "slug": "vs-perfume-85ml-mango-temptation",
     "brand": "Victoria's Secret",
     "sku": "VS85-MT",
@@ -37,9 +37,9 @@
       "Blonde Wood",
       "Sweet Amber"
     ],
-    "image_url": "/images/perfumes/vs-perfume-85ml-mango-temptation.webp",
+    "image_url": "https://xpguejvrmwkchzblzsvx.supabase.co/storage/v1/object/public/product-images/uploads/1793956384313-gemini_generated_image_cm9tricm9tricm9t.webp",
     "gallery": [
-      "/images/perfumes/vs-perfume-85ml-mango-temptation.webp"
+      "https://xpguejvrmwkchzblzsvx.supabase.co/storage/v1/object/public/product-images/uploads/1793956384313-gemini_generated_image_cm9tricm9tricm9t.webp"
     ],
     "collection_id": null,
     "collection_slug": "",
@@ -47,261 +47,11 @@
     "is_featured": false,
     "is_published": true,
     "created_at": "2026-11-04T15:08:52.38099+00:00",
-    "updated_at": "2026-11-05T05:43:59.229338+00:00"
-  },
-  {
-    "id": "f607d00f-c6b7-48c8-afe1-abd17f0f4e88",
-    "name": "VS Perfume 85ml - Romantic Wish",
-    "slug": "vs-perfume-85ml-romantic-wish",
-    "brand": "Victoria's Secret",
-    "sku": "VS85-RW",
-    "volume": "85ml",
-    "volume_display": "85 ml / 2.9 fl. oz.",
-    "category": "perfume",
-    "gender": "female",
-    "price": 200,
-    "original_price": 250,
-    "stock": 20,
-    "status": "in_stock",
-    "sold_count": 0,
-    "rating": 0,
-    "rating_count": 0,
-    "is_main_male": false,
-    "is_main_female": false,
-    "subtitle": "Eau de Parfum",
-    "description": "Deepened and concentrated in an 85ml flacon: ripe midnight pomegranate, blossoming pink freesia, and warm radiant amber.",
-    "fragrance_family": "Fruity Floral Amber",
-    "scent_profile": "Midnight pomegranate & pink freesia",
-    "top_notes": [
-      "Midnight Pomegranate",
-      "Pink Freesia",
-      "Sweet Orange"
-    ],
-    "heart_notes": [
-      "Star Jasmine",
-      "Cucumber Blossom",
-      "Water Lily"
-    ],
-    "base_notes": [
-      "Glowing Amber",
-      "Creamy Woods",
-      "Soft Velvet Musk"
-    ],
-    "image_url": "/images/perfumes/vs-perfume-85ml-romantic-wish.webp",
-    "gallery": [
-      "/images/perfumes/vs-perfume-85ml-romantic-wish.webp"
-    ],
-    "collection_id": null,
-    "collection_slug": "",
-    "concentration": "Eau de Parfum",
-    "is_featured": false,
-    "is_published": true,
-    "created_at": "2026-11-04T15:08:52.38099+00:00",
-    "updated_at": "2026-11-05T05:43:59.680407+00:00"
-  },
-  {
-    "id": "08ed00cc-1fcb-417f-9c96-bbdc4a23a72b",
-    "name": "Elizabeth Arden - Green Tea",
-    "slug": "aroma-body-mist-50ml-elizabeth-arden-green-tea",
-    "brand": "Elizabeth Arden",
-    "sku": "EA-GT-50",
-    "volume": "50ml",
-    "volume_display": "50 ml / 1.7 fl. oz.",
-    "category": "mist",
-    "gender": "unisex",
-    "price": 135,
-    "original_price": 180,
-    "stock": 20,
-    "status": "in_stock",
-    "sold_count": 0,
-    "rating": 0,
-    "rating_count": 0,
-    "is_main_male": false,
-    "is_main_female": false,
-    "subtitle": "Aroma Body Mist",
-    "description": "An uplifting burst of clean botanical freshness featuring crisp crushed green tea leaves, sparkling Italian bergamot, fresh rhubarb, and cooling peppermint dew.",
-    "fragrance_family": "Citrus Aromatic Green",
-    "scent_profile": "Steeped green tea leaves & cool crushed mint",
-    "top_notes": [
-      "Bergamot Mist",
-      "Lemon Zest",
-      "Cool Peppermint"
-    ],
-    "heart_notes": [
-      "Green Tea Extract",
-      "Jasmine Petals",
-      "Celery Seed"
-    ],
-    "base_notes": [
-      "Clean Oakmoss",
-      "Soft Amber",
-      "Transparent Musk"
-    ],
-    "image_url": "/images/perfumes/aroma-body-mist-50ml-elizabeth-arden-green-tea.webp",
-    "gallery": [
-      "/images/perfumes/aroma-body-mist-50ml-elizabeth-arden-green-tea.webp"
-    ],
-    "collection_id": null,
-    "collection_slug": "",
-    "concentration": "Aroma Body Mist",
-    "is_featured": false,
-    "is_published": true,
-    "created_at": "2026-11-04T15:08:52.38099+00:00",
-    "updated_at": "2026-11-05T05:43:59.796831+00:00"
-  },
-  {
-    "id": "0bedc736-b779-401d-a508-fc4ce6c9b9b5",
-    "name": "VS Perfume 85ml - Strawberries & Champagne",
-    "slug": "vs-perfume-85ml-strawberries-and-champagne",
-    "brand": "Victoria's Secret",
-    "sku": "VS85-SC",
-    "volume": "85ml",
-    "volume_display": "85 ml / 2.9 fl. oz.",
-    "category": "perfume",
-    "gender": "female",
-    "price": 200,
-    "original_price": 250,
-    "stock": 20,
-    "status": "in_stock",
-    "sold_count": 0,
-    "rating": 0,
-    "rating_count": 0,
-    "is_main_male": false,
-    "is_main_female": false,
-    "subtitle": "Eau de Parfum",
-    "description": "The decadent concentrated flacon edition of Strawberries & Champagne. Ultra-sparkling wild berry nectar, fizzy vintage rosé, and crystalline sugar musk.",
-    "fragrance_family": "Sparkling Fruity Rosé",
-    "scent_profile": "Wild strawberry nectar & vintage champagne",
-    "top_notes": [
-      "Wild Strawberry Nectar",
-      "Vintage Champagne Rosé",
-      "Blackcurrant"
-    ],
-    "heart_notes": [
-      "Peach Nectar",
-      "Rose Petals",
-      "Water Hyacinth"
-    ],
-    "base_notes": [
-      "Sugar Crystals",
-      "Sweet Amber",
-      "Soft Cedar"
-    ],
-    "image_url": "/images/perfumes/vs-perfume-85ml-strawberries-and-champagne.webp",
-    "gallery": [
-      "/images/perfumes/vs-perfume-85ml-strawberries-and-champagne.webp"
-    ],
-    "collection_id": null,
-    "collection_slug": "",
-    "concentration": "Eau de Parfum",
-    "is_featured": false,
-    "is_published": true,
-    "created_at": "2026-11-04T15:08:52.38099+00:00",
-    "updated_at": "2026-11-05T05:44:00.095752+00:00"
-  },
-  {
-    "id": "03c0b6b7-4364-4c27-8564-771ecbcbac06",
-    "name": "CK - Eternity (CCK02)",
-    "slug": "aroma-body-mist-50ml-ck-eternity",
-    "brand": "Calvin Klein",
-    "sku": "CCK02",
-    "volume": "50ml",
-    "volume_display": "50 ml / 1.7 fl. oz.",
-    "category": "mist",
-    "gender": "male",
-    "price": 135,
-    "original_price": 180,
-    "stock": 20,
-    "status": "in_stock",
-    "sold_count": 0,
-    "rating": 0,
-    "rating_count": 0,
-    "is_main_male": true,
-    "is_main_female": false,
-    "subtitle": "Aroma Body Mist",
-    "description": "An iconic, timeless masculine fougère that blends crisp mandarin orange, aromatic French lavender, clary sage, crushed geranium, and deep smoky sandalwood.",
-    "fragrance_family": "Aromatic Fougère",
-    "scent_profile": "French lavender, clary sage & clean vetiver",
-    "top_notes": [
-      "Mandarin Orange",
-      "French Lavender",
-      "Green Botanicals"
-    ],
-    "heart_notes": [
-      "Clary Sage",
-      "Crushed Geranium",
-      "Sweet Basil"
-    ],
-    "base_notes": [
-      "Sandalwood",
-      "Haitian Vetiver",
-      "Rosewood Amber"
-    ],
-    "image_url": "/images/perfumes/aroma-body-mist-50ml-ck-eternity.webp",
-    "gallery": [
-      "/images/perfumes/aroma-body-mist-50ml-ck-eternity.webp"
-    ],
-    "collection_id": null,
-    "collection_slug": "",
-    "concentration": "Aroma Body Mist",
-    "is_featured": true,
-    "is_published": true,
-    "created_at": "2026-11-04T15:08:52.38099+00:00",
-    "updated_at": "2026-11-05T05:44:02.856351+00:00"
-  },
-  {
-    "id": "648d5137-54a1-416d-982a-044320501c2d",
-    "name": "VS Perfume 85ml - Summer Sexy",
-    "slug": "vs-perfume-85ml-summer-sexy",
-    "brand": "Victoria's Secret",
-    "sku": "VS85-SS",
-    "volume": "85ml",
-    "volume_display": "85 ml / 2.9 fl. oz.",
-    "category": "perfume",
-    "gender": "female",
-    "price": 200,
-    "original_price": 250,
-    "stock": 20,
-    "status": "in_stock",
-    "sold_count": 0,
-    "rating": 0,
-    "rating_count": 0,
-    "is_main_male": false,
-    "is_main_female": false,
-    "subtitle": "Eau de Parfum",
-    "description": "Endless golden hour on a sunlit beach. Sun-drenched coconut water, golden nectar, exotic tiare flower, and warm beach sand amber.",
-    "fragrance_family": "Solar Floral Coconut",
-    "scent_profile": "Sunlit coconut & beach sand amber",
-    "top_notes": [
-      "Coconut Water",
-      "Golden Nectar",
-      "Sunburst Bergamot"
-    ],
-    "heart_notes": [
-      "Tiare Flower",
-      "Solar Jasmine",
-      "Frangipani"
-    ],
-    "base_notes": [
-      "Beach Sand Amber",
-      "Vanilla Orchid",
-      "Driftwood"
-    ],
-    "image_url": "/images/perfumes/vs-perfume-85ml-summer-sexy.webp",
-    "gallery": [
-      "/images/perfumes/vs-perfume-85ml-summer-sexy.webp"
-    ],
-    "collection_id": null,
-    "collection_slug": "",
-    "concentration": "Eau de Parfum",
-    "is_featured": false,
-    "is_published": true,
-    "created_at": "2026-11-04T15:08:52.38099+00:00",
-    "updated_at": "2026-11-05T05:44:02.966887+00:00"
+    "updated_at": "2026-11-06T09:13:09.650859+00:00"
   },
   {
     "id": "37af2354-d605-4ebd-8aeb-40779f50d3c0",
-    "name": "Bvlgari - Bvlgari Man Black",
+    "name": "Bvlgari Man Black",
     "slug": "aroma-body-mist-50ml-bvlgari-man-in-black",
     "brand": "Bvlgari",
     "sku": "BVL-MIB-50",
@@ -313,7 +63,7 @@
     "original_price": 180,
     "stock": 20,
     "status": "in_stock",
-    "sold_count": 0,
+    "sold_count": 1,
     "rating": 0,
     "rating_count": 0,
     "is_main_male": true,
@@ -337,9 +87,9 @@
       "Guaiac Wood",
       "Benzoin Tears"
     ],
-    "image_url": "/images/perfumes/aroma-body-mist-50ml-bvlgari-man-in-black.webp",
+    "image_url": "https://xpguejvrmwkchzblzsvx.supabase.co/storage/v1/object/public/product-images/uploads/1793950081038-gemini_generated_image_82nham82nham82nh.webp",
     "gallery": [
-      "/images/perfumes/aroma-body-mist-50ml-bvlgari-man-in-black.webp"
+      "https://xpguejvrmwkchzblzsvx.supabase.co/storage/v1/object/public/product-images/uploads/1793950081038-gemini_generated_image_82nham82nham82nh.webp"
     ],
     "collection_id": null,
     "collection_slug": "",
@@ -347,249 +97,49 @@
     "is_featured": true,
     "is_published": true,
     "created_at": "2026-11-04T15:08:52.38099+00:00",
-    "updated_at": "2026-11-05T05:44:00.245714+00:00"
+    "updated_at": "2026-11-06T07:28:09.422555+00:00"
   },
   {
-    "id": "5bdb76b4-ba57-4647-b851-a625314dbb3a",
-    "name": "VS - Sweet Temptation (CVS24)",
-    "slug": "aroma-body-mist-50ml-vs-sweet-temptation",
+    "id": "5b9841eb-e594-44d9-aef0-cb93b3e09f09",
+    "name": "Angel Gold",
+    "slug": "vs-perfume-85ml-secret-angel-gold",
     "brand": "Victoria's Secret",
-    "sku": "CVS24",
-    "volume": "50ml",
-    "volume_display": "50 ml / 1.7 fl. oz.",
-    "category": "mist",
-    "gender": "female",
-    "price": 135,
-    "original_price": 180,
-    "stock": 20,
-    "status": "in_stock",
-    "sold_count": 0,
-    "rating": 0,
-    "rating_count": 0,
-    "is_main_male": false,
-    "is_main_female": true,
-    "subtitle": "Aroma Body Mist",
-    "description": "A deeply tempting, sweet fruity floral blend of warm apricot nectar, sparkling grapefruit flower, and soft whipped vanilla lily.",
-    "fragrance_family": "Fruity Floral Gourmand",
-    "scent_profile": "Warm apricot nectar & pink grapefruit blossom",
-    "top_notes": [
-      "Apricot Nectar",
-      "Grapefruit Blossom",
-      "Sweet Pear"
-    ],
-    "heart_notes": [
-      "Lily of the Valley",
-      "Dewy Jasmine",
-      "Freesia"
-    ],
-    "base_notes": [
-      "Whipped Sugar Vanilla",
-      "Clean Musk",
-      "Soft Amber"
-    ],
-    "image_url": "/images/perfumes/aroma-body-mist-50ml-vs-sweet-temptation.webp",
-    "gallery": [
-      "/images/perfumes/aroma-body-mist-50ml-vs-sweet-temptation.webp"
-    ],
-    "collection_id": null,
-    "collection_slug": "",
-    "concentration": "Aroma Body Mist",
-    "is_featured": true,
-    "is_published": true,
-    "created_at": "2026-11-04T15:08:52.38099+00:00",
-    "updated_at": "2026-11-05T05:44:00.493939+00:00"
-  },
-  {
-    "id": "c43cc2ae-4e6c-4e87-865c-0dc4fc8bd4a7",
-    "name": "Ariana G. - Sweet Like Candy",
-    "slug": "aroma-body-mist-50ml-ariana-grande-sweet-like-candy",
-    "brand": "Ariana Grande",
-    "sku": "AG-SLC-50",
-    "volume": "50ml",
-    "volume_display": "50 ml / 1.7 fl. oz.",
-    "category": "mist",
-    "gender": "female",
-    "price": 135,
-    "original_price": 180,
-    "stock": 20,
-    "status": "in_stock",
-    "sold_count": 0,
-    "rating": 0,
-    "rating_count": 0,
-    "is_main_male": false,
-    "is_main_female": true,
-    "subtitle": "Aroma Body Mist",
-    "description": "An irresistible confectionery delight of sugar-frosted blackberries, juicy Italian bergamot, fluffy whipped marshmallow cream, and addictive vanilla cashmere.",
-    "fragrance_family": "Floral Fruity Gourmand",
-    "scent_profile": "Sugar-frosted blackberry & whipped marshmallow",
-    "top_notes": [
-      "Sugar-Frosted Blackberry",
-      "Italian Bergamot",
-      "Juicy Pear"
-    ],
-    "heart_notes": [
-      "Fluffy Marshmallow",
-      "Blackcurrant Creme",
-      "Jasmine Sambac"
-    ],
-    "base_notes": [
-      "Vanilla Cashmere",
-      "Whipped Cream",
-      "Precious Woods"
-    ],
-    "image_url": "/images/perfumes/aroma-body-mist-50ml-ariana-grande-sweet-like-candy.webp",
-    "gallery": [
-      "/images/perfumes/aroma-body-mist-50ml-ariana-grande-sweet-like-candy.webp"
-    ],
-    "collection_id": null,
-    "collection_slug": "",
-    "concentration": "Aroma Body Mist",
-    "is_featured": true,
-    "is_published": true,
-    "created_at": "2026-11-04T15:08:52.38099+00:00",
-    "updated_at": "2026-11-05T05:44:00.617101+00:00"
-  },
-  {
-    "id": "e9534a6b-2538-490d-88ab-f753d67699c3",
-    "name": "Katy Perry - Purr",
-    "slug": "aroma-body-mist-50ml-katy-perry-purr",
-    "brand": "Katy Perry",
-    "sku": "KP-PURR-50",
-    "volume": "50ml",
-    "volume_display": "50 ml / 1.7 fl. oz.",
-    "category": "mist",
-    "gender": "female",
-    "price": 135,
-    "original_price": 180,
-    "stock": 20,
-    "status": "in_stock",
-    "sold_count": 0,
-    "rating": 0,
-    "rating_count": 0,
-    "is_main_male": false,
-    "is_main_female": true,
-    "subtitle": "Aroma Body Mist",
-    "description": "A luscious opening of sweet peach nectar and crisp forbidden apple, mingled with delicate bamboo, blossoming into fragrant night jasmine and creamy vanilla orchid.",
-    "fragrance_family": "Fruity Floral Gourmand",
-    "scent_profile": "Velvety peach nectar & creamy vanilla orchid",
-    "top_notes": [
-      "Peach Nectar",
-      "Crisp Red Apple",
-      "Green Bamboo"
-    ],
-    "heart_notes": [
-      "Night Jasmine",
-      "Pink Freesia",
-      "Bulgarian Rose"
-    ],
-    "base_notes": [
-      "Vanilla Orchid",
-      "White Amber",
-      "Sandalwood Musk"
-    ],
-    "image_url": "/images/perfumes/aroma-body-mist-50ml-katy-perry-purr.webp",
-    "gallery": [
-      "/images/perfumes/aroma-body-mist-50ml-katy-perry-purr.webp"
-    ],
-    "collection_id": null,
-    "collection_slug": "",
-    "concentration": "Aroma Body Mist",
-    "is_featured": true,
-    "is_published": true,
-    "created_at": "2026-11-04T15:08:52.38099+00:00",
-    "updated_at": "2026-11-05T05:44:00.749836+00:00"
-  },
-  {
-    "id": "0b517e5e-3289-4be1-8c06-dab119d66736",
-    "name": "VS - Love Spell (CVS11)",
-    "slug": "aroma-body-mist-50ml-vs-love-spell",
-    "brand": "Victoria's Secret",
-    "sku": "CVS11",
-    "volume": "50ml",
-    "volume_display": "50 ml / 1.7 fl. oz.",
-    "category": "mist",
-    "gender": "female",
-    "price": 135,
-    "original_price": 180,
-    "stock": 20,
-    "status": "in_stock",
-    "sold_count": 0,
-    "rating": 0,
-    "rating_count": 0,
-    "is_main_male": false,
-    "is_main_female": true,
-    "subtitle": "Aroma Body Mist",
-    "description": "Victoria's Secret legendary fan-favorite mist. Dazzling sweet cherry blossom, succulent Georgia peach nectar, crisp red apple, and sheer white woods.",
-    "fragrance_family": "Fruity Floral Seduction",
-    "scent_profile": "Cherry blossom & Georgia peach nectar",
-    "top_notes": [
-      "Cherry Blossom",
-      "Georgia Peach",
-      "Crisp Red Apple"
-    ],
-    "heart_notes": [
-      "Lilac Blossom",
-      "Jasmine Petals",
-      "Muguet"
-    ],
-    "base_notes": [
-      "White Woods",
-      "Tamarind",
-      "Soft Powder Musk"
-    ],
-    "image_url": "/images/perfumes/aroma-body-mist-50ml-vs-love-spell.webp",
-    "gallery": [
-      "/images/perfumes/aroma-body-mist-50ml-vs-love-spell.webp"
-    ],
-    "collection_id": null,
-    "collection_slug": "",
-    "concentration": "Aroma Body Mist",
-    "is_featured": true,
-    "is_published": true,
-    "created_at": "2026-11-04T15:08:52.38099+00:00",
-    "updated_at": "2026-11-05T05:44:00.867933+00:00"
-  },
-  {
-    "id": "ab517981-9fbe-4560-a451-4cfb29c35f1e",
-    "name": "VS Perfume 85ml - Winter Bombshell",
-    "slug": "vs-perfume-85ml-winter-bombshell",
-    "brand": "Victoria's Secret",
-    "sku": "VS85-WB",
+    "sku": "VS85-SAG",
     "volume": "85ml",
     "volume_display": "85 ml / 2.9 fl. oz.",
     "category": "perfume",
-    "gender": "female",
+    "gender": "male",
     "price": 200,
     "original_price": 250,
     "stock": 20,
     "status": "in_stock",
-    "sold_count": 0,
+    "sold_count": 1,
     "rating": 0,
     "rating_count": 0,
-    "is_main_male": false,
-    "is_main_female": true,
+    "is_main_male": true,
+    "is_main_female": false,
     "subtitle": "Eau de Parfum",
-    "description": "The coveted limited winter edition. Frosted camellia flower, night-blooming winter jasmine, crystalline starry woods, and cozy velvet amber.",
-    "fragrance_family": "Frosted Floral Woods",
-    "scent_profile": "Frosted camellia & winter jasmine",
+    "description": "The crown jewel of gold and prestige. Sparkling Italian bergamot, lush golden gardenia, warm amber musk, and sophisticated blonde cedar.",
+    "fragrance_family": "Luxe Amber Floral",
+    "scent_profile": "Sparkling bergamot & 24K gold amber",
     "top_notes": [
-      "Frosted Camellia",
-      "Starfruit Ice",
-      "Winter Pear"
+      "Italian Bergamot",
+      "Prickly Pear",
+      "Pomelo Mist"
     ],
     "heart_notes": [
-      "Winter Jasmine",
-      "White Snow Lotus",
-      "Peony Frost"
+      "Golden Gardenia",
+      "Star Jasmine",
+      "Waterlily"
     ],
     "base_notes": [
-      "Starry Woods",
-      "Cozy Velvet Amber",
-      "Silver Cedar"
+      "24K Gold Amber",
+      "Blonde Cedar",
+      "Skin Musk"
     ],
-    "image_url": "/images/perfumes/vs-perfume-85ml-winter-bombshell.webp",
+    "image_url": "https://xpguejvrmwkchzblzsvx.supabase.co/storage/v1/object/public/product-images/uploads/1793951601067-gemini_generated_image_gudv15gudv15gudv.webp",
     "gallery": [
-      "/images/perfumes/vs-perfume-85ml-winter-bombshell.webp"
+      "https://xpguejvrmwkchzblzsvx.supabase.co/storage/v1/object/public/product-images/uploads/1793951601067-gemini_generated_image_gudv15gudv15gudv.webp"
     ],
     "collection_id": null,
     "collection_slug": "",
@@ -597,11 +147,11 @@
     "is_featured": true,
     "is_published": true,
     "created_at": "2026-11-04T15:08:52.38099+00:00",
-    "updated_at": "2026-11-05T05:44:00.989417+00:00"
+    "updated_at": "2026-11-06T07:53:25.643542+00:00"
   },
   {
     "id": "c0617a3c-8b73-468b-a94f-bc25cf7790a2",
-    "name": "B&BW - Sweet Pea (CBB26)",
+    "name": "Bath & Body Works Sweet Pea",
     "slug": "aroma-body-mist-50ml-bbw-sweet-pea",
     "brand": "Bath & Body Works",
     "sku": "CBB26",
@@ -637,9 +187,9 @@
       "Soft Plum",
       "Clean Amber"
     ],
-    "image_url": "/images/perfumes/aroma-body-mist-50ml-bbw-sweet-pea.webp",
+    "image_url": "https://xpguejvrmwkchzblzsvx.supabase.co/storage/v1/object/public/product-images/uploads/1793953402382-gemini_generated_image_2d3jza2d3jza2d3j.webp",
     "gallery": [
-      "/images/perfumes/aroma-body-mist-50ml-bbw-sweet-pea.webp"
+      "https://xpguejvrmwkchzblzsvx.supabase.co/storage/v1/object/public/product-images/uploads/1793953402382-gemini_generated_image_2d3jza2d3jza2d3j.webp"
     ],
     "collection_id": null,
     "collection_slug": "",
@@ -647,11 +197,311 @@
     "is_featured": true,
     "is_published": true,
     "created_at": "2026-11-04T15:08:52.38099+00:00",
-    "updated_at": "2026-11-05T05:44:01.105547+00:00"
+    "updated_at": "2026-11-06T08:23:26.9039+00:00"
+  },
+  {
+    "id": "fef709ff-eea0-4f6f-9071-4bb235000e73",
+    "name": "Bath & Body Works Cucumber Melon",
+    "slug": "aroma-body-mist-50ml-bbw-cucumber-melon",
+    "brand": "Bath & Body Works",
+    "sku": "CBB06",
+    "volume": "50ml",
+    "volume_display": "50 ml / 1.7 fl. oz.",
+    "category": "mist",
+    "gender": "unisex",
+    "price": 135,
+    "original_price": 180,
+    "stock": 20,
+    "status": "in_stock",
+    "sold_count": 0,
+    "rating": 0,
+    "rating_count": 0,
+    "is_main_male": false,
+    "is_main_female": false,
+    "subtitle": "Aroma Body Mist",
+    "description": "A nostalgic, refreshing summer blend of crisp green cucumber, juicy honeydew melon, sweet cantaloupe, and sheer aquatic woods.",
+    "fragrance_family": "Fresh Fruity Aquatic",
+    "scent_profile": "Crisp cucumber dew & sweet honeydew",
+    "top_notes": [
+      "Crisp Cucumber",
+      "Sweet Honeydew Melon",
+      "Grapefruit Dew"
+    ],
+    "heart_notes": [
+      "Summer Cantaloupe",
+      "Lily of the Valley",
+      "Water Violet"
+    ],
+    "base_notes": [
+      "Sheer Woods",
+      "Clean Musk",
+      "Green Bamboo"
+    ],
+    "image_url": "https://xpguejvrmwkchzblzsvx.supabase.co/storage/v1/object/public/product-images/uploads/1793954678086-gemini_generated_image_yh7vf3yh7vf3yh7v.webp",
+    "gallery": [
+      "https://xpguejvrmwkchzblzsvx.supabase.co/storage/v1/object/public/product-images/uploads/1793954678086-gemini_generated_image_yh7vf3yh7vf3yh7v.webp"
+    ],
+    "collection_id": null,
+    "collection_slug": "",
+    "concentration": "Aroma Body Mist",
+    "is_featured": false,
+    "is_published": true,
+    "created_at": "2026-11-04T15:08:52.38099+00:00",
+    "updated_at": "2026-11-06T08:44:45.296526+00:00"
+  },
+  {
+    "id": "f607d00f-c6b7-48c8-afe1-abd17f0f4e88",
+    "name": "Victoria Secret Romantic Wish",
+    "slug": "vs-perfume-85ml-romantic-wish",
+    "brand": "Victoria's Secret",
+    "sku": "VS85-RW",
+    "volume": "85ml",
+    "volume_display": "85 ml / 2.9 fl. oz.",
+    "category": "perfume",
+    "gender": "female",
+    "price": 200,
+    "original_price": 250,
+    "stock": 20,
+    "status": "in_stock",
+    "sold_count": 0,
+    "rating": 0,
+    "rating_count": 0,
+    "is_main_male": false,
+    "is_main_female": false,
+    "subtitle": "Eau de Parfum",
+    "description": "Deepened and concentrated in an 85ml flacon: ripe midnight pomegranate, blossoming pink freesia, and warm radiant amber.",
+    "fragrance_family": "Fruity Floral Amber",
+    "scent_profile": "Midnight pomegranate & pink freesia",
+    "top_notes": [
+      "Midnight Pomegranate",
+      "Pink Freesia",
+      "Sweet Orange"
+    ],
+    "heart_notes": [
+      "Star Jasmine",
+      "Cucumber Blossom",
+      "Water Lily"
+    ],
+    "base_notes": [
+      "Glowing Amber",
+      "Creamy Woods",
+      "Soft Velvet Musk"
+    ],
+    "image_url": "https://xpguejvrmwkchzblzsvx.supabase.co/storage/v1/object/public/product-images/uploads/1793955544164-gemini_generated_image_4mtvh54mtvh54mtv.webp",
+    "gallery": [
+      "https://xpguejvrmwkchzblzsvx.supabase.co/storage/v1/object/public/product-images/uploads/1793955544164-gemini_generated_image_4mtvh54mtvh54mtv.webp"
+    ],
+    "collection_id": null,
+    "collection_slug": "",
+    "concentration": "Eau de Parfum",
+    "is_featured": false,
+    "is_published": true,
+    "created_at": "2026-11-04T15:08:52.38099+00:00",
+    "updated_at": "2026-11-06T08:59:07.789367+00:00"
+  },
+  {
+    "id": "9b415d42-4e59-476e-bae2-06876af49e6e",
+    "name": "Victoria Secret Warm Embrace",
+    "slug": "aroma-body-mist-50ml-vs-warm-embrace",
+    "brand": "Victoria's Secret",
+    "sku": "CVS26",
+    "volume": "50ml",
+    "volume_display": "50 ml / 1.7 fl. oz.",
+    "category": "mist",
+    "gender": "female",
+    "price": 135,
+    "original_price": 180,
+    "stock": 20,
+    "status": "in_stock",
+    "sold_count": 0,
+    "rating": 0,
+    "rating_count": 0,
+    "is_main_male": false,
+    "is_main_female": false,
+    "subtitle": "Aroma Body Mist",
+    "description": "Envelop yourself in a cozy, intimate mist of warm liquid amber, passion flower blossoms, and comforting velvet cashmere woods.",
+    "fragrance_family": "Warm Woody Floral",
+    "scent_profile": "Liquid amber & exotic passion flower",
+    "top_notes": [
+      "Passion Flower",
+      "Sweet Bergamot",
+      "Spiced Plum"
+    ],
+    "heart_notes": [
+      "White Orchid",
+      "Gardenia",
+      "Cashmere Accord"
+    ],
+    "base_notes": [
+      "Liquid Amber",
+      "Creamy Vanilla",
+      "Velvet Cedar"
+    ],
+    "image_url": "https://xpguejvrmwkchzblzsvx.supabase.co/storage/v1/object/public/product-images/uploads/1793955963549-gemini_generated_image_2omb4u2omb4u2omb.webp",
+    "gallery": [
+      "https://xpguejvrmwkchzblzsvx.supabase.co/storage/v1/object/public/product-images/uploads/1793955963549-gemini_generated_image_2omb4u2omb4u2omb.webp"
+    ],
+    "collection_id": null,
+    "collection_slug": "",
+    "concentration": "Aroma Body Mist",
+    "is_featured": false,
+    "is_published": true,
+    "created_at": "2026-11-04T15:08:52.38099+00:00",
+    "updated_at": "2026-11-06T09:06:09.312929+00:00"
+  },
+  {
+    "id": "e9534a6b-2538-490d-88ab-f753d67699c3",
+    "name": "Purr",
+    "slug": "aroma-body-mist-50ml-katy-perry-purr",
+    "brand": "Katy Perry",
+    "sku": "KP-PURR-50",
+    "volume": "50ml",
+    "volume_display": "50 ml / 1.7 fl. oz.",
+    "category": "mist",
+    "gender": "female",
+    "price": 135,
+    "original_price": 180,
+    "stock": 20,
+    "status": "in_stock",
+    "sold_count": 0,
+    "rating": 0,
+    "rating_count": 0,
+    "is_main_male": false,
+    "is_main_female": true,
+    "subtitle": "Aroma Body Mist",
+    "description": "A luscious opening of sweet peach nectar and crisp forbidden apple, mingled with delicate bamboo, blossoming into fragrant night jasmine and creamy vanilla orchid.",
+    "fragrance_family": "Fruity Floral Gourmand",
+    "scent_profile": "Velvety peach nectar & creamy vanilla orchid",
+    "top_notes": [
+      "Peach Nectar",
+      "Crisp Red Apple",
+      "Green Bamboo"
+    ],
+    "heart_notes": [
+      "Night Jasmine",
+      "Pink Freesia",
+      "Bulgarian Rose"
+    ],
+    "base_notes": [
+      "Vanilla Orchid",
+      "White Amber",
+      "Sandalwood Musk"
+    ],
+    "image_url": "https://xpguejvrmwkchzblzsvx.supabase.co/storage/v1/object/public/product-images/uploads/1793952433284-gemini_generated_image_t2ta5t2ta5t2ta5t.webp",
+    "gallery": [
+      "https://xpguejvrmwkchzblzsvx.supabase.co/storage/v1/object/public/product-images/uploads/1793952433284-gemini_generated_image_t2ta5t2ta5t2ta5t.webp"
+    ],
+    "collection_id": null,
+    "collection_slug": "",
+    "concentration": "Aroma Body Mist",
+    "is_featured": true,
+    "is_published": true,
+    "created_at": "2026-11-04T15:08:52.38099+00:00",
+    "updated_at": "2026-11-06T08:07:23.142628+00:00"
+  },
+  {
+    "id": "0b517e5e-3289-4be1-8c06-dab119d66736",
+    "name": "Victoria Secret Love Spell",
+    "slug": "aroma-body-mist-50ml-vs-love-spell",
+    "brand": "Victoria's Secret",
+    "sku": "CVS11",
+    "volume": "50ml",
+    "volume_display": "50 ml / 1.7 fl. oz.",
+    "category": "mist",
+    "gender": "female",
+    "price": 135,
+    "original_price": 180,
+    "stock": 20,
+    "status": "in_stock",
+    "sold_count": 0,
+    "rating": 0,
+    "rating_count": 0,
+    "is_main_male": false,
+    "is_main_female": true,
+    "subtitle": "Aroma Body Mist",
+    "description": "Victoria's Secret legendary fan-favorite mist. Dazzling sweet cherry blossom, succulent Georgia peach nectar, crisp red apple, and sheer white woods.",
+    "fragrance_family": "Fruity Floral Seduction",
+    "scent_profile": "Cherry blossom & Georgia peach nectar",
+    "top_notes": [
+      "Cherry Blossom",
+      "Georgia Peach",
+      "Crisp Red Apple"
+    ],
+    "heart_notes": [
+      "Lilac Blossom",
+      "Jasmine Petals",
+      "Muguet"
+    ],
+    "base_notes": [
+      "White Woods",
+      "Tamarind",
+      "Soft Powder Musk"
+    ],
+    "image_url": "https://xpguejvrmwkchzblzsvx.supabase.co/storage/v1/object/public/product-images/uploads/1793952730078-gemini_generated_image_937yge937yge937y.webp",
+    "gallery": [
+      "https://xpguejvrmwkchzblzsvx.supabase.co/storage/v1/object/public/product-images/uploads/1793952730078-gemini_generated_image_937yge937yge937y.webp"
+    ],
+    "collection_id": null,
+    "collection_slug": "",
+    "concentration": "Aroma Body Mist",
+    "is_featured": true,
+    "is_published": true,
+    "created_at": "2026-11-04T15:08:52.38099+00:00",
+    "updated_at": "2026-11-06T08:12:14.315413+00:00"
+  },
+  {
+    "id": "5bdb76b4-ba57-4647-b851-a625314dbb3a",
+    "name": "Sweet Temptation",
+    "slug": "aroma-body-mist-50ml-vs-sweet-temptation",
+    "brand": "Victoria's Secret",
+    "sku": "CVS24",
+    "volume": "50ml",
+    "volume_display": "50 ml / 1.7 fl. oz.",
+    "category": "mist",
+    "gender": "female",
+    "price": 135,
+    "original_price": 180,
+    "stock": 20,
+    "status": "in_stock",
+    "sold_count": 0,
+    "rating": 0,
+    "rating_count": 0,
+    "is_main_male": false,
+    "is_main_female": true,
+    "subtitle": "Aroma Body Mist",
+    "description": "A deeply tempting, sweet fruity floral blend of warm apricot nectar, sparkling grapefruit flower, and soft whipped vanilla lily.",
+    "fragrance_family": "Fruity Floral Gourmand",
+    "scent_profile": "Warm apricot nectar & pink grapefruit blossom",
+    "top_notes": [
+      "Apricot Nectar",
+      "Grapefruit Blossom",
+      "Sweet Pear"
+    ],
+    "heart_notes": [
+      "Lily of the Valley",
+      "Dewy Jasmine",
+      "Freesia"
+    ],
+    "base_notes": [
+      "Whipped Sugar Vanilla",
+      "Clean Musk",
+      "Soft Amber"
+    ],
+    "image_url": "https://xpguejvrmwkchzblzsvx.supabase.co/storage/v1/object/public/product-images/uploads/1793951908450-gemini_generated_image_n7ef3pn7ef3pn7ef.webp",
+    "gallery": [
+      "https://xpguejvrmwkchzblzsvx.supabase.co/storage/v1/object/public/product-images/uploads/1793951908450-gemini_generated_image_n7ef3pn7ef3pn7ef.webp"
+    ],
+    "collection_id": null,
+    "collection_slug": "",
+    "concentration": "Aroma Body Mist",
+    "is_featured": true,
+    "is_published": true,
+    "created_at": "2026-11-04T15:08:52.38099+00:00",
+    "updated_at": "2026-11-06T07:58:32.085642+00:00"
   },
   {
     "id": "28994bf7-d04a-4e55-a62f-3cc1eefcdcbc",
-    "name": "VS - Bombshell (CVS03)",
+    "name": "Victoria Secret Bombshell",
     "slug": "aroma-body-mist-50ml-vs-bombshell",
     "brand": "Victoria's Secret",
     "sku": "CVS03",
@@ -687,9 +537,9 @@
       "Sun-Drenched Woods",
       "Oakmoss"
     ],
-    "image_url": "/images/perfumes/aroma-body-mist-50ml-vs-bombshell.webp",
+    "image_url": "https://xpguejvrmwkchzblzsvx.supabase.co/storage/v1/object/public/product-images/uploads/1793953532507-gemini_generated_image_nme6j3nme6j3nme6.webp",
     "gallery": [
-      "/images/perfumes/aroma-body-mist-50ml-vs-bombshell.webp"
+      "https://xpguejvrmwkchzblzsvx.supabase.co/storage/v1/object/public/product-images/uploads/1793953532507-gemini_generated_image_nme6j3nme6j3nme6.webp"
     ],
     "collection_id": null,
     "collection_slug": "",
@@ -697,11 +547,11 @@
     "is_featured": true,
     "is_published": true,
     "created_at": "2026-11-04T15:08:52.38099+00:00",
-    "updated_at": "2026-11-05T05:44:01.219412+00:00"
+    "updated_at": "2026-11-06T08:25:37.148702+00:00"
   },
   {
     "id": "078eb2ef-1c2f-416f-a30a-b888cef1ff91",
-    "name": "VS Perfume 85ml - Pink Ravishing Love",
+    "name": "Victoria Secret Pink Ravishing Love",
     "slug": "vs-perfume-85ml-pink-ravishing-love",
     "brand": "Victoria's Secret",
     "sku": "VS85-PRL",
@@ -737,9 +587,9 @@
       "Cedarwood",
       "Warm Amber"
     ],
-    "image_url": "/images/perfumes/vs-perfume-85ml-pink-ravishing-love.webp",
+    "image_url": "https://xpguejvrmwkchzblzsvx.supabase.co/storage/v1/object/public/product-images/uploads/1793953675478-gemini_generated_image_81i6pl81i6pl81i6.webp",
     "gallery": [
-      "/images/perfumes/vs-perfume-85ml-pink-ravishing-love.webp"
+      "https://xpguejvrmwkchzblzsvx.supabase.co/storage/v1/object/public/product-images/uploads/1793953675478-gemini_generated_image_81i6pl81i6pl81i6.webp"
     ],
     "collection_id": null,
     "collection_slug": "",
@@ -747,7 +597,107 @@
     "is_featured": true,
     "is_published": true,
     "created_at": "2026-11-04T15:08:52.38099+00:00",
-    "updated_at": "2026-11-05T05:44:01.350521+00:00"
+    "updated_at": "2026-11-06T08:27:59.75483+00:00"
+  },
+  {
+    "id": "ab517981-9fbe-4560-a451-4cfb29c35f1e",
+    "name": "Victoria Secret - Winter Bombshell",
+    "slug": "vs-perfume-85ml-winter-bombshell",
+    "brand": "Victoria's Secret",
+    "sku": "VS85-WB",
+    "volume": "85ml",
+    "volume_display": "85 ml / 2.9 fl. oz.",
+    "category": "perfume",
+    "gender": "female",
+    "price": 200,
+    "original_price": 250,
+    "stock": 20,
+    "status": "in_stock",
+    "sold_count": 0,
+    "rating": 0,
+    "rating_count": 0,
+    "is_main_male": false,
+    "is_main_female": true,
+    "subtitle": "Eau de Parfum",
+    "description": "The coveted limited winter edition. Frosted camellia flower, night-blooming winter jasmine, crystalline starry woods, and cozy velvet amber.",
+    "fragrance_family": "Frosted Floral Woods",
+    "scent_profile": "Frosted camellia & winter jasmine",
+    "top_notes": [
+      "Frosted Camellia",
+      "Starfruit Ice",
+      "Winter Pear"
+    ],
+    "heart_notes": [
+      "Winter Jasmine",
+      "White Snow Lotus",
+      "Peony Frost"
+    ],
+    "base_notes": [
+      "Starry Woods",
+      "Cozy Velvet Amber",
+      "Silver Cedar"
+    ],
+    "image_url": "https://xpguejvrmwkchzblzsvx.supabase.co/storage/v1/object/public/product-images/uploads/1793953154238-gemini_generated_image_jxxw8tjxxw8tjxxw.webp",
+    "gallery": [
+      "https://xpguejvrmwkchzblzsvx.supabase.co/storage/v1/object/public/product-images/uploads/1793953154238-gemini_generated_image_jxxw8tjxxw8tjxxw.webp"
+    ],
+    "collection_id": null,
+    "collection_slug": "",
+    "concentration": "Eau de Parfum",
+    "is_featured": true,
+    "is_published": true,
+    "created_at": "2026-11-04T15:08:52.38099+00:00",
+    "updated_at": "2026-11-06T08:19:20.234733+00:00"
+  },
+  {
+    "id": "c43cc2ae-4e6c-4e87-865c-0dc4fc8bd4a7",
+    "name": "Sweet Like Candy",
+    "slug": "aroma-body-mist-50ml-ariana-grande-sweet-like-candy",
+    "brand": "Ariana Grande",
+    "sku": "AG-SLC-50",
+    "volume": "50ml",
+    "volume_display": "50 ml / 1.7 fl. oz.",
+    "category": "mist",
+    "gender": "female",
+    "price": 135,
+    "original_price": 180,
+    "stock": 20,
+    "status": "in_stock",
+    "sold_count": 0,
+    "rating": 0,
+    "rating_count": 0,
+    "is_main_male": false,
+    "is_main_female": true,
+    "subtitle": "Aroma Body Mist",
+    "description": "An irresistible confectionery delight of sugar-frosted blackberries, juicy Italian bergamot, fluffy whipped marshmallow cream, and addictive vanilla cashmere.",
+    "fragrance_family": "Floral Fruity Gourmand",
+    "scent_profile": "Sugar-frosted blackberry & whipped marshmallow",
+    "top_notes": [
+      "Sugar-Frosted Blackberry",
+      "Italian Bergamot",
+      "Juicy Pear"
+    ],
+    "heart_notes": [
+      "Fluffy Marshmallow",
+      "Blackcurrant Creme",
+      "Jasmine Sambac"
+    ],
+    "base_notes": [
+      "Vanilla Cashmere",
+      "Whipped Cream",
+      "Precious Woods"
+    ],
+    "image_url": "https://xpguejvrmwkchzblzsvx.supabase.co/storage/v1/object/public/product-images/uploads/1793952074675-gemini_generated_image_tv6vx0tv6vx0tv6v.webp",
+    "gallery": [
+      "https://xpguejvrmwkchzblzsvx.supabase.co/storage/v1/object/public/product-images/uploads/1793952074675-gemini_generated_image_tv6vx0tv6vx0tv6v.webp"
+    ],
+    "collection_id": null,
+    "collection_slug": "",
+    "concentration": "Aroma Body Mist",
+    "is_featured": true,
+    "is_published": true,
+    "created_at": "2026-11-04T15:08:52.38099+00:00",
+    "updated_at": "2026-11-06T08:01:19.794156+00:00"
   },
   {
     "id": "0d47ac7f-da5a-4c0e-a8f1-2d57941856d1",
@@ -787,9 +737,9 @@
       "Sheer Amber",
       "Violet Leaf"
     ],
-    "image_url": "https://xpguejvrmwkchzblzsvx.supabase.co/storage/v1/object/public/product-images/uploads/1793847873184-heiress_3-4oz.webp",
+    "image_url": "https://xpguejvrmwkchzblzsvx.supabase.co/storage/v1/object/public/product-images/uploads/1793953028067-gemini_generated_image_tfhcmutfhcmutfhc.webp",
     "gallery": [
-      "https://xpguejvrmwkchzblzsvx.supabase.co/storage/v1/object/public/product-images/uploads/1793847873184-heiress_3-4oz.webp"
+      "https://xpguejvrmwkchzblzsvx.supabase.co/storage/v1/object/public/product-images/uploads/1793953028067-gemini_generated_image_tfhcmutfhcmutfhc.webp"
     ],
     "collection_id": null,
     "collection_slug": "",
@@ -797,18 +747,18 @@
     "is_featured": true,
     "is_published": true,
     "created_at": "2026-11-04T15:08:52.38099+00:00",
-    "updated_at": "2026-11-05T05:44:01.464621+00:00"
+    "updated_at": "2026-11-06T08:17:13.275207+00:00"
   },
   {
-    "id": "5b9841eb-e594-44d9-aef0-cb93b3e09f09",
-    "name": "VS Perfume 85ml - Secret Angel Gold",
-    "slug": "vs-perfume-85ml-secret-angel-gold",
+    "id": "78081171-39ab-4c2c-a335-ff3dbe256cb1",
+    "name": "Victoria Secret Romantic Wish",
+    "slug": "aroma-body-mist-50ml-vs-romantic-wish",
     "brand": "Victoria's Secret",
-    "sku": "VS85-SAG",
+    "sku": "VS85-RW",
     "volume": "85ml",
     "volume_display": "85 ml / 2.9 fl. oz.",
     "category": "perfume",
-    "gender": "male",
+    "gender": "female",
     "price": 200,
     "original_price": 250,
     "stock": 20,
@@ -816,112 +766,12 @@
     "sold_count": 0,
     "rating": 0,
     "rating_count": 0,
-    "is_main_male": true,
+    "is_main_male": false,
     "is_main_female": false,
     "subtitle": "Eau de Parfum",
-    "description": "The crown jewel of gold and prestige. Sparkling Italian bergamot, lush golden gardenia, warm amber musk, and sophisticated blonde cedar.",
-    "fragrance_family": "Luxe Amber Floral",
-    "scent_profile": "Sparkling bergamot & 24K gold amber",
-    "top_notes": [
-      "Italian Bergamot",
-      "Prickly Pear",
-      "Pomelo Mist"
-    ],
-    "heart_notes": [
-      "Golden Gardenia",
-      "Star Jasmine",
-      "Waterlily"
-    ],
-    "base_notes": [
-      "24K Gold Amber",
-      "Blonde Cedar",
-      "Skin Musk"
-    ],
-    "image_url": "/images/perfumes/vs-perfume-85ml-secret-angel-gold.webp",
-    "gallery": [
-      "/images/perfumes/vs-perfume-85ml-secret-angel-gold.webp"
-    ],
-    "collection_id": null,
-    "collection_slug": "",
-    "concentration": "Eau de Parfum",
-    "is_featured": true,
-    "is_published": true,
-    "created_at": "2026-11-04T15:08:52.38099+00:00",
-    "updated_at": "2026-11-05T05:44:00.374006+00:00"
-  },
-  {
-    "id": "473ce941-38d8-4bf0-aa52-12c746c1d4d8",
-    "name": "VS - Endless Love (CVS06)",
-    "slug": "aroma-body-mist-50ml-vs-endless-love",
-    "brand": "Victoria's Secret",
-    "sku": "CVS06",
-    "volume": "50ml",
-    "volume_display": "50 ml / 1.7 fl. oz.",
-    "category": "mist",
-    "gender": "female",
-    "price": 135,
-    "original_price": 180,
-    "stock": 20,
-    "status": "in_stock",
-    "sold_count": 0,
-    "rating": 0,
-    "rating_count": 0,
-    "is_main_male": false,
-    "is_main_female": false,
-    "subtitle": "Aroma Body Mist",
-    "description": "A beloved classic floral romantic mist of fresh blooming apple blossom, dewy summer peach nectar, and sweet ylang-ylang.",
-    "fragrance_family": "Romantic Floral",
-    "scent_profile": "Apple blossom petals & sweet peach nectar",
-    "top_notes": [
-      "Apple Blossom",
-      "Dewy Peach Nectar",
-      "Citrus Sparkle"
-    ],
-    "heart_notes": [
-      "Ylang Ylang",
-      "Star Jasmine",
-      "Lily Petals"
-    ],
-    "base_notes": [
-      "Soft Cashmere Musk",
-      "Clean Woods",
-      "Sweet Amber"
-    ],
-    "image_url": "/images/perfumes/aroma-body-mist-50ml-vs-endless-love.webp",
-    "gallery": [
-      "/images/perfumes/aroma-body-mist-50ml-vs-endless-love.webp"
-    ],
-    "collection_id": null,
-    "collection_slug": "",
-    "concentration": "Aroma Body Mist",
-    "is_featured": false,
-    "is_published": true,
-    "created_at": "2026-11-04T15:08:52.38099+00:00",
-    "updated_at": "2026-11-05T05:44:01.705568+00:00"
-  },
-  {
-    "id": "78081171-39ab-4c2c-a335-ff3dbe256cb1",
-    "name": "VS - Romantic Wish (CVS19)",
-    "slug": "aroma-body-mist-50ml-vs-romantic-wish",
-    "brand": "Victoria's Secret",
-    "sku": "CVS19",
-    "volume": "50ml",
-    "volume_display": "50 ml / 1.7 fl. oz.",
-    "category": "mist",
-    "gender": "female",
-    "price": 135,
-    "original_price": 180,
-    "stock": 20,
-    "status": "in_stock",
-    "sold_count": 0,
-    "rating": 0,
-    "rating_count": 0,
-    "is_main_male": false,
-    "is_main_female": false,
-    "subtitle": "Aroma Body Mist",
     "description": "A captivating, romantic scent of ruby red pomegranate, sparkling pink freesia petals, and warm vanilla amber musk.",
     "fragrance_family": "Fruity Floral Amber",
-    "scent_profile": "Ruby pomegranate & pink freesia petals",
+    "scent_profile": "Midnight pomegranate & pink freesia",
     "top_notes": [
       "Ruby Pomegranate",
       "Pink Freesia",
@@ -937,259 +787,9 @@
       "Soft Woods",
       "Velvet Musk"
     ],
-    "image_url": "/images/perfumes/aroma-body-mist-50ml-vs-romantic-wish.webp",
+    "image_url": "https://xpguejvrmwkchzblzsvx.supabase.co/storage/v1/object/public/product-images/uploads/1793955682862-gemini_generated_image_1upgbf1upgbf1upg.webp",
     "gallery": [
-      "/images/perfumes/aroma-body-mist-50ml-vs-romantic-wish.webp"
-    ],
-    "collection_id": null,
-    "collection_slug": "",
-    "concentration": "Aroma Body Mist",
-    "is_featured": false,
-    "is_published": true,
-    "created_at": "2026-11-04T15:08:52.38099+00:00",
-    "updated_at": "2026-11-05T05:44:01.817179+00:00"
-  },
-  {
-    "id": "441e8424-6ed4-43cb-8371-438b3d7abf10",
-    "name": "VS - Strawberries & Champagne (CVS22)",
-    "slug": "aroma-body-mist-50ml-vs-strawberries-and-champagne",
-    "brand": "Victoria's Secret",
-    "sku": "CVS22",
-    "volume": "50ml",
-    "volume_display": "50 ml / 1.7 fl. oz.",
-    "category": "mist",
-    "gender": "female",
-    "price": 135,
-    "original_price": 180,
-    "stock": 20,
-    "status": "in_stock",
-    "sold_count": 0,
-    "rating": 0,
-    "rating_count": 0,
-    "is_main_male": false,
-    "is_main_female": false,
-    "subtitle": "Aroma Body Mist",
-    "description": "An intoxicating toast of ripe wild strawberries, fizzy pink champagne bubbles, blackcurrant cassis, and sweet musk.",
-    "fragrance_family": "Fruity Gourmand Fizz",
-    "scent_profile": "Wild strawberries & sparkling pink champagne",
-    "top_notes": [
-      "Wild Strawberries",
-      "Pink Champagne Fizz",
-      "Blackcurrant"
-    ],
-    "heart_notes": [
-      "Peach Blossom",
-      "Rose Petals",
-      "Water Hyacinth"
-    ],
-    "base_notes": [
-      "Sugar Crystals",
-      "Sweet Musk",
-      "Sandalwood"
-    ],
-    "image_url": "/images/perfumes/aroma-body-mist-50ml-vs-strawberries-and-champagne.webp",
-    "gallery": [
-      "/images/perfumes/aroma-body-mist-50ml-vs-strawberries-and-champagne.webp"
-    ],
-    "collection_id": null,
-    "collection_slug": "",
-    "concentration": "Aroma Body Mist",
-    "is_featured": false,
-    "is_published": true,
-    "created_at": "2026-11-04T15:08:52.38099+00:00",
-    "updated_at": "2026-11-05T05:44:01.926601+00:00"
-  },
-  {
-    "id": "80550fde-77b7-4dc1-93ed-e4e5b177177c",
-    "name": "VS - Vanilla Lace (CVS25)",
-    "slug": "aroma-body-mist-50ml-vs-vanilla-lace",
-    "brand": "Victoria's Secret",
-    "sku": "CVS25",
-    "volume": "50ml",
-    "volume_display": "50 ml / 1.7 fl. oz.",
-    "category": "mist",
-    "gender": "female",
-    "price": 135,
-    "original_price": 180,
-    "stock": 20,
-    "status": "in_stock",
-    "sold_count": 0,
-    "rating": 0,
-    "rating_count": 0,
-    "is_main_male": false,
-    "is_main_female": false,
-    "subtitle": "Aroma Body Mist",
-    "description": "An iconic, comforting warm vanilla mist enveloped in velvety sensual orchid petals, creamy honeyed tonka, and sheer skin musk.",
-    "fragrance_family": "Warm Amber Vanilla",
-    "scent_profile": "Pure bourbon vanilla & sensual orchid petals",
-    "top_notes": [
-      "Bourbon Vanilla",
-      "Sugar Orchid",
-      "Whipped Cream"
-    ],
-    "heart_notes": [
-      "Sensual White Petals",
-      "Honeyed Tonka",
-      "Almond Blossom"
-    ],
-    "base_notes": [
-      "Golden Amber",
-      "Skin Musk",
-      "Creamy Sandalwood"
-    ],
-    "image_url": "/images/perfumes/aroma-body-mist-50ml-vs-vanilla-lace.webp",
-    "gallery": [
-      "/images/perfumes/aroma-body-mist-50ml-vs-vanilla-lace.webp"
-    ],
-    "collection_id": null,
-    "collection_slug": "",
-    "concentration": "Aroma Body Mist",
-    "is_featured": false,
-    "is_published": true,
-    "created_at": "2026-11-04T15:08:52.38099+00:00",
-    "updated_at": "2026-11-05T05:44:02.058169+00:00"
-  },
-  {
-    "id": "9b415d42-4e59-476e-bae2-06876af49e6e",
-    "name": "VS - Warm Embrace (CVS26)",
-    "slug": "aroma-body-mist-50ml-vs-warm-embrace",
-    "brand": "Victoria's Secret",
-    "sku": "CVS26",
-    "volume": "50ml",
-    "volume_display": "50 ml / 1.7 fl. oz.",
-    "category": "mist",
-    "gender": "female",
-    "price": 135,
-    "original_price": 180,
-    "stock": 20,
-    "status": "in_stock",
-    "sold_count": 0,
-    "rating": 0,
-    "rating_count": 0,
-    "is_main_male": false,
-    "is_main_female": false,
-    "subtitle": "Aroma Body Mist",
-    "description": "Envelop yourself in a cozy, intimate mist of warm liquid amber, passion flower blossoms, and comforting velvet cashmere woods.",
-    "fragrance_family": "Warm Woody Floral",
-    "scent_profile": "Liquid amber & exotic passion flower",
-    "top_notes": [
-      "Passion Flower",
-      "Sweet Bergamot",
-      "Spiced Plum"
-    ],
-    "heart_notes": [
-      "White Orchid",
-      "Gardenia",
-      "Cashmere Accord"
-    ],
-    "base_notes": [
-      "Liquid Amber",
-      "Creamy Vanilla",
-      "Velvet Cedar"
-    ],
-    "image_url": "/images/perfumes/aroma-body-mist-50ml-vs-warm-embrace.webp",
-    "gallery": [
-      "/images/perfumes/aroma-body-mist-50ml-vs-warm-embrace.webp"
-    ],
-    "collection_id": null,
-    "collection_slug": "",
-    "concentration": "Aroma Body Mist",
-    "is_featured": false,
-    "is_published": true,
-    "created_at": "2026-11-04T15:08:52.38099+00:00",
-    "updated_at": "2026-11-05T05:44:02.177514+00:00"
-  },
-  {
-    "id": "fef709ff-eea0-4f6f-9071-4bb235000e73",
-    "name": "B&BW - Cucumber Melon (CBB06)",
-    "slug": "aroma-body-mist-50ml-bbw-cucumber-melon",
-    "brand": "Bath & Body Works",
-    "sku": "CBB06",
-    "volume": "50ml",
-    "volume_display": "50 ml / 1.7 fl. oz.",
-    "category": "mist",
-    "gender": "unisex",
-    "price": 135,
-    "original_price": 180,
-    "stock": 20,
-    "status": "in_stock",
-    "sold_count": 0,
-    "rating": 0,
-    "rating_count": 0,
-    "is_main_male": false,
-    "is_main_female": false,
-    "subtitle": "Aroma Body Mist",
-    "description": "A nostalgic, refreshing summer blend of crisp green cucumber, juicy honeydew melon, sweet cantaloupe, and sheer aquatic woods.",
-    "fragrance_family": "Fresh Fruity Aquatic",
-    "scent_profile": "Crisp cucumber dew & sweet honeydew",
-    "top_notes": [
-      "Crisp Cucumber",
-      "Sweet Honeydew Melon",
-      "Grapefruit Dew"
-    ],
-    "heart_notes": [
-      "Summer Cantaloupe",
-      "Lily of the Valley",
-      "Water Violet"
-    ],
-    "base_notes": [
-      "Sheer Woods",
-      "Clean Musk",
-      "Green Bamboo"
-    ],
-    "image_url": "/images/perfumes/aroma-body-mist-50ml-bbw-cucumber-melon.webp",
-    "gallery": [
-      "/images/perfumes/aroma-body-mist-50ml-bbw-cucumber-melon.webp"
-    ],
-    "collection_id": null,
-    "collection_slug": "",
-    "concentration": "Aroma Body Mist",
-    "is_featured": false,
-    "is_published": true,
-    "created_at": "2026-11-04T15:08:52.38099+00:00",
-    "updated_at": "2026-11-05T05:44:02.299879+00:00"
-  },
-  {
-    "id": "ad37fb03-1080-4411-9152-c179b08edcf3",
-    "name": "VS Perfume 85ml - Forever Sexy",
-    "slug": "vs-perfume-85ml-forever-sexy",
-    "brand": "Victoria's Secret",
-    "sku": "VS85-FS",
-    "volume": "85ml",
-    "volume_display": "85 ml / 2.9 fl. oz.",
-    "category": "perfume",
-    "gender": "female",
-    "price": 200,
-    "original_price": 250,
-    "stock": 20,
-    "status": "in_stock",
-    "sold_count": 0,
-    "rating": 0,
-    "rating_count": 0,
-    "is_main_male": false,
-    "is_main_female": false,
-    "subtitle": "Eau de Parfum",
-    "description": "An alluring, sultry composition of juicy belladonna orange, solar gardenia petals, and provocative golden amber wrapped in seductive vanilla.",
-    "fragrance_family": "Amber Floral Seduction",
-    "scent_profile": "Belladonna orange & solar gardenia",
-    "top_notes": [
-      "Belladonna Orange",
-      "Coconut Water",
-      "Solar Rays"
-    ],
-    "heart_notes": [
-      "Solar Gardenia",
-      "Golden Amber Petals",
-      "Jasmine"
-    ],
-    "base_notes": [
-      "Pure Vanilla",
-      "Warm Amber",
-      "Sensual Musk"
-    ],
-    "image_url": "/images/perfumes/vs-perfume-85ml-forever-sexy.webp",
-    "gallery": [
-      "/images/perfumes/vs-perfume-85ml-forever-sexy.webp"
+      "https://xpguejvrmwkchzblzsvx.supabase.co/storage/v1/object/public/product-images/uploads/1793955682862-gemini_generated_image_1upgbf1upgbf1upg.webp"
     ],
     "collection_id": null,
     "collection_slug": "",
@@ -1197,11 +797,11 @@
     "is_featured": false,
     "is_published": true,
     "created_at": "2026-11-04T15:08:52.38099+00:00",
-    "updated_at": "2026-11-05T05:44:02.410293+00:00"
+    "updated_at": "2026-11-06T09:01:27.208333+00:00"
   },
   {
     "id": "c2b347bb-8aec-45b7-9617-17d02cf6fa5f",
-    "name": "VS Perfume 85ml - Lost in Fantasy",
+    "name": "Victoria Secret Lost in Fantasy",
     "slug": "vs-perfume-85ml-lost-in-fantasy",
     "brand": "Victoria's Secret",
     "sku": "VS85-LIF",
@@ -1237,9 +837,9 @@
       "Coconut Wood",
       "Golden Amber"
     ],
-    "image_url": "/images/perfumes/vs-perfume-85ml-lost-in-fantasy.webp",
+    "image_url": "https://xpguejvrmwkchzblzsvx.supabase.co/storage/v1/object/public/product-images/uploads/1793955166125-gemini_generated_image_g6skr4g6skr4g6sk.webp",
     "gallery": [
-      "/images/perfumes/vs-perfume-85ml-lost-in-fantasy.webp"
+      "https://xpguejvrmwkchzblzsvx.supabase.co/storage/v1/object/public/product-images/uploads/1793955166125-gemini_generated_image_g6skr4g6skr4g6sk.webp"
     ],
     "collection_id": null,
     "collection_slug": "",
@@ -1247,20 +847,120 @@
     "is_featured": false,
     "is_published": true,
     "created_at": "2026-11-04T15:08:52.38099+00:00",
-    "updated_at": "2026-11-05T05:44:02.524522+00:00"
+    "updated_at": "2026-11-06T08:52:50.593484+00:00"
+  },
+  {
+    "id": "473ce941-38d8-4bf0-aa52-12c746c1d4d8",
+    "name": "Victoria Secret Endless Love",
+    "slug": "aroma-body-mist-50ml-vs-endless-love",
+    "brand": "Victoria's Secret",
+    "sku": "CVS06",
+    "volume": "50ml",
+    "volume_display": "50 ml / 1.7 fl. oz.",
+    "category": "mist",
+    "gender": "female",
+    "price": 135,
+    "original_price": 180,
+    "stock": 20,
+    "status": "in_stock",
+    "sold_count": 0,
+    "rating": 0,
+    "rating_count": 0,
+    "is_main_male": false,
+    "is_main_female": false,
+    "subtitle": "Aroma Body Mist",
+    "description": "A beloved classic floral romantic mist of fresh blooming apple blossom, dewy summer peach nectar, and sweet ylang-ylang.",
+    "fragrance_family": "Romantic Floral",
+    "scent_profile": "Apple blossom petals & sweet peach nectar",
+    "top_notes": [
+      "Apple Blossom",
+      "Dewy Peach Nectar",
+      "Citrus Sparkle"
+    ],
+    "heart_notes": [
+      "Ylang Ylang",
+      "Star Jasmine",
+      "Lily Petals"
+    ],
+    "base_notes": [
+      "Soft Cashmere Musk",
+      "Clean Woods",
+      "Sweet Amber"
+    ],
+    "image_url": "https://xpguejvrmwkchzblzsvx.supabase.co/storage/v1/object/public/product-images/uploads/1793954952088-gemini_generated_image_tc4hpftc4hpftc4h.webp",
+    "gallery": [
+      "https://xpguejvrmwkchzblzsvx.supabase.co/storage/v1/object/public/product-images/uploads/1793954952088-gemini_generated_image_tc4hpftc4hpftc4h.webp"
+    ],
+    "collection_id": null,
+    "collection_slug": "",
+    "concentration": "Aroma Body Mist",
+    "is_featured": false,
+    "is_published": true,
+    "created_at": "2026-11-04T15:08:52.38099+00:00",
+    "updated_at": "2026-11-06T08:49:18.08492+00:00"
+  },
+  {
+    "id": "441e8424-6ed4-43cb-8371-438b3d7abf10",
+    "name": "Victoria Secret Strawberries & Champagne",
+    "slug": "aroma-body-mist-50ml-vs-strawberries-and-champagne",
+    "brand": "Victoria's Secret",
+    "sku": "CVS22",
+    "volume": "50ml",
+    "volume_display": "50 ml / 1.7 fl. oz.",
+    "category": "mist",
+    "gender": "female",
+    "price": 135,
+    "original_price": 180,
+    "stock": 20,
+    "status": "in_stock",
+    "sold_count": 0,
+    "rating": 0,
+    "rating_count": 0,
+    "is_main_male": false,
+    "is_main_female": false,
+    "subtitle": "Aroma Body Mist",
+    "description": "An intoxicating toast of ripe wild strawberries, fizzy pink champagne bubbles, blackcurrant cassis, and sweet musk.",
+    "fragrance_family": "Fruity Gourmand Fizz",
+    "scent_profile": "Wild strawberries & sparkling pink champagne",
+    "top_notes": [
+      "Wild Strawberries",
+      "Pink Champagne Fizz",
+      "Blackcurrant"
+    ],
+    "heart_notes": [
+      "Peach Blossom",
+      "Rose Petals",
+      "Water Hyacinth"
+    ],
+    "base_notes": [
+      "Sugar Crystals",
+      "Sweet Musk",
+      "Sandalwood"
+    ],
+    "image_url": "https://xpguejvrmwkchzblzsvx.supabase.co/storage/v1/object/public/product-images/uploads/1793955341075-gemini_generated_image_3nqvu33nqvu33nqv.webp",
+    "gallery": [
+      "https://xpguejvrmwkchzblzsvx.supabase.co/storage/v1/object/public/product-images/uploads/1793955341075-gemini_generated_image_3nqvu33nqvu33nqv.webp"
+    ],
+    "collection_id": null,
+    "collection_slug": "",
+    "concentration": "Aroma Body Mist",
+    "is_featured": false,
+    "is_published": true,
+    "created_at": "2026-11-04T15:08:52.38099+00:00",
+    "updated_at": "2026-11-06T08:55:44.976257+00:00"
   },
   {
     "id": "646a44ef-3d00-46a8-972f-69aefb350ecb",
-    "name": "VS Perfume 85ml - Love Spell",
+    "name": "Victoria Secret Love Spell",
     "slug": "vs-perfume-85ml-love-spell",
     "brand": "Victoria's Secret",
-    "sku": "VS85-LS",
-    "volume": "85ml",
-    "volume_display": "85 ml / 2.9 fl. oz.",
-    "category": "perfume",
+    "sku": "CVS11",
+    "volume": "50ml",
+    "volume_display": "50 ml / 1.7 fl. oz.",
+    "category": "mist",
     "gender": "female",
-    "price": 200,
-    "original_price": 250,
+    "price": 135,
+    "original_price": 180,
     "stock": 20,
     "status": "in_stock",
     "sold_count": 0,
@@ -1268,10 +968,10 @@
     "rating_count": 0,
     "is_main_male": false,
     "is_main_female": true,
-    "subtitle": "Eau de Parfum",
+    "subtitle": "Aroma Body Mist",
     "description": "The deluxe concentrated Eau de Parfum edition of Love Spell. Rich cherry blossom absolute, juicy Georgia peach, red apple, and lingering white cedarwood.",
     "fragrance_family": "Fruity Floral Luxe",
-    "scent_profile": "Concentrated cherry blossom & peach",
+    "scent_profile": "Cherry blossom & Georgia peach nectar",
     "top_notes": [
       "Cherry Blossom Absolute",
       "Georgia Peach",
@@ -1287,59 +987,9 @@
       "Soft Musk",
       "Tamarind Glaze"
     ],
-    "image_url": "/images/perfumes/vs-perfume-85ml-love-spell.webp",
+    "image_url": "https://xpguejvrmwkchzblzsvx.supabase.co/storage/v1/object/public/product-images/uploads/1793952828454-gemini_generated_image_7316gn7316gn7316.webp",
     "gallery": [
-      "/images/perfumes/vs-perfume-85ml-love-spell.webp"
-    ],
-    "collection_id": null,
-    "collection_slug": "",
-    "concentration": "Eau de Parfum",
-    "is_featured": true,
-    "is_published": true,
-    "created_at": "2026-11-04T15:08:52.38099+00:00",
-    "updated_at": "2026-11-05T05:44:02.637929+00:00"
-  },
-  {
-    "id": "92914b9c-343b-4762-a816-bdc0a24b4fa2",
-    "name": "D&G Cologne - Light Blue",
-    "slug": "aroma-body-mist-50ml-dg-cologne-light-blue",
-    "brand": "Dolce & Gabbana",
-    "sku": "DG-LB-50",
-    "volume": "50ml",
-    "volume_display": "50 ml / 1.7 fl. oz.",
-    "category": "mist",
-    "gender": "male",
-    "price": 135,
-    "original_price": 180,
-    "stock": 20,
-    "status": "in_stock",
-    "sold_count": 0,
-    "rating": 0,
-    "rating_count": 0,
-    "is_main_male": false,
-    "is_main_female": false,
-    "subtitle": "Aroma Body Mist",
-    "description": "The quintessential Mediterranean summer captured in a mist: sun-drenched Sicilian citron, crisp Granny Smith apple, fresh bluebell, and warm cedarwood amber.",
-    "fragrance_family": "Citrus Woody Marine",
-    "scent_profile": "Sicilian lemon, aquatic breeze, sun-warmed cedar",
-    "top_notes": [
-      "Sicilian Lemon",
-      "Crisp Green Apple",
-      "Bluebell"
-    ],
-    "heart_notes": [
-      "Bamboo Mist",
-      "White Rose",
-      "Jasmine Sambac"
-    ],
-    "base_notes": [
-      "Virginian Cedar",
-      "Warm Amber",
-      "Sensual Musk"
-    ],
-    "image_url": "/images/perfumes/aroma-body-mist-50ml-dg-cologne-light-blue.webp",
-    "gallery": [
-      "/images/perfumes/aroma-body-mist-50ml-dg-cologne-light-blue.webp"
+      "https://xpguejvrmwkchzblzsvx.supabase.co/storage/v1/object/public/product-images/uploads/1793952828454-gemini_generated_image_7316gn7316gn7316.webp"
     ],
     "collection_id": null,
     "collection_slug": "",
@@ -1347,7 +997,57 @@
     "is_featured": true,
     "is_published": true,
     "created_at": "2026-11-04T15:08:52.38099+00:00",
-    "updated_at": "2026-11-05T05:44:02.746137+00:00"
+    "updated_at": "2026-11-06T08:13:52.028477+00:00"
+  },
+  {
+    "id": "ad37fb03-1080-4411-9152-c179b08edcf3",
+    "name": "Victoria Secret Forever Sexy",
+    "slug": "vs-perfume-85ml-forever-sexy",
+    "brand": "Victoria's Secret",
+    "sku": "VS85-FS",
+    "volume": "85ml",
+    "volume_display": "85 ml / 2.9 fl. oz.",
+    "category": "perfume",
+    "gender": "female",
+    "price": 200,
+    "original_price": 250,
+    "stock": 20,
+    "status": "in_stock",
+    "sold_count": 0,
+    "rating": 0,
+    "rating_count": 0,
+    "is_main_male": false,
+    "is_main_female": false,
+    "subtitle": "Eau de Parfum",
+    "description": "An alluring, sultry composition of juicy belladonna orange, solar gardenia petals, and provocative golden amber wrapped in seductive vanilla.",
+    "fragrance_family": "Amber Floral Seduction",
+    "scent_profile": "Belladonna orange & solar gardenia",
+    "top_notes": [
+      "Belladonna Orange",
+      "Coconut Water",
+      "Solar Rays"
+    ],
+    "heart_notes": [
+      "Solar Gardenia",
+      "Golden Amber Petals",
+      "Jasmine"
+    ],
+    "base_notes": [
+      "Pure Vanilla",
+      "Warm Amber",
+      "Sensual Musk"
+    ],
+    "image_url": "https://xpguejvrmwkchzblzsvx.supabase.co/storage/v1/object/public/product-images/uploads/1793954522194-gemini_generated_image_s07l7ys07l7ys07l.webp",
+    "gallery": [
+      "https://xpguejvrmwkchzblzsvx.supabase.co/storage/v1/object/public/product-images/uploads/1793954522194-gemini_generated_image_s07l7ys07l7ys07l.webp"
+    ],
+    "collection_id": null,
+    "collection_slug": "",
+    "concentration": "Eau de Parfum",
+    "is_featured": false,
+    "is_published": true,
+    "created_at": "2026-11-04T15:08:52.38099+00:00",
+    "updated_at": "2026-11-06T08:42:07.867876+00:00"
   },
   {
     "id": "38595b7c-0929-4ff3-9620-a37d1fcbcb1b",
@@ -1397,20 +1097,170 @@
     "is_featured": false,
     "is_published": true,
     "created_at": "2026-11-04T15:08:52.38099+00:00",
-    "updated_at": "2026-11-05T05:44:01.577941+00:00"
+    "updated_at": "2026-11-05T15:11:19.808411+00:00"
+  },
+  {
+    "id": "92914b9c-343b-4762-a816-bdc0a24b4fa2",
+    "name": "Dolce&Gabbana Light Blue",
+    "slug": "aroma-body-mist-50ml-dg-cologne-light-blue",
+    "brand": "Dolce & Gabbana",
+    "sku": "DG-LB-50",
+    "volume": "50ml",
+    "volume_display": "50 ml / 1.7 fl. oz.",
+    "category": "mist",
+    "gender": "male",
+    "price": 135,
+    "original_price": 180,
+    "stock": 20,
+    "status": "in_stock",
+    "sold_count": 0,
+    "rating": 0,
+    "rating_count": 0,
+    "is_main_male": false,
+    "is_main_female": false,
+    "subtitle": "Aroma Body Mist",
+    "description": "The quintessential Mediterranean summer captured in a mist: sun-drenched Sicilian citron, crisp Granny Smith apple, fresh bluebell, and warm cedarwood amber.",
+    "fragrance_family": "Citrus Woody Marine",
+    "scent_profile": "Sicilian lemon, aquatic breeze, sun-warmed cedar",
+    "top_notes": [
+      "Sicilian Lemon",
+      "Crisp Green Apple",
+      "Bluebell"
+    ],
+    "heart_notes": [
+      "Bamboo Mist",
+      "White Rose",
+      "Jasmine Sambac"
+    ],
+    "base_notes": [
+      "Virginian Cedar",
+      "Warm Amber",
+      "Sensual Musk"
+    ],
+    "image_url": "https://xpguejvrmwkchzblzsvx.supabase.co/storage/v1/object/public/product-images/uploads/1793953811024-gemini_generated_image_jw5n0jjw5n0jjw5n.webp",
+    "gallery": [
+      "https://xpguejvrmwkchzblzsvx.supabase.co/storage/v1/object/public/product-images/uploads/1793953811024-gemini_generated_image_jw5n0jjw5n0jjw5n.webp"
+    ],
+    "collection_id": null,
+    "collection_slug": "",
+    "concentration": "Aroma Body Mist",
+    "is_featured": true,
+    "is_published": true,
+    "created_at": "2026-11-04T15:08:52.38099+00:00",
+    "updated_at": "2026-11-06T08:30:15.984298+00:00"
+  },
+  {
+    "id": "08ed00cc-1fcb-417f-9c96-bbdc4a23a72b",
+    "name": "Elizabeth Arden - Green Tea",
+    "slug": "aroma-body-mist-50ml-elizabeth-arden-green-tea",
+    "brand": "Elizabeth Arden",
+    "sku": "EA-GT-50",
+    "volume": "50ml",
+    "volume_display": "50 ml / 1.7 fl. oz.",
+    "category": "mist",
+    "gender": "unisex",
+    "price": 135,
+    "original_price": 180,
+    "stock": 20,
+    "status": "in_stock",
+    "sold_count": 0,
+    "rating": 0,
+    "rating_count": 0,
+    "is_main_male": false,
+    "is_main_female": false,
+    "subtitle": "Aroma Body Mist",
+    "description": "An uplifting burst of clean botanical freshness featuring crisp crushed green tea leaves, sparkling Italian bergamot, fresh rhubarb, and cooling peppermint dew.",
+    "fragrance_family": "Citrus Aromatic Green",
+    "scent_profile": "Steeped green tea leaves & cool crushed mint",
+    "top_notes": [
+      "Bergamot Mist",
+      "Lemon Zest",
+      "Cool Peppermint"
+    ],
+    "heart_notes": [
+      "Green Tea Extract",
+      "Jasmine Petals",
+      "Celery Seed"
+    ],
+    "base_notes": [
+      "Clean Oakmoss",
+      "Soft Amber",
+      "Transparent Musk"
+    ],
+    "image_url": "https://xpguejvrmwkchzblzsvx.supabase.co/storage/v1/object/public/product-images/uploads/1793956550182-gemini_generated_image_ho6nl6ho6nl6ho6n.webp",
+    "gallery": [
+      "https://xpguejvrmwkchzblzsvx.supabase.co/storage/v1/object/public/product-images/uploads/1793956550182-gemini_generated_image_ho6nl6ho6nl6ho6n.webp"
+    ],
+    "collection_id": null,
+    "collection_slug": "",
+    "concentration": "Aroma Body Mist",
+    "is_featured": false,
+    "is_published": true,
+    "created_at": "2026-11-04T15:08:52.38099+00:00",
+    "updated_at": "2026-11-06T09:15:55.132849+00:00"
+  },
+  {
+    "id": "03c0b6b7-4364-4c27-8564-771ecbcbac06",
+    "name": "Calvin Klein Eternity for Men",
+    "slug": "aroma-body-mist-50ml-ck-eternity",
+    "brand": "Calvin Klein",
+    "sku": "CCK02",
+    "volume": "50ml",
+    "volume_display": "50 ml / 1.7 fl. oz.",
+    "category": "mist",
+    "gender": "male",
+    "price": 135,
+    "original_price": 180,
+    "stock": 20,
+    "status": "in_stock",
+    "sold_count": 2,
+    "rating": 0,
+    "rating_count": 0,
+    "is_main_male": true,
+    "is_main_female": false,
+    "subtitle": "Aroma Body Mist",
+    "description": "An iconic, timeless masculine fougère that blends crisp mandarin orange, aromatic French lavender, clary sage, crushed geranium, and deep smoky sandalwood.",
+    "fragrance_family": "Aromatic Fougère",
+    "scent_profile": "French lavender, clary sage & clean vetiver",
+    "top_notes": [
+      "Mandarin Orange",
+      "French Lavender",
+      "Green Botanicals"
+    ],
+    "heart_notes": [
+      "Clary Sage",
+      "Crushed Geranium",
+      "Sweet Basil"
+    ],
+    "base_notes": [
+      "Sandalwood",
+      "Haitian Vetiver",
+      "Rosewood Amber"
+    ],
+    "image_url": "https://xpguejvrmwkchzblzsvx.supabase.co/storage/v1/object/public/product-images/uploads/1793950450906-gemini_generated_image_77hu9b77hu9b77hu.webp",
+    "gallery": [
+      "https://xpguejvrmwkchzblzsvx.supabase.co/storage/v1/object/public/product-images/uploads/1793950450906-gemini_generated_image_77hu9b77hu9b77hu.webp"
+    ],
+    "collection_id": null,
+    "collection_slug": "",
+    "concentration": "Aroma Body Mist",
+    "is_featured": true,
+    "is_published": true,
+    "created_at": "2026-11-04T15:08:52.38099+00:00",
+    "updated_at": "2026-11-06T07:34:16.9696+00:00"
   },
   {
     "id": "5a38f511-4851-4bba-a9b3-e075888d661c",
-    "name": "VS Perfume 85ml - Sweet Temptation",
+    "name": "Sweet Temptation",
     "slug": "vs-perfume-85ml-sweet-temptation",
     "brand": "Victoria's Secret",
-    "sku": "VS85-ST",
-    "volume": "85ml",
-    "volume_display": "85 ml / 2.9 fl. oz.",
-    "category": "perfume",
+    "sku": "CVS24",
+    "volume": "50ml",
+    "volume_display": "50 ml / 1.7 fl. oz.",
+    "category": "mist",
     "gender": "female",
-    "price": 200,
-    "original_price": 250,
+    "price": 135,
+    "original_price": 180,
     "stock": 20,
     "status": "in_stock",
     "sold_count": 0,
@@ -1418,10 +1268,10 @@
     "rating_count": 0,
     "is_main_male": false,
     "is_main_female": true,
-    "subtitle": "Eau de Parfum",
+    "subtitle": "Aroma Body Mist",
     "description": "A rich, long-lasting concentrated Eau de Parfum of velvety apricot nectar, sun-ripened grapefruit blossom, and warm whipped sugar cream.",
     "fragrance_family": "Fruity Floral Gourmand",
-    "scent_profile": "Velvety apricot nectar & sugar cream",
+    "scent_profile": "Warm apricot nectar & pink grapefruit blossom",
     "top_notes": [
       "Velvety Apricot Nectar",
       "Grapefruit Blossom",
@@ -1437,24 +1287,24 @@
       "Warm Amber",
       "Clean Musk"
     ],
-    "image_url": "/images/perfumes/vs-perfume-85ml-sweet-temptation.webp",
+    "image_url": "https://xpguejvrmwkchzblzsvx.supabase.co/storage/v1/object/public/product-images/uploads/1793951718600-gemini_generated_image_vdvhb7vdvhb7vdvh.webp",
     "gallery": [
-      "/images/perfumes/vs-perfume-85ml-sweet-temptation.webp"
+      "https://xpguejvrmwkchzblzsvx.supabase.co/storage/v1/object/public/product-images/uploads/1793951718600-gemini_generated_image_vdvhb7vdvhb7vdvh.webp"
     ],
     "collection_id": null,
     "collection_slug": "",
-    "concentration": "Eau de Parfum",
+    "concentration": "Aroma Body Mist",
     "is_featured": true,
     "is_published": true,
     "created_at": "2026-11-04T15:08:52.38099+00:00",
-    "updated_at": "2026-11-05T05:44:03.078752+00:00"
+    "updated_at": "2026-11-06T07:55:23.983423+00:00"
   },
   {
-    "id": "2abc6bfd-9198-4965-95e6-32c792df5307",
-    "name": "VS Perfume 85ml - Pear Glaze",
-    "slug": "vs-perfume-85ml-pear-glaze",
+    "id": "648d5137-54a1-416d-982a-044320501c2d",
+    "name": "Victoria Secret Summer Sexy",
+    "slug": "vs-perfume-85ml-summer-sexy",
     "brand": "Victoria's Secret",
-    "sku": "VS85-PG",
+    "sku": "VS85-SS",
     "volume": "85ml",
     "volume_display": "85 ml / 2.9 fl. oz.",
     "category": "perfume",
@@ -1469,27 +1319,27 @@
     "is_main_male": false,
     "is_main_female": false,
     "subtitle": "Eau de Parfum",
-    "description": "Delightfully crisp and glazed. Sugared Bartlett pear, dewy cassis, sweet apple blossoms, and honeyed floral nectar.",
-    "fragrance_family": "Crisp Fruity Sweet",
-    "scent_profile": "Sugared pear & honeyed glaze",
+    "description": "Endless golden hour on a sunlit beach. Sun-drenched coconut water, golden nectar, exotic tiare flower, and warm beach sand amber.",
+    "fragrance_family": "Solar Floral Coconut",
+    "scent_profile": "Sunlit coconut & beach sand amber",
     "top_notes": [
-      "Sugared Pear",
-      "Dewy Cassis",
-      "Crisp Green Apple"
+      "Coconut Water",
+      "Golden Nectar",
+      "Sunburst Bergamot"
     ],
     "heart_notes": [
-      "Honey Blossom",
-      "Peony Petals",
-      "Water Lily"
+      "Tiare Flower",
+      "Solar Jasmine",
+      "Frangipani"
     ],
     "base_notes": [
-      "Clean Amber",
-      "Vanilla Sugar",
-      "Musk"
+      "Beach Sand Amber",
+      "Vanilla Orchid",
+      "Driftwood"
     ],
-    "image_url": "/images/perfumes/vs-perfume-85ml-pear-glaze.webp",
+    "image_url": "https://xpguejvrmwkchzblzsvx.supabase.co/storage/v1/object/public/product-images/uploads/1793954264350-gemini_generated_image_pnaphhpnaphhpnap.webp",
     "gallery": [
-      "/images/perfumes/vs-perfume-85ml-pear-glaze.webp"
+      "https://xpguejvrmwkchzblzsvx.supabase.co/storage/v1/object/public/product-images/uploads/1793954264350-gemini_generated_image_pnaphhpnaphhpnap.webp"
     ],
     "collection_id": null,
     "collection_slug": "",
@@ -1497,11 +1347,61 @@
     "is_featured": false,
     "is_published": true,
     "created_at": "2026-11-04T15:08:52.38099+00:00",
-    "updated_at": "2026-11-05T05:43:59.109542+00:00"
+    "updated_at": "2026-11-06T08:37:50.683494+00:00"
+  },
+  {
+    "id": "0bedc736-b779-401d-a508-fc4ce6c9b9b5",
+    "name": "Victoria Secret Strawberries & Champagne",
+    "slug": "vs-perfume-85ml-strawberries-and-champagne",
+    "brand": "Victoria's Secret",
+    "sku": "CVS22",
+    "volume": "50ml",
+    "volume_display": "50 ml / 1.7 fl. oz.",
+    "category": "mist",
+    "gender": "female",
+    "price": 135,
+    "original_price": 180,
+    "stock": 20,
+    "status": "in_stock",
+    "sold_count": 0,
+    "rating": 0,
+    "rating_count": 0,
+    "is_main_male": false,
+    "is_main_female": false,
+    "subtitle": "Aroma Body Mist",
+    "description": "The decadent concentrated flacon edition of Strawberries & Champagne. Ultra-sparkling wild berry nectar, fizzy vintage rosé, and crystalline sugar musk.",
+    "fragrance_family": "Sparkling Fruity Rosé",
+    "scent_profile": "Wild strawberries & sparkling pink champagne",
+    "top_notes": [
+      "Wild Strawberry Nectar",
+      "Vintage Champagne Rosé",
+      "Blackcurrant"
+    ],
+    "heart_notes": [
+      "Peach Nectar",
+      "Rose Petals",
+      "Water Hyacinth"
+    ],
+    "base_notes": [
+      "Sugar Crystals",
+      "Sweet Amber",
+      "Soft Cedar"
+    ],
+    "image_url": "https://xpguejvrmwkchzblzsvx.supabase.co/storage/v1/object/public/product-images/uploads/1793955280189-gemini_generated_image_auvw92auvw92auvw.webp",
+    "gallery": [
+      "https://xpguejvrmwkchzblzsvx.supabase.co/storage/v1/object/public/product-images/uploads/1793955280189-gemini_generated_image_auvw92auvw92auvw.webp"
+    ],
+    "collection_id": null,
+    "collection_slug": "",
+    "concentration": "Aroma Body Mist",
+    "is_featured": false,
+    "is_published": true,
+    "created_at": "2026-11-04T15:08:52.38099+00:00",
+    "updated_at": "2026-11-06T08:54:43.833502+00:00"
   },
   {
     "id": "631b04b7-aa95-497e-a95b-f68d1e2f4fbf",
-    "name": "VS Perfume 85ml - Pink Chiffon",
+    "name": "Victoria Secret Pink Chiffon",
     "slug": "vs-perfume-85ml-pink-chiffon",
     "brand": "Victoria's Secret",
     "sku": "VS85-PC",
@@ -1537,9 +1437,9 @@
       "Creamy Sandalwood",
       "Chiffon Musk"
     ],
-    "image_url": "/images/perfumes/vs-perfume-85ml-pink-chiffon.webp",
+    "image_url": "https://xpguejvrmwkchzblzsvx.supabase.co/storage/v1/object/public/product-images/uploads/1793955436062-gemini_generated_image_qt2nx1qt2nx1qt2n.webp",
     "gallery": [
-      "/images/perfumes/vs-perfume-85ml-pink-chiffon.webp"
+      "https://xpguejvrmwkchzblzsvx.supabase.co/storage/v1/object/public/product-images/uploads/1793955436062-gemini_generated_image_qt2nx1qt2nx1qt2n.webp"
     ],
     "collection_id": null,
     "collection_slug": "",
@@ -1547,11 +1447,111 @@
     "is_featured": false,
     "is_published": true,
     "created_at": "2026-11-04T15:08:52.38099+00:00",
-    "updated_at": "2026-11-05T05:43:59.358747+00:00"
+    "updated_at": "2026-11-06T08:57:20.313035+00:00"
+  },
+  {
+    "id": "80550fde-77b7-4dc1-93ed-e4e5b177177c",
+    "name": "VS - Vanilla Lace (CVS25)",
+    "slug": "aroma-body-mist-50ml-vs-vanilla-lace",
+    "brand": "Victoria's Secret",
+    "sku": "CVS25",
+    "volume": "50ml",
+    "volume_display": "50 ml / 1.7 fl. oz.",
+    "category": "mist",
+    "gender": "female",
+    "price": 135,
+    "original_price": 180,
+    "stock": 20,
+    "status": "in_stock",
+    "sold_count": 0,
+    "rating": 0,
+    "rating_count": 0,
+    "is_main_male": false,
+    "is_main_female": false,
+    "subtitle": "Aroma Body Mist",
+    "description": "An iconic, comforting warm vanilla mist enveloped in velvety sensual orchid petals, creamy honeyed tonka, and sheer skin musk.",
+    "fragrance_family": "Warm Amber Vanilla",
+    "scent_profile": "Pure bourbon vanilla & sensual orchid petals",
+    "top_notes": [
+      "Bourbon Vanilla",
+      "Sugar Orchid",
+      "Whipped Cream"
+    ],
+    "heart_notes": [
+      "Sensual White Petals",
+      "Honeyed Tonka",
+      "Almond Blossom"
+    ],
+    "base_notes": [
+      "Golden Amber",
+      "Skin Musk",
+      "Creamy Sandalwood"
+    ],
+    "image_url": "https://xpguejvrmwkchzblzsvx.supabase.co/storage/v1/object/public/product-images/uploads/1793890983131-375x500-122423.jpg",
+    "gallery": [
+      "https://xpguejvrmwkchzblzsvx.supabase.co/storage/v1/object/public/product-images/uploads/1793890983131-375x500-122423.jpg"
+    ],
+    "collection_id": null,
+    "collection_slug": "",
+    "concentration": "Aroma Body Mist",
+    "is_featured": false,
+    "is_published": true,
+    "created_at": "2026-11-04T15:08:52.38099+00:00",
+    "updated_at": "2026-11-05T15:11:20.029093+00:00"
+  },
+  {
+    "id": "2abc6bfd-9198-4965-95e6-32c792df5307",
+    "name": "Victoria Secret Pear Glaze",
+    "slug": "vs-perfume-85ml-pear-glaze",
+    "brand": "Victoria's Secret",
+    "sku": "VS85-PG",
+    "volume": "85ml",
+    "volume_display": "85 ml / 2.9 fl. oz.",
+    "category": "perfume",
+    "gender": "female",
+    "price": 200,
+    "original_price": 250,
+    "stock": 20,
+    "status": "in_stock",
+    "sold_count": 0,
+    "rating": 0,
+    "rating_count": 0,
+    "is_main_male": false,
+    "is_main_female": false,
+    "subtitle": "Eau de Parfum",
+    "description": "Delightfully crisp and glazed. Sugared Bartlett pear, dewy cassis, sweet apple blossoms, and honeyed floral nectar.",
+    "fragrance_family": "Crisp Fruity Sweet",
+    "scent_profile": "Sugared pear & honeyed glaze",
+    "top_notes": [
+      "Sugared Pear",
+      "Dewy Cassis",
+      "Crisp Green Apple"
+    ],
+    "heart_notes": [
+      "Honey Blossom",
+      "Peony Petals",
+      "Water Lily"
+    ],
+    "base_notes": [
+      "Clean Amber",
+      "Vanilla Sugar",
+      "Musk"
+    ],
+    "image_url": "https://xpguejvrmwkchzblzsvx.supabase.co/storage/v1/object/public/product-images/uploads/1793956205021-gemini_generated_image_91dt9591dt9591dt.webp",
+    "gallery": [
+      "https://xpguejvrmwkchzblzsvx.supabase.co/storage/v1/object/public/product-images/uploads/1793956205021-gemini_generated_image_91dt9591dt9591dt.webp"
+    ],
+    "collection_id": null,
+    "collection_slug": "",
+    "concentration": "Eau de Parfum",
+    "is_featured": false,
+    "is_published": true,
+    "created_at": "2026-11-04T15:08:52.38099+00:00",
+    "updated_at": "2026-11-06T09:10:09.498978+00:00"
   },
   {
     "id": "22c52323-40d3-4cfd-ac71-7336d84da03c",
-    "name": "Clinique - Happy",
+    "name": "Clinique Happy For Men",
     "slug": "aroma-body-mist-50ml-clinique-happy",
     "brand": "Clinique",
     "sku": "CL-HAP-50",
@@ -1563,7 +1563,7 @@
     "original_price": 180,
     "stock": 20,
     "status": "in_stock",
-    "sold_count": 0,
+    "sold_count": 1,
     "rating": 0,
     "rating_count": 0,
     "is_main_male": true,
@@ -1587,9 +1587,9 @@
       "Transparent Musk",
       "Soft Amber"
     ],
-    "image_url": "https://xpguejvrmwkchzblzsvx.supabase.co/storage/v1/object/public/product-images/uploads/1793854328980-lookph-70020239-front-zoom_50047002-nrplstno-zoo.avif",
+    "image_url": "https://xpguejvrmwkchzblzsvx.supabase.co/storage/v1/object/public/product-images/uploads/1793949616438-gemini_generated_image_84f5d184f5d184f5.webp",
     "gallery": [
-      "https://xpguejvrmwkchzblzsvx.supabase.co/storage/v1/object/public/product-images/uploads/1793854328980-lookph-70020239-front-zoom_50047002-nrplstno-zoo.avif"
+      "https://xpguejvrmwkchzblzsvx.supabase.co/storage/v1/object/public/product-images/uploads/1793949616438-gemini_generated_image_84f5d184f5d184f5.webp"
     ],
     "collection_id": null,
     "collection_slug": "",
@@ -1597,58 +1597,7 @@
     "is_featured": true,
     "is_published": true,
     "created_at": "2026-11-04T15:06:39.603644+00:00",
-    "updated_at": "2026-11-05T05:44:03.188409+00:00"
-  },
-  {
-    "id": "b9420c81-6188-4f7c-a69d-07c7e21827f4",
-    "name": "Velvet Amber & Sakura Dusk",
-    "slug": "velvet-amber-and-sakura-dusk",
-    "brand": "SCENTS & MISTS",
-    "sku": "SCENT-01",
-    "volume": "50ml",
-    "volume_display": "50 ml / 1.7 fl. oz.",
-    "category": "mist",
-    "gender": "female",
-    "price": 135,
-    "original_price": 180,
-    "stock": 20,
-    "status": "in_stock",
-    "sold_count": 0,
-    "rating": 0,
-    "rating_count": 0,
-    "is_main_male": false,
-    "is_main_female": false,
-    "subtitle": "Aroma Body Mist",
-    "description": "As twilight settles over mountain valleys, delicate blossom petals meet warm resinous amber and toasted tonka bean.",
-    "fragrance_family": "Amber Floral",
-    "scent_profile": "",
-    "top_notes": [
-      "Pink Peppercorn",
-      "Bitter Almond Blossom",
-      "Plum Nectar"
-    ],
-    "heart_notes": [
-      "Night-Blooming Sakura",
-      "Damask Rose Absolute",
-      "Saffron Thread"
-    ],
-    "base_notes": [
-      "Labdanum Resin",
-      "Sandalwood Heart",
-      "Roasted Tonka"
-    ],
-    "image_url": "/images/products/velvet-amber-sakura-dusk.webp",
-    "gallery": [
-      "/images/products/velvet-amber-sakura-dusk.webp",
-      "/images/products/morning-cedar-mist.webp"
-    ],
-    "collection_id": "11111111-1111-1111-1111-111111111103",
-    "collection_slug": "",
-    "concentration": "Aroma Body Mist",
-    "is_featured": false,
-    "is_published": true,
-    "created_at": "2026-11-03T02:06:49.411462+00:00",
-    "updated_at": "2026-11-05T05:44:03.407724+00:00"
+    "updated_at": "2026-11-06T07:22:08.225724+00:00"
   },
   {
     "id": "5d15a6eb-b8cc-47b5-81d1-2fac3cb1a2fc",
@@ -1699,7 +1648,7 @@
     "is_featured": false,
     "is_published": true,
     "created_at": "2026-11-03T02:06:49.411462+00:00",
-    "updated_at": "2026-11-05T05:44:03.518758+00:00"
+    "updated_at": "2026-11-05T15:11:20.594938+00:00"
   },
   {
     "id": "446583dc-abc3-4fbf-bc92-e5e87b775f20",
@@ -1733,9 +1682,9 @@
     "base_notes": [
       "Cedarwood"
     ],
-    "image_url": "/images/products/sakura-mountain-mist.webp",
+    "image_url": "https://xpguejvrmwkchzblzsvx.supabase.co/storage/v1/object/public/product-images/uploads/1793953953754-gemini_generated_image_kg0l4bkg0l4bkg0l.webp",
     "gallery": [
-      "/images/products/sakura-mountain-mist.webp"
+      "https://xpguejvrmwkchzblzsvx.supabase.co/storage/v1/object/public/product-images/uploads/1793953953754-gemini_generated_image_kg0l4bkg0l4bkg0l.webp"
     ],
     "collection_id": null,
     "collection_slug": "",
@@ -1743,7 +1692,7 @@
     "is_featured": true,
     "is_published": true,
     "created_at": "2026-11-03T02:06:49.411462+00:00",
-    "updated_at": "2026-11-05T05:44:03.298781+00:00"
+    "updated_at": "2026-11-06T08:32:38.386407+00:00"
   },
   {
     "id": "04b6452c-a798-4d29-8775-06ad5858579e",
@@ -1794,6 +1743,57 @@
     "is_featured": false,
     "is_published": true,
     "created_at": "2026-11-03T02:06:49.411462+00:00",
-    "updated_at": "2026-11-05T05:44:03.62948+00:00"
+    "updated_at": "2026-11-05T15:11:21.002809+00:00"
+  },
+  {
+    "id": "b9420c81-6188-4f7c-a69d-07c7e21827f4",
+    "name": "Velvet Amber & Sakura Dusk",
+    "slug": "velvet-amber-and-sakura-dusk",
+    "brand": "SCENTS & MISTS",
+    "sku": "SCENT-01",
+    "volume": "50ml",
+    "volume_display": "50 ml / 1.7 fl. oz.",
+    "category": "mist",
+    "gender": "female",
+    "price": 135,
+    "original_price": 180,
+    "stock": 20,
+    "status": "in_stock",
+    "sold_count": 0,
+    "rating": 0,
+    "rating_count": 0,
+    "is_main_male": false,
+    "is_main_female": false,
+    "subtitle": "Aroma Body Mist",
+    "description": "As twilight settles over mountain valleys, delicate blossom petals meet warm resinous amber and toasted tonka bean.",
+    "fragrance_family": "Amber Floral",
+    "scent_profile": "",
+    "top_notes": [
+      "Pink Peppercorn",
+      "Bitter Almond Blossom",
+      "Plum Nectar"
+    ],
+    "heart_notes": [
+      "Night-Blooming Sakura",
+      "Damask Rose Absolute",
+      "Saffron Thread"
+    ],
+    "base_notes": [
+      "Labdanum Resin",
+      "Sandalwood Heart",
+      "Roasted Tonka"
+    ],
+    "image_url": "/images/products/velvet-amber-sakura-dusk.webp",
+    "gallery": [
+      "/images/products/velvet-amber-sakura-dusk.webp",
+      "/images/products/morning-cedar-mist.webp"
+    ],
+    "collection_id": "11111111-1111-1111-1111-111111111103",
+    "collection_slug": "",
+    "concentration": "Aroma Body Mist",
+    "is_featured": false,
+    "is_published": true,
+    "created_at": "2026-11-03T02:06:49.411462+00:00",
+    "updated_at": "2026-11-05T15:11:20.480595+00:00"
   }
 ]

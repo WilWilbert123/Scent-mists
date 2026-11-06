@@ -40,7 +40,11 @@ class SceneErrorBoundary extends Component<
 export function PerfumeScene() {
   const { theme, mounted } = useTheme();
   const isMobile = useMediaQuery("(max-width: 768px)");
+  const isDark = theme === "dark";
   const [webGlSupported, setWebGlSupported] = useState<boolean>(true);
+
+  // In dark mode, slightly adjust camera elevation to match lowered stone ledge
+  const cameraY = isDark ? (isMobile ? -0.16 : -0.14) : 0.00;
 
   useEffect(() => {
     try {
@@ -67,15 +71,15 @@ export function PerfumeScene() {
     <SceneErrorBoundary fallback={<PerfumeModelFallback />}>
       <Suspense fallback={<PerfumeModelLoader />}>
         <div
-          className="relative h-[44vh] min-h-[320px] max-h-[440px] sm:h-[600px] lg:h-[720px] w-full select-none overflow-visible"
+          className="relative h-[50vh] min-h-[350px] max-h-[490px] sm:h-[650px] lg:h-[800px] w-full select-none overflow-visible"
           aria-label="Interactive 3D SCENTS & MISTS perfume flacon. Drag to rotate."
           role="img"
         >
           <Canvas
             dpr={isMobile ? [1, 1.25] : [1, 2]}
             camera={{
-              position: [isMobile ? 0.10 : 0.12, 0.04, 4.42],
-              fov: 38,
+              position: [isMobile ? 0.10 : 0.12, cameraY, 4.45],
+              fov: 42,
             }}
             gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
           >

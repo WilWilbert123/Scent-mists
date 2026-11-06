@@ -2,7 +2,7 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import type { Metadata } from "next";
-import { ArrowRight, Layers, Sparkles } from "lucide-react";
+import { ArrowRight, Layers } from "lucide-react";
 import { constructMetadata } from "@/lib/metadata";
 import { getPublicCollectionsAction } from "@/actions/collection.actions";
 import { getBannersContentAction } from "@/actions/content.actions";
@@ -89,7 +89,6 @@ export default async function CollectionsPage() {
             >
               <div className="space-y-2">
                 <div className="inline-flex items-center gap-2 text-accent">
-                  <Sparkles className="h-3.5 w-3.5" aria-hidden="true" />
                   <span className="eyebrow-label">House Dispatch</span>
                 </div>
                 <h3 className="font-serif text-xl text-foreground">

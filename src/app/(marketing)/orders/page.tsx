@@ -14,7 +14,6 @@ import {
   CheckCircle2,
   Truck,
   CheckCheck,
-  Sparkles,
   ChevronRight,
 } from "lucide-react";
 import {
@@ -334,8 +333,8 @@ export default function OrderSearchPage() {
                                   isCurrent
                                     ? "border-accent bg-accent text-accent-foreground font-bold ring-4 ring-accent/20 scale-110"
                                     : isDone
-                                    ? "border-accent bg-accent/20 text-accent font-semibold"
-                                    : "border-border bg-surface text-muted-foreground"
+                                      ? "border-accent bg-accent/20 text-accent font-semibold"
+                                      : "border-border bg-surface text-muted-foreground"
                                 )}
                               >
                                 <Icon className="h-3.5 w-3.5" />
@@ -346,8 +345,8 @@ export default function OrderSearchPage() {
                                   isCurrent
                                     ? "text-accent font-bold"
                                     : isDone
-                                    ? "text-foreground font-medium"
-                                    : "text-muted-foreground"
+                                      ? "text-foreground font-medium"
+                                      : "text-muted-foreground"
                                 )}
                               >
                                 {step.label}
@@ -495,7 +494,7 @@ export default function OrderSearchPage() {
               href="/shop"
               className="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-primary-foreground hover:bg-accent transition-colors shadow-xs"
             >
-              <Sparkles className="h-3.5 w-3.5" />
+
               <span>Explore Fragrances</span>
             </Link>
             <button

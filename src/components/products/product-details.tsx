@@ -8,7 +8,7 @@ import {
   Plus,
   Minus,
   CheckCircle2,
-  Sparkles,
+  Zap,
 } from "lucide-react";
 import type { Product } from "@/types/product";
 import { ProductGallery } from "./product-gallery";
@@ -106,7 +106,7 @@ export function ProductDetails({ product }: ProductDetailsProps) {
           <div className="rounded-xl border border-border bg-surface p-3.5 sm:p-5 space-y-2 sm:space-y-3 shadow-xs">
             {isFlashSale && (
               <div className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-amber-500/15 via-rose-500/15 to-transparent border border-amber-500/30 px-3 py-1.5 text-xs">
-                <Sparkles className="h-3.5 w-3.5 text-amber-500 shrink-0" />
+                <Zap className="h-3.5 w-3.5 text-amber-500 shrink-0" />
                 <div>
                   <span className="font-bold text-amber-600 dark:text-amber-400">
                     ⚡ {flashSaleCampaign?.name || "Flash Sale"} Active!

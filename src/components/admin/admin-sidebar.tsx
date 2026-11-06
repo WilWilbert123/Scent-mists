@@ -7,6 +7,7 @@ import { usePathname, useRouter } from "next/navigation";
 import {
   LayoutDashboard,
   ShoppingBag,
+  MessageCircle,
   BarChart3,
   Users,
   MessageSquare,
@@ -29,6 +30,7 @@ import { toast } from "@/components/ui/toast";
 const ICON_MAP: Record<AdminNavItem["iconName"], React.ComponentType<{ className?: string }>> = {
   LayoutDashboard,
   ShoppingBag,
+  MessageCircle,
   BarChart3,
   Users,
   MessageSquare,
@@ -72,7 +74,7 @@ export function AdminSidebar() {
   return (
     <aside
       aria-label="Administrator navigation"
-      className="hidden lg:flex lg:w-64 lg:flex-col lg:fixed lg:inset-y-0 border-r border-border bg-surface-elevated text-foreground transition-colors duration-200 dark:bg-[#1B1918] dark:text-[#F5F0EB]"
+      className="hidden lg:flex lg:w-64 lg:flex-col lg:shrink-0 sticky top-0 h-dvh z-30 border-r border-border bg-surface-elevated text-foreground transition-colors duration-200 dark:bg-[#1B1918] dark:text-[#F5F0EB]"
     >
       {/* Brand Header */}
       <div className="flex h-16 items-center justify-between border-b border-border px-5 dark:border-white/10">

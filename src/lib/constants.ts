@@ -12,7 +12,7 @@ export const ALLOWED_IMAGE_MIME_TYPES = [
   "image/avif",
 ] as const;
 
-export const MAX_UPLOAD_SIZE_BYTES = 5 * 1024 * 1024; // 5 MB
+export const MAX_UPLOAD_SIZE_BYTES = 25 * 1024 * 1024; // 25 MB
 
 export const STORAGE_BUCKETS = {
   PRODUCTS: "product-images",
