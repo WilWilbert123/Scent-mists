@@ -23,7 +23,10 @@ interface SupabaseContentClient {
         maybeSingle: () => Promise<{ data: { content_value: unknown } | null; error: unknown }>;
       };
     };
-    upsert: (values: Record<string, unknown>) => Promise<{ error: unknown }>;
+    upsert: (
+      values: Record<string, unknown>,
+      options?: { onConflict?: string }
+    ) => Promise<{ error: unknown }>;
   };
 }
 
@@ -195,14 +198,20 @@ export async function updateCartDeliverySettingsAction(
         const supabase = createSupabaseServiceClient() ?? (await createSupabaseServerClient());
         if (supabase) {
           const client = supabase as unknown as SupabaseContentClient;
-          await client.from("site_content").upsert({
-            content_key: "cart_delivery_settings",
-            content_value: updated,
-            updated_at: new Date().toISOString(),
-          });
+          const { error: upsertErr } = await client.from("site_content").upsert(
+            {
+              content_key: "cart_delivery_settings",
+              content_value: updated,
+              updated_at: new Date().toISOString(),
+            },
+            { onConflict: "content_key" }
+          );
+          if (upsertErr) {
+            console.error("Supabase upsert cart_delivery_settings error:", upsertErr);
+          }
         }
-      } catch {
-        // ignore
+      } catch (err) {
+        console.error("Failed to sync cart_delivery_settings to Supabase:", err);
       }
     }
 
@@ -318,14 +327,20 @@ export async function updateFlashSaleCampaignAction(
         const supabase = createSupabaseServiceClient() ?? (await createSupabaseServerClient());
         if (supabase) {
           const client = supabase as unknown as SupabaseContentClient;
-          await client.from("site_content").upsert({
-            content_key: "flash_sale_campaign",
-            content_value: updated,
-            updated_at: new Date().toISOString(),
-          });
+          const { error: upsertErr } = await client.from("site_content").upsert(
+            {
+              content_key: "flash_sale_campaign",
+              content_value: updated,
+              updated_at: new Date().toISOString(),
+            },
+            { onConflict: "content_key" }
+          );
+          if (upsertErr) {
+            console.error("Supabase upsert flash_sale_campaign error:", upsertErr);
+          }
         }
-      } catch {
-        // ignore
+      } catch (err) {
+        console.error("Failed to sync flash_sale_campaign to Supabase:", err);
       }
     }
 

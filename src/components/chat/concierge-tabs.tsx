@@ -18,16 +18,16 @@ export function ConciergeTabs({
   const [activeTab, setActiveTab] = useState<"chat" | "enquiry">(initialTab);
 
   return (
-    <div className="space-y-4 sm:space-y-6">
+    <div className="space-y-1.5 sm:space-y-3">
       {/* =================================================================== */}
       {/* SEGMENTED TAB SWITCHER */}
       {/* =================================================================== */}
-      <div className="inline-flex w-full sm:w-auto p-1 rounded-xl border border-border/80 bg-surface shadow-xs">
+      <div className="inline-flex w-full sm:w-auto p-0.5 sm:p-1 rounded-xl border border-border/80 bg-surface shadow-xs">
         <button
           type="button"
           onClick={() => setActiveTab("chat")}
           className={cn(
-            "flex-1 sm:flex-initial flex items-center justify-center gap-2 rounded-lg px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium transition-all cursor-pointer",
+            "flex-1 sm:flex-initial flex items-center justify-center gap-1.5 sm:gap-2 rounded-lg px-2.5 sm:px-4 py-1 sm:py-1.5 text-xs sm:text-sm font-medium transition-all cursor-pointer",
             activeTab === "chat"
               ? "bg-foreground text-background shadow-xs font-semibold"
               : "text-muted-foreground hover:text-foreground"
@@ -37,7 +37,7 @@ export function ConciergeTabs({
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
             <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
           </span>
-          <MessageSquare className="h-4 w-4" />
+          <MessageSquare className="h-3.5 w-3.5" />
           <span>Live Chat</span>
         </button>
 
@@ -45,13 +45,13 @@ export function ConciergeTabs({
           type="button"
           onClick={() => setActiveTab("enquiry")}
           className={cn(
-            "flex-1 sm:flex-initial flex items-center justify-center gap-2 rounded-lg px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium transition-all cursor-pointer",
+            "flex-1 sm:flex-initial flex items-center justify-center gap-1.5 sm:gap-2 rounded-lg px-2.5 sm:px-4 py-1 sm:py-1.5 text-xs sm:text-sm font-medium transition-all cursor-pointer",
             activeTab === "enquiry"
               ? "bg-foreground text-background shadow-xs font-semibold"
               : "text-muted-foreground hover:text-foreground"
           )}
         >
-          <Mail className="h-4 w-4" />
+          <Mail className="h-3.5 w-3.5" />
           <span>Send Enquiry</span>
         </button>
       </div>

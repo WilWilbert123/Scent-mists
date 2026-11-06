@@ -17,7 +17,7 @@ export function ModelEnvironment({ theme }: ModelEnvironmentProps) {
   const isMobile = useMediaQuery("(max-width: 768px)");
   const shadowY = isDark
     ? (isMobile ? -1.44 : -1.72)
-    : (isMobile ? -1.20 : -1.46);
+    : (isMobile ? -1.16 : -1.32);
 
   return (
     <group>

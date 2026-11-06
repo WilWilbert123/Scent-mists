@@ -7,6 +7,7 @@ import { Menu, X, LogOut } from "lucide-react";
 import { ADMIN_NAV_ITEMS } from "@/data/admin-navigation";
 import { BRAND_NAME } from "@/lib/constants";
 import { signOutAdminAction } from "@/actions/auth.actions";
+import { useAdminChatNotification } from "@/context/admin-chat-notification-context";
 import { cn } from "@/lib/utils";
 import { toast } from "@/components/ui/toast";
 
@@ -14,6 +15,7 @@ export function AdminMobileNav() {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
+  const { unreadCount } = useAdminChatNotification();
 
   const handleLogout = async () => {
     setOpen(false);
@@ -64,13 +66,18 @@ export function AdminMobileNav() {
                       prefetch={true}
                       onClick={() => setOpen(false)}
                       className={cn(
-                        "block border px-3 py-2.5 text-xs font-medium transition-colors",
+                        "flex items-center justify-between border px-3 py-2.5 text-xs font-medium transition-colors",
                         isActive
                           ? "border-accent bg-accent/15 text-foreground"
                           : "border-border bg-surface text-muted-foreground hover:text-foreground"
                       )}
                     >
-                      {item.label}
+                      <span>{item.label}</span>
+                      {item.href === "/admin/chat" && unreadCount > 0 && (
+                        <span className="inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-rose-600 px-1 text-[10px] font-bold text-white font-mono animate-pulse">
+                          {unreadCount > 99 ? "99+" : unreadCount}
+                        </span>
+                      )}
                     </Link>
                   </li>
                 );

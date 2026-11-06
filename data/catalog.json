@@ -50,56 +50,6 @@
     "updated_at": "2026-11-06T09:24:49.046288+00:00"
   },
   {
-    "id": "e25f2a12-a873-4ddd-8788-4af6213da798",
-    "name": "Victoria Secret Mango Temptation",
-    "slug": "vs-perfume-85ml-mango-temptation",
-    "brand": "Victoria's Secret",
-    "sku": "VS85-MT",
-    "volume": "85ml",
-    "volume_display": "85 ml / 2.9 fl. oz.",
-    "category": "perfume",
-    "gender": "female",
-    "price": 200,
-    "original_price": 250,
-    "stock": 20,
-    "status": "in_stock",
-    "sold_count": 0,
-    "rating": 0,
-    "rating_count": 0,
-    "is_main_male": false,
-    "is_main_female": false,
-    "subtitle": "Eau de Parfum",
-    "description": "A mouthwatering burst of succulent golden mango nectar, exotic hibiscus bloom, calming chamomile flower, and refreshing aloe mist.",
-    "fragrance_family": "Fruity Tropical Lush",
-    "scent_profile": "Golden mango nectar & red hibiscus",
-    "top_notes": [
-      "Ripe Mango Nectar",
-      "Papaya Dew",
-      "Citrus Splash"
-    ],
-    "heart_notes": [
-      "Red Hibiscus Bloom",
-      "Chamomile Flower",
-      "Lily Petals"
-    ],
-    "base_notes": [
-      "Clean Skin Musk",
-      "Blonde Wood",
-      "Sweet Amber"
-    ],
-    "image_url": "https://xpguejvrmwkchzblzsvx.supabase.co/storage/v1/object/public/product-images/uploads/1793956384313-gemini_generated_image_cm9tricm9tricm9t.webp",
-    "gallery": [
-      "https://xpguejvrmwkchzblzsvx.supabase.co/storage/v1/object/public/product-images/uploads/1793956384313-gemini_generated_image_cm9tricm9tricm9t.webp"
-    ],
-    "collection_id": null,
-    "collection_slug": "",
-    "concentration": "Eau de Parfum",
-    "is_featured": false,
-    "is_published": true,
-    "created_at": "2026-11-04T15:08:52.38099+00:00",
-    "updated_at": "2026-11-06T09:24:59.802515+00:00"
-  },
-  {
     "id": "5b9841eb-e594-44d9-aef0-cb93b3e09f09",
     "name": "Angel Gold",
     "slug": "vs-perfume-85ml-secret-angel-gold",
@@ -1550,6 +1500,56 @@
     "updated_at": "2026-11-06T09:24:59.530195+00:00"
   },
   {
+    "id": "e25f2a12-a873-4ddd-8788-4af6213da798",
+    "name": "Victoria Secret Mango Temptation",
+    "slug": "vs-perfume-85ml-mango-temptation",
+    "brand": "Victoria's Secret",
+    "sku": "VS85-MT",
+    "volume": "85ml",
+    "volume_display": "85 ml / 2.9 fl. oz.",
+    "category": "perfume",
+    "gender": "female",
+    "price": 200,
+    "original_price": 250,
+    "stock": 20,
+    "status": "in_stock",
+    "sold_count": 0,
+    "rating": 0,
+    "rating_count": 0,
+    "is_main_male": false,
+    "is_main_female": false,
+    "subtitle": "Eau de Parfum",
+    "description": "A mouthwatering burst of succulent golden mango nectar, exotic hibiscus bloom, calming chamomile flower, and refreshing aloe mist.",
+    "fragrance_family": "Fruity Tropical Lush",
+    "scent_profile": "Golden mango nectar & red hibiscus",
+    "top_notes": [
+      "Ripe Mango Nectar",
+      "Papaya Dew",
+      "Citrus Splash"
+    ],
+    "heart_notes": [
+      "Red Hibiscus Bloom",
+      "Chamomile Flower",
+      "Lily Petals"
+    ],
+    "base_notes": [
+      "Clean Skin Musk",
+      "Blonde Wood",
+      "Sweet Amber"
+    ],
+    "image_url": "https://xpguejvrmwkchzblzsvx.supabase.co/storage/v1/object/public/product-images/uploads/1793956384313-gemini_generated_image_cm9tricm9tricm9t.webp",
+    "gallery": [
+      "https://xpguejvrmwkchzblzsvx.supabase.co/storage/v1/object/public/product-images/uploads/1793956384313-gemini_generated_image_cm9tricm9tricm9t.webp"
+    ],
+    "collection_id": null,
+    "collection_slug": "",
+    "concentration": "Eau de Parfum",
+    "is_featured": false,
+    "is_published": true,
+    "created_at": "2026-11-04T15:08:52.38099+00:00",
+    "updated_at": "2026-11-06T09:24:59.802515+00:00"
+  },
+  {
     "id": "22c52323-40d3-4cfd-ac71-7336d84da03c",
     "name": "Clinique Happy For Men",
     "slug": "aroma-body-mist-50ml-clinique-happy",
@@ -1642,56 +1642,5 @@
     "is_published": true,
     "created_at": "2026-11-03T02:06:49.411462+00:00",
     "updated_at": "2026-11-06T09:25:00.574015+00:00"
-  },
-  {
-    "id": "b9420c81-6188-4f7c-a69d-07c7e21827f4",
-    "name": "Velvet Amber & Sakura Dusk",
-    "slug": "velvet-amber-and-sakura-dusk",
-    "brand": "SCENTS & MISTS",
-    "sku": "SCENT-01",
-    "volume": "50ml",
-    "volume_display": "50 ml / 1.7 fl. oz.",
-    "category": "mist",
-    "gender": "female",
-    "price": 135,
-    "original_price": 180,
-    "stock": 20,
-    "status": "in_stock",
-    "sold_count": 0,
-    "rating": 0,
-    "rating_count": 0,
-    "is_main_male": false,
-    "is_main_female": false,
-    "subtitle": "Aroma Body Mist",
-    "description": "As twilight settles over mountain valleys, delicate blossom petals meet warm resinous amber and toasted tonka bean.",
-    "fragrance_family": "Amber Floral",
-    "scent_profile": "",
-    "top_notes": [
-      "Pink Peppercorn",
-      "Bitter Almond Blossom",
-      "Plum Nectar"
-    ],
-    "heart_notes": [
-      "Night-Blooming Sakura",
-      "Damask Rose Absolute",
-      "Saffron Thread"
-    ],
-    "base_notes": [
-      "Labdanum Resin",
-      "Sandalwood Heart",
-      "Roasted Tonka"
-    ],
-    "image_url": "/images/products/velvet-amber-sakura-dusk.webp",
-    "gallery": [
-      "/images/products/velvet-amber-sakura-dusk.webp",
-      "/images/products/morning-cedar-mist.webp"
-    ],
-    "collection_id": "11111111-1111-1111-1111-111111111103",
-    "collection_slug": "",
-    "concentration": "Aroma Body Mist",
-    "is_featured": false,
-    "is_published": true,
-    "created_at": "2026-11-03T02:06:49.411462+00:00",
-    "updated_at": "2026-11-06T09:25:01.115613+00:00"
   }
 ]

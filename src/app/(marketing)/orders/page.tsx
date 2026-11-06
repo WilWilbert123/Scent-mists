@@ -551,7 +551,7 @@ export default function OrderSearchPage() {
                   required
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
-                  placeholder="e.g. SCENT-2026-9039 or 09380836756"
+                  placeholder="e.g. SCENT-2026-9039 or 09388837432"
                   className="w-full pl-10 pr-4 py-2.5 text-xs bg-surface border border-border rounded-xl text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-accent font-mono"
                 />
               </div>

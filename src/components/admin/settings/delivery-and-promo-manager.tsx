@@ -3,7 +3,6 @@
 import React, { useState, useEffect, useMemo } from "react";
 import {
   Truck,
-  Sparkles,
   CheckCircle2,
   Save,
   Calendar,
@@ -13,6 +12,8 @@ import {
   Banknote,
   ShieldCheck,
   Flame,
+  Zap,
+  AlertCircle,
 } from "lucide-react";
 import type {
   CartDeliverySettings,
@@ -158,21 +159,22 @@ export function DeliveryAndPromoManager({
     return { regular, discount, finalPrice, badge };
   }, [fsDiscountType, fsDiscountValue]);
 
-  // Quick Preset Handlers
+  // Quick Preset Handlers (Automatically activates the campaign schedule)
   const applyPreset = (preset: "nov15" | "today" | "weekend" | "next3days") => {
+    setFsEnabled(true);
     const cur = new Date();
     if (preset === "nov15") {
       // 2026-11-15 00:00 to 2026-11-15 23:59 (as in user request)
       setFsStartDate("2026-11-15T00:00");
       setFsEndDate("2026-11-15T23:59");
       setFsName("Nov 15 Mega Flash Sale");
-      toast.info("Applied preset: Nov 15, 2026 (Full Day Schedule)");
+      toast.info("Applied preset: Nov 15, 2026 (Campaign ENABLED & Scheduled)");
     } else if (preset === "today") {
       const start = new Date(cur.getFullYear(), cur.getMonth(), cur.getDate(), 0, 0, 0);
       const end = new Date(cur.getFullYear(), cur.getMonth(), cur.getDate(), 23, 59, 59);
       setFsStartDate(toDateTimeLocalString(start));
       setFsEndDate(toDateTimeLocalString(end));
-      toast.info("Applied preset: Today Only (Until 11:59 PM)");
+      toast.info("Applied preset: Today Only (Campaign ENABLED & Live until 11:59 PM)");
     } else if (preset === "weekend") {
       const day = cur.getDay(); // 0 is Sun, 6 is Sat
       const sat = new Date(cur);
@@ -186,7 +188,7 @@ export function DeliveryAndPromoManager({
       setFsStartDate(toDateTimeLocalString(sat));
       setFsEndDate(toDateTimeLocalString(sun));
       setFsName("Weekend Fragrance Flash Sale");
-      toast.info("Applied preset: Upcoming Weekend (Sat - Sun)");
+      toast.info("Applied preset: Upcoming Weekend (Campaign ENABLED & Scheduled)");
     } else if (preset === "next3days") {
       const start = new Date(cur);
       const end = new Date(cur);
@@ -194,7 +196,7 @@ export function DeliveryAndPromoManager({
       end.setHours(23, 59, 59, 999);
       setFsStartDate(toDateTimeLocalString(start));
       setFsEndDate(toDateTimeLocalString(end));
-      toast.info("Applied preset: Next 3 Days");
+      toast.info("Applied preset: Next 3 Days (Campaign ENABLED & Scheduled)");
     }
   };
 
@@ -213,10 +215,29 @@ export function DeliveryAndPromoManager({
         successText,
       });
 
-      if (res.success) {
+      if (res.success && res.data) {
         setIsSavedDelivery(true);
         toast.success("Delivery fee & promo threshold updated successfully!");
         setTimeout(() => setIsSavedDelivery(false), 3500);
+
+        // Instant cross-tab broadcast
+        try {
+          if (typeof window !== "undefined") {
+            localStorage.setItem("scent_mists_promo_sync_timestamp", String(Date.now()));
+            if ("BroadcastChannel" in window) {
+              const bc = new BroadcastChannel("scent_mists_promotions_channel");
+              bc.postMessage({ type: "DELIVERY_UPDATED", payload: res.data });
+              bc.close();
+            }
+            window.dispatchEvent(
+              new CustomEvent("scent_mists_flash_sale_updated", {
+                detail: { delivery: res.data },
+              })
+            );
+          }
+        } catch {
+          // ignore
+        }
       } else {
         toast.error(res.error || "Failed to update delivery settings.");
       }
@@ -227,13 +248,21 @@ export function DeliveryAndPromoManager({
     }
   };
 
-  // Save Flash Sale Campaign
-  const handleSaveFlashSale = async (e: React.FormEvent) => {
-    e.preventDefault();
+  // Save Flash Sale Campaign (with optional explicit enable override)
+  const handleSaveFlashSale = async (
+    e?: React.FormEvent,
+    enableExplicitly?: boolean
+  ) => {
+    if (e) e.preventDefault();
     setIsSavingFs(true);
     setIsSavedFs(false);
 
-    if (fsEnabled && (!fsStartDate || !fsEndDate)) {
+    const targetEnabled = enableExplicitly !== undefined ? enableExplicitly : fsEnabled;
+    if (enableExplicitly !== undefined && enableExplicitly !== fsEnabled) {
+      setFsEnabled(enableExplicitly);
+    }
+
+    if (targetEnabled && (!fsStartDate || !fsEndDate)) {
       toast.warning("Please specify both a scheduled Start Date and End Date for the promotion.");
       setIsSavingFs(false);
       return;
@@ -247,7 +276,7 @@ export function DeliveryAndPromoManager({
 
     try {
       const res = await updateFlashSaleCampaignAction({
-        enabled: fsEnabled,
+        enabled: targetEnabled,
         name: fsName.trim() || "Exclusive Flash Sale",
         discountType: fsDiscountType,
         discountValue: Math.max(1, Number(fsDiscountValue) || 1),
@@ -257,10 +286,33 @@ export function DeliveryAndPromoManager({
         bannerText: fsBannerText.trim(),
       });
 
-      if (res.success) {
+      if (res.success && res.data) {
         setIsSavedFs(true);
-        toast.success("Scheduled Flash Sale campaign saved & synced!");
+        toast.success(
+          targetEnabled
+            ? "Scheduled Flash Sale campaign saved & active across store in real time!"
+            : "Flash sale saved as disabled draft."
+        );
         setTimeout(() => setIsSavedFs(false), 3500);
+
+        // Instant cross-tab broadcast
+        try {
+          if (typeof window !== "undefined") {
+            localStorage.setItem("scent_mists_promo_sync_timestamp", String(Date.now()));
+            if ("BroadcastChannel" in window) {
+              const bc = new BroadcastChannel("scent_mists_promotions_channel");
+              bc.postMessage({ type: "FLASH_SALE_UPDATED", payload: res.data });
+              bc.close();
+            }
+            window.dispatchEvent(
+              new CustomEvent("scent_mists_flash_sale_updated", {
+                detail: { flashSale: res.data },
+              })
+            );
+          }
+        } catch {
+          // ignore
+        }
       } else {
         toast.error(res.error || "Failed to save flash sale campaign.");
       }
@@ -579,6 +631,29 @@ export function DeliveryAndPromoManager({
             </label>
           </div>
 
+          {/* Prominent Alert Banner if Campaign is Currently Off */}
+          {!fsEnabled && (
+            <div className="rounded-lg border border-amber-500/30 bg-amber-500/10 p-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+              <div className="flex items-center gap-2.5 text-amber-800 dark:text-amber-200">
+                <AlertCircle className="h-4 w-4 shrink-0 text-amber-500" />
+                <p>
+                  <strong>Campaign is currently TURNED OFF.</strong> Shoppers will see normal catalog prices until the campaign is enabled and saved.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  setFsEnabled(true);
+                  toast.success("Campaign Enabled! Now click 'Save & Activate Schedule' below to launch.");
+                }}
+                className="inline-flex items-center justify-center gap-1.5 rounded-md bg-amber-500 hover:bg-amber-600 text-white font-bold px-3 py-1.5 text-xs transition-colors cursor-pointer shrink-0 shadow-xs"
+              >
+                <Zap className="h-3.5 w-3.5" />
+                <span>Turn Campaign ON</span>
+              </button>
+            </div>
+          )}
+
           {/* Quick Preset Buttons */}
           <div className="rounded-lg border border-border bg-surface-elevated p-3.5 space-y-2">
             <span className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
@@ -606,7 +681,7 @@ export function DeliveryAndPromoManager({
                 onClick={() => applyPreset("weekend")}
                 className="inline-flex items-center gap-1.5 rounded-md border border-border bg-surface px-2.5 py-1 text-xs text-foreground hover:border-accent hover:text-accent transition-colors cursor-pointer"
               >
-                <Sparkles className="h-3 w-3 text-amber-500" />
+                <Zap className="h-3 w-3 text-amber-500" />
                 <span>Upcoming Weekend (Sat - Sun)</span>
               </button>
               <button
@@ -774,7 +849,7 @@ export function DeliveryAndPromoManager({
           {/* Live Mathematical Verification Box */}
           <div className="rounded-lg border border-amber-500/30 bg-amber-500/5 p-4 space-y-2">
             <div className="flex items-center gap-2 text-xs font-semibold text-amber-600 dark:text-amber-400">
-              <Sparkles className="h-4 w-4" />
+              <Zap className="h-4 w-4" />
               <span>Automated Schedule Calculation Simulation</span>
             </div>
             <p className="text-xs text-foreground/90 leading-relaxed">
@@ -792,27 +867,53 @@ export function DeliveryAndPromoManager({
             </p>
           </div>
 
-          {/* Save Action Bar */}
-          <div className="flex items-center justify-between border-t border-border pt-4">
+          {/* Save Action Bar with Clear Activation Choices */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-t border-border pt-4">
             {isSavedFs ? (
               <span className="flex items-center gap-1.5 text-xs text-emerald-500 font-medium">
                 <CheckCircle2 className="h-4 w-4" />
-                Flash sale campaign saved and synchronized!
+                Flash sale campaign saved and synchronized in real time!
               </span>
             ) : (
               <span className="text-xs text-muted-foreground">
-                Automated scheduler runs directly against current timestamp.
+                Automated scheduler runs directly against current timestamp with instant multi-tab sync.
               </span>
             )}
 
-            <button
-              type="submit"
-              disabled={isSavingFs}
-              className="inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-primary-foreground hover:bg-accent transition-colors disabled:opacity-50 cursor-pointer shadow-xs"
-            >
-              <Save className="h-4 w-4" />
-              <span>{isSavingFs ? "Saving Campaign..." : "Save Flash Sale Campaign"}</span>
-            </button>
+            <div className="flex items-center gap-2 self-end sm:self-auto">
+              {!fsEnabled ? (
+                <>
+                  <button
+                    type="button"
+                    onClick={() => handleSaveFlashSale(undefined, false)}
+                    disabled={isSavingFs}
+                    className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-surface px-4 py-2.5 text-xs font-semibold text-muted-foreground hover:text-foreground hover:border-accent/60 transition-colors disabled:opacity-50 cursor-pointer"
+                  >
+                    <Save className="h-3.5 w-3.5" />
+                    <span>Save as Draft (Off)</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => handleSaveFlashSale(undefined, true)}
+                    disabled={isSavingFs}
+                    className="inline-flex items-center gap-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-white transition-colors disabled:opacity-50 cursor-pointer shadow-md"
+                  >
+                    <Zap className="h-4 w-4" />
+                    <span>{isSavingFs ? "Activating..." : "Save & Activate Schedule (Live)"}</span>
+                  </button>
+                </>
+              ) : (
+                <button
+                  type="submit"
+                  disabled={isSavingFs}
+                  className="inline-flex items-center gap-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-white transition-colors disabled:opacity-50 cursor-pointer shadow-md"
+                >
+                  <Zap className="h-4 w-4" />
+                  <span>{isSavingFs ? "Saving..." : "Save & Update Live Campaign"}</span>
+                </button>
+              )}
+            </div>
           </div>
         </form>
       )}

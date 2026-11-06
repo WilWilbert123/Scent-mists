@@ -201,9 +201,7 @@ export function Navbar({
                 <span className="font-serif text-xl lg:text-2xl font-normal tracking-[0.24em] text-foreground uppercase leading-none">
                   {brandName}
                 </span>
-                <span className="font-mono text-[9px] tracking-[0.32em] text-muted-foreground/80 uppercase pt-1 font-medium">
-                  Haute Parfumerie
-                </span>
+
               </Link>
             </div>
 

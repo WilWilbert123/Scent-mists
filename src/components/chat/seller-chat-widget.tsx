@@ -232,13 +232,31 @@ export function SellerChatWidget({ initialFragranceNote }: SellerChatWidgetProps
           prev.map((m) => (m.id === optimisticId ? { ...res.message!, status: "delivered" } : m))
         );
 
-        // Broadcast to seller admin in real time
+        // Broadcast to seller admin in real time via Supabase
         if (channelRef.current) {
           void channelRef.current.send({
             type: "broadcast",
             event: "new_message",
             payload: res.message,
           });
+        }
+
+        // Multi-tab sync & instant notification for admin dashboard
+        try {
+          if (typeof window !== "undefined" && "BroadcastChannel" in window) {
+            const bc = new BroadcastChannel("scent_mists_chat_sync");
+            bc.postMessage({
+              type: "new_customer_message",
+              threadId,
+              message: res.message,
+            });
+            bc.close();
+          }
+          window.dispatchEvent(
+            new CustomEvent("scent_mists_chat_updated", { detail: res.message })
+          );
+        } catch {
+          // ignore broadcast errors
         }
 
         // Smart auto-reply if keyword matched and it's customer's first question
@@ -306,11 +324,11 @@ export function SellerChatWidget({ initialFragranceNote }: SellerChatWidgetProps
   };
 
   return (
-    <div className="flex flex-col h-[560px] sm:h-[660px] w-full rounded-2xl border border-border/80 bg-surface-elevated/90 shadow-xl overflow-hidden backdrop-blur-md">
+    <div className="flex flex-col h-[calc(100dvh-265px)] sm:h-[calc(100dvh-220px)] lg:h-[calc(100dvh-215px)] min-h-[280px] max-h-[640px] w-full rounded-2xl border border-border/80 bg-surface-elevated/90 shadow-xl overflow-hidden backdrop-blur-md">
       {/* =================================================================== */}
       {/* 1. SELLER CONCIERGE HEADER (Clean & Minimalist) */}
       {/* =================================================================== */}
-      <div className="border-b border-border/70 bg-[#FAF7F2] dark:bg-[#1A1816] px-3.5 py-2.5 sm:px-5 sm:py-3 flex items-center justify-between gap-3">
+      <div className="border-b border-border/70 bg-[#FAF7F2] dark:bg-[#1A1816] px-3 py-1.5 sm:px-4 sm:py-2.5 flex items-center justify-between gap-2.5 shrink-0">
         <div className="flex items-center gap-2.5">
           <div className="relative h-9 w-9 shrink-0 rounded-full border border-amber-600/30 bg-[#FAF7F2] dark:bg-[#201D1B] p-1 shadow-xs flex items-center justify-center">
             <span className="font-serif text-xs sm:text-sm font-semibold tracking-wider text-foreground">
@@ -392,7 +410,7 @@ export function SellerChatWidget({ initialFragranceNote }: SellerChatWidgetProps
       {/* =================================================================== */}
       {/* 2. LIVE MESSAGE FEED */}
       {/* =================================================================== */}
-      <div className="flex-1 overflow-y-auto p-3.5 sm:p-5 space-y-3.5 bg-dot-pattern">
+      <div className="flex-1 overflow-y-auto p-2.5 sm:p-5 space-y-2.5 sm:space-y-3.5 bg-dot-pattern">
         {/* Message items */}
         {messages.map((msg) => {
           const isMe = msg.sender === "customer";
@@ -474,7 +492,7 @@ export function SellerChatWidget({ initialFragranceNote }: SellerChatWidgetProps
       {/* =================================================================== */}
       {/* 3. QUICK CONCIERGE PROMPTS (Clickable chips) */}
       {/* =================================================================== */}
-      <div className="border-t border-border/50 bg-[#FAF7F2]/60 dark:bg-[#181615]/60 px-3 py-1.5 sm:px-4">
+      <div className="border-t border-border/50 bg-[#FAF7F2]/60 dark:bg-[#181615]/60 px-2.5 py-1 sm:px-4 shrink-0">
         <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none">
           <span className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground shrink-0 flex items-center gap-1 mr-0.5">
             <HelpCircle className="h-3 w-3 text-accent" />
@@ -494,10 +512,10 @@ export function SellerChatWidget({ initialFragranceNote }: SellerChatWidgetProps
       </div>
 
       {/* =================================================================== */}
-      {/* 4. CHAT INPUT BAR */}
+      {/* 4. CHAT INPUT BAR (Fixed height, perfectly visible on mobile without scroll) */}
       {/* =================================================================== */}
-      <div className="border-t border-border/70 bg-[#FAF7F2] dark:bg-[#1A1816] p-2.5 sm:p-3">
-        <div className="relative flex items-end gap-2 rounded-xl border border-border bg-background p-1.5 focus-within:border-accent focus-within:ring-1 focus-within:ring-accent transition-all shadow-xs">
+      <div className="border-t border-border/70 bg-[#FAF7F2] dark:bg-[#1A1816] p-1.5 sm:p-2.5 shrink-0">
+        <div className="relative flex items-center gap-2 rounded-xl border border-border bg-background px-2.5 py-1 sm:p-1.5 focus-within:border-accent focus-within:ring-1 focus-within:ring-accent transition-all shadow-xs min-h-[42px]">
           <textarea
             ref={inputRef}
             rows={1}
@@ -505,7 +523,7 @@ export function SellerChatWidget({ initialFragranceNote }: SellerChatWidgetProps
             onChange={(e) => setInputText(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="Type a message... (Press Enter to send)"
-            className="w-full resize-none bg-transparent px-2 py-1 text-xs sm:text-sm text-foreground placeholder:text-muted-foreground focus:outline-none max-h-24 min-h-[36px]"
+            className="w-full resize-none bg-transparent px-1 py-1 text-xs sm:text-sm text-foreground placeholder:text-muted-foreground focus:outline-none max-h-20 min-h-[34px] leading-relaxed"
           />
 
           <button
