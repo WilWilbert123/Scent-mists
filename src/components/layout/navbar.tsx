@@ -158,44 +158,36 @@ export function Navbar({
           </div>
         </div>
 
-        {/* =================================================================== */}
-        {/* 2. DESKTOP JO MALONE-STYLE HEADER (Top Tier: Centered Brand Wordmark) */}
-        {/* =================================================================== */}
+
         <div className="hidden md:block border-b border-border/50">
-          <div className="mx-auto flex h-16 max-w-[1400px] items-center justify-between px-6 lg:px-10 xl:px-12">
-            {/* Left Utilities (Search, GPS Delivery Pin, Scent Guide) — shifted slightly to the left */}
-            <div className="flex-1 flex items-center justify-start gap-4 lg:gap-6 text-muted-foreground">
+          <div className="w-full flex h-16 items-center justify-between px-3 sm:px-4 lg:px-6">
+            {/* Left Utilities (Search, GPS Delivery Pin, Scent Guide) — positioned near the left edge */}
+            <div className="flex-1 flex items-center justify-start gap-1 sm:gap-2 text-muted-foreground">
               <Link
                 href="/shop"
-                className="group flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+                className="group flex h-9 w-9 items-center justify-center rounded-full text-muted-foreground hover:text-foreground hover:bg-surface/80 transition-colors cursor-pointer"
                 aria-label="Search perfumes"
+                title="Search perfumes"
               >
                 <Search className="h-4 w-4 transition-transform group-hover:scale-110" />
-                <span className="font-mono text-[11px] tracking-wider uppercase hidden lg:inline">
-                  Search
-                </span>
               </Link>
 
               <Link
                 href="/orders"
-                className="group flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+                className="group flex h-9 w-9 items-center justify-center rounded-full text-muted-foreground hover:text-foreground hover:bg-surface/80 transition-colors cursor-pointer"
                 aria-label="Track and pin order"
+                title="Pin & Track Orders"
               >
                 <MapPin className="h-4 w-4 transition-transform group-hover:scale-110 text-accent/80" />
-                <span className="font-mono text-[11px] tracking-wider uppercase hidden lg:inline">
-                  Pin &amp; Track
-                </span>
               </Link>
 
               <Link
                 href="/fragrance-guide"
-                className="group flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+                className="group flex h-9 w-9 items-center justify-center rounded-full text-muted-foreground hover:text-foreground hover:bg-surface/80 transition-colors cursor-pointer"
                 aria-label="Scent Guide"
+                title="Fragrance Notes & Scent Guide"
               >
                 <Compass className="h-4 w-4 transition-transform group-hover:scale-110 text-accent/80" />
-                <span className="font-mono text-[11px] tracking-wider uppercase hidden xl:inline">
-                  Scent Guide
-                </span>
               </Link>
             </div>
 
@@ -215,25 +207,23 @@ export function Navbar({
               </Link>
             </div>
 
-            {/* Right Utilities (Concierge, Theme Toggle, Cart Drawer Button) — shifted slightly to the right */}
-            <div className="flex-1 flex items-center justify-end gap-3.5 lg:gap-4">
+            {/* Right Utilities (Concierge, Theme Toggle, Cart Drawer Button) — positioned near the right edge */}
+            <div className="flex-1 flex items-center justify-end gap-1.5 sm:gap-2.5">
               <Link
                 href="/contact"
-                className="group flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors cursor-pointer mr-1"
+                className="group flex h-9 w-9 items-center justify-center rounded-full text-muted-foreground hover:text-foreground hover:bg-surface/80 transition-colors cursor-pointer"
                 aria-label="Concierge and inquiries"
+                title="Private Concierge & Live Chat"
               >
                 <MessageSquare className="h-4 w-4 transition-transform group-hover:scale-110" />
-                <span className="font-mono text-[11px] tracking-wider uppercase hidden lg:inline">
-                  Concierge
-                </span>
               </Link>
 
-              <ThemeToggle />
+              <ThemeToggle className="h-9 w-9 min-h-[36px] min-w-[36px] rounded-full border-none hover:bg-surface/80 p-0 text-muted-foreground hover:text-foreground" />
 
               <button
                 type="button"
                 onClick={() => setIsCartOpen(true)}
-                className="group relative flex items-center gap-2 rounded-full border border-border/80 bg-surface/80 px-3.5 py-1.5 text-foreground hover:border-accent/60 hover:bg-surface transition-all cursor-pointer shadow-xs"
+                className="group relative flex items-center gap-2 rounded-full border border-border/80 bg-surface/80 px-3.5 py-1.5 text-foreground hover:border-accent/60 hover:bg-surface transition-all cursor-pointer shadow-xs ml-0.5"
                 aria-label={`Open shopping cart with ${totalItems} items`}
               >
                 <ShoppingBag className="h-4 w-4 transition-transform group-hover:scale-110" />

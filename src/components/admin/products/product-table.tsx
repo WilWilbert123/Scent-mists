@@ -43,7 +43,6 @@ export function ProductTable({ initialProducts }: ProductTableProps) {
   const [products, setProducts] = useState<Product[]>(initialProducts);
   const [searchQuery, setSearchQuery] = useState("");
   const [deleteTarget, setDeleteTarget] = useState<Product | null>(null);
-  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
     setProducts(initialProducts);
@@ -215,19 +214,25 @@ export function ProductTable({ initialProducts }: ProductTableProps) {
 
   const handleConfirmDelete = async () => {
     if (!deleteTarget) return;
-    setIsDeleting(true);
+    const targetToDelete = deleteTarget;
+    setDeleteTarget(null);
+
+    // Optimistic real-time deletion (0ms UI latency)
+    setProducts((prev) => prev.filter((p) => p.id !== targetToDelete.id));
+
     try {
-      const res = await deleteProductAction(deleteTarget.id);
+      const res = await deleteProductAction(targetToDelete.id);
       if (!res.success) {
+        // Rollback state if server deletion failed
+        setProducts((prev) => [targetToDelete, ...prev]);
         toast.error(res.error || "Unable to delete product.");
         return;
       }
-      setProducts((prev) => prev.filter((p) => p.id !== deleteTarget.id));
-      toast.success(`Deleted ${deleteTarget.name}.`);
+      toast.success(`Deleted "${targetToDelete.name}".`);
       router.refresh();
-    } finally {
-      setIsDeleting(false);
-      setDeleteTarget(null);
+    } catch {
+      setProducts((prev) => [targetToDelete, ...prev]);
+      toast.error("Network error while deleting product.");
     }
   };
 
@@ -562,7 +567,6 @@ export function ProductTable({ initialProducts }: ProductTableProps) {
             ? `Are you sure you want to delete "${deleteTarget.name}" from the inventory?`
             : ""
         }
-        isLoading={isDeleting}
         onConfirm={handleConfirmDelete}
       />
 
