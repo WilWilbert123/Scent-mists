@@ -20,7 +20,7 @@ export default async function AdminDashboardLayout({
   return (
     <div className="flex min-h-dvh bg-background text-foreground">
       <AdminSidebar />
-      <div className="flex flex-1 flex-col lg:pl-64">
+      <div className="flex flex-1 flex-col min-w-0">
         <AdminHeader
           adminEmail={verification.admin?.email || "Not connected (.env.local)"}
           adminName={verification.admin?.full_name || "House Administrator"}
@@ -45,7 +45,7 @@ export default async function AdminDashboardLayout({
           </div>
         )}
 
-        <main id="admin-main-content" className="flex-1 p-4 sm:p-6 lg:p-8">
+        <main id="admin-main-content" className="flex-1 min-w-0 p-4 sm:p-6 lg:p-8">
           {children}
         </main>
       </div>

@@ -107,11 +107,11 @@ export function ProductGrid({ products }: ProductGridProps) {
   }, [products, activeTab, searchQuery, sortBy]);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 sm:space-y-8">
       {/* Category Tabs & Controls */}
-      <div className="space-y-3">
+      <div className="space-y-4">
         {/* Category Pills (Touch scroll on mobile with hidden scrollbar) */}
-        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none no-scrollbar [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <div className="flex items-center gap-2 sm:gap-2.5 overflow-x-auto pb-1 scrollbar-none no-scrollbar [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {TABS.map((tab) => {
             const isActive = activeTab === tab.id;
             return (
@@ -119,18 +119,18 @@ export function ProductGrid({ products }: ProductGridProps) {
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
                 className={cn(
-                  "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-colors cursor-pointer",
+                  "inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs sm:text-[13px] font-medium whitespace-nowrap transition-all cursor-pointer",
                   isActive
                     ? "bg-primary text-primary-foreground font-semibold shadow-xs"
-                    : "bg-surface border border-border/80 text-muted-foreground hover:text-foreground"
+                    : "bg-surface border border-border/80 text-muted-foreground hover:text-foreground hover:border-accent/40"
                 )}
               >
                 <span>{tab.label}</span>
                 <span
                   className={cn(
-                    "rounded-full px-1.5 py-0.2 text-[9px] font-mono",
+                    "rounded-full px-2 py-0.5 text-[10px] font-mono",
                     isActive
-                      ? "bg-primary-foreground/20 text-primary-foreground"
+                      ? "bg-primary-foreground/20 text-primary-foreground font-semibold"
                       : "bg-secondary text-muted-foreground"
                   )}
                 >
@@ -142,22 +142,22 @@ export function ProductGrid({ products }: ProductGridProps) {
         </div>
 
         {/* Search & Sort Bar */}
-        <div className="flex gap-2 items-center">
+        <div className="flex gap-2.5 sm:gap-3 items-center">
           <div className="relative flex-1">
-            <Search className="absolute left-3 top-2.5 h-3.5 w-3.5 text-muted-foreground" />
+            <Search className="absolute left-3.5 top-3 h-4 w-4 text-muted-foreground" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search perfumes..."
-              className="w-full pl-8 pr-3 py-1.5 text-xs bg-surface border border-border/80 rounded-lg text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-accent"
+              placeholder="Search perfumes by name, brand, or notes..."
+              className="w-full pl-10 pr-4 py-2.5 text-xs sm:text-sm bg-surface border border-border/80 rounded-xl text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-accent transition-all shadow-2xs"
             />
           </div>
 
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value)}
-            className="px-2.5 py-1.5 text-xs bg-surface border border-border/80 rounded-lg text-foreground focus:outline-none focus:ring-1 focus:ring-accent font-medium cursor-pointer shrink-0"
+            className="px-3.5 sm:px-4 py-2.5 text-xs sm:text-sm bg-surface border border-border/80 rounded-xl text-foreground focus:outline-none focus:ring-1 focus:ring-accent font-medium cursor-pointer shrink-0 shadow-2xs"
           >
             <option value="featured">Featured</option>
             <option value="popular">Best Selling</option>
@@ -167,7 +167,7 @@ export function ProductGrid({ products }: ProductGridProps) {
         </div>
       </div>
 
-      {/* Responsive Grid: 2 columns on mobile, 3 on tablet, 4 on desktop */}
+      {/* Responsive Grid: 2 columns on mobile, 3 columns on desktop for spacious luxury framing */}
       {filteredProducts.length === 0 ? (
         <div className="rounded-xl border border-border bg-surface p-8 text-center space-y-2">
           <Package className="mx-auto h-8 w-8 text-muted-foreground" />
@@ -177,7 +177,7 @@ export function ProductGrid({ products }: ProductGridProps) {
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-2 gap-3 sm:gap-4 sm:grid-cols-3 lg:grid-cols-4">
+        <div className="grid grid-cols-2 gap-3.5 sm:gap-6 lg:grid-cols-3 xl:gap-8">
           {filteredProducts.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}

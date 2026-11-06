@@ -1,5 +1,49 @@
 [
   {
+    "id": "order_1793891473917_xug5c",
+    "email": "johnwilbertgamis2022@gmail.com",
+    "items": [
+      {
+        "sku": "VS85-SAG",
+        "name": "VS Perfume 85ml - Secret Angel Gold",
+        "brand": "Victoria's Secret",
+        "price": 200,
+        "volume": "85ml",
+        "quantity": 1,
+        "image_url": "/images/perfumes/vs-perfume-85ml-secret-angel-gold.webp",
+        "product_id": "5b9841eb-e594-44d9-aef0-cb93b3e09f09"
+      },
+      {
+        "sku": "CCK02",
+        "name": "CK - Eternity (CCK02)",
+        "brand": "Calvin Klein",
+        "price": 135,
+        "volume": "50ml",
+        "quantity": 1,
+        "image_url": "/images/perfumes/aroma-body-mist-50ml-ck-eternity.webp",
+        "product_id": "03c0b6b7-4364-4c27-8564-771ecbcbac06"
+      }
+    ],
+    "phone": "09380836756",
+    "status": "delivered",
+    "landmark": "None",
+    "subtotal": 335,
+    "created_at": "2026-11-05T15:11:13.917Z",
+    "updated_at": "2026-11-06T07:09:21.226Z",
+    "delivery_fee": 60,
+    "order_number": "SCENT-2026-6634",
+    "total_amount": 395,
+    "customer_name": "John wilbert Gamis",
+    "payment_method": "cod",
+    "discount_amount": 0,
+    "delivery_address": "Irosin Sorsogon",
+    "delivery_location": {
+      "lat": 12.7038417,
+      "lng": 124.0320966,
+      "address_text": "Irosin, Sorsogon, Bicol Region, 4707, Philippines"
+    }
+  },
+  {
     "id": "order_1793857438536_2ay6y",
     "email": "johnwilbertgamis2022@gmail.com",
     "items": [
@@ -25,11 +69,11 @@
       }
     ],
     "phone": "09380836756",
-    "status": "pending",
+    "status": "cancelled",
     "landmark": "None",
     "subtotal": 270,
     "created_at": "2026-11-05T05:43:58.536Z",
-    "updated_at": "2026-11-05T05:43:58.536Z",
+    "updated_at": "2026-11-05T15:12:49.236Z",
     "delivery_fee": 60,
     "order_number": "SCENT-2026-9039",
     "total_amount": 330,

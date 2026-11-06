@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import { ArrowRight, ShoppingBag } from "lucide-react";
+import { ArrowRight, ChevronDown, ShoppingBag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { FadeIn } from "@/components/animations/fade-in";
 import { useCart } from "@/context/cart-context";
@@ -47,6 +47,12 @@ export function HeroContent({ content }: HeroContentProps) {
           </p>
         </div>
       </FadeIn>
+
+      {/* Mobile Subtle Scroll Cue */}
+      <div className="md:hidden flex items-center justify-center pt-2 text-[10px] text-muted-foreground/75 font-mono tracking-widest uppercase">
+        <span>Scroll to explore</span>
+        <ChevronDown className="h-3.5 w-3.5 ml-1 animate-bounce text-accent" />
+      </div>
 
       {/* Action Buttons - Shown on desktop/tablet, hidden on mobile so mobile visitors use the Shop bottom tab */}
       <FadeIn delay={0.28} xOffset={-24} yOffset={0}>

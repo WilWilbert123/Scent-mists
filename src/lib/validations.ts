@@ -156,7 +156,7 @@ export function validateImageUpload(file: { type: string; size: number; name: st
   if (file.size > MAX_UPLOAD_SIZE_BYTES) {
     return {
       valid: false,
-      error: "Image exceeds the 5 MB maximum file size.",
+      error: "Image exceeds the 25 MB maximum file size.",
     };
   }
   const ext = file.name.split(".").pop()?.toLowerCase().replace(/[^a-z0-9]/g, "") || "webp";

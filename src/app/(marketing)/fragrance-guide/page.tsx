@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import type { Metadata } from "next";
-import { ArrowRight, Compass, ShieldCheck, Sparkles } from "lucide-react";
+import { ArrowRight, Compass, ShieldCheck } from "lucide-react";
 import { constructMetadata } from "@/lib/metadata";
 import { getPublicProductsAction } from "@/actions/product.actions";
 import { Button } from "@/components/ui/button";
@@ -87,7 +87,6 @@ export default async function FragranceGuidePage() {
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:items-end border-b border-border/80 pb-8">
           <div className="lg:col-span-7 space-y-3">
             <div className="flex items-center gap-2 text-accent">
-              <Sparkles className="h-4 w-4" aria-hidden="true" />
               <span className="eyebrow-label">Ritual of Application</span>
             </div>
             <h2 className="heading-section text-foreground">

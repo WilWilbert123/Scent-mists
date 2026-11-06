@@ -239,7 +239,10 @@ export async function updateOrderStatusAction(
 
     revalidatePath("/admin");
     revalidatePath("/admin/orders");
+    revalidatePath("/admin/products");
     revalidatePath("/orders");
+    revalidatePath("/shop");
+    revalidatePath("/");
     revalidatePath(`/orders/${orders[index].order_number}`);
     revalidatePath(`/orders/${orders[index].id}`);
 

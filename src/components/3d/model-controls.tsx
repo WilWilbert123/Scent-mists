@@ -12,8 +12,8 @@ export function ModelControls({ theme = "light" }: ModelControlsProps) {
   const isMobile = useMediaQuery("(max-width: 768px)");
   const targetX = isMobile ? 0.08 : theme === "dark" ? 0.14 : 0.12;
   const targetY = isMobile
-    ? (theme === "dark" ? -0.12 : 0.04)
-    : (theme === "dark" ? -0.22 : -0.02);
+    ? (theme === "dark" ? -0.24 : 0.00)
+    : (theme === "dark" ? -0.26 : 0.00);
 
   return (
     <OrbitControls
@@ -21,10 +21,10 @@ export function ModelControls({ theme = "light" }: ModelControlsProps) {
       enableZoom={false}
       enablePan={false}
       autoRotate={false}
-      minPolarAngle={Math.PI / 2.35}
-      maxPolarAngle={Math.PI / 1.88}
-      minAzimuthAngle={-Math.PI / 3.2}
-      maxAzimuthAngle={Math.PI / 3.2}
+      minPolarAngle={Math.PI / 2.06}
+      maxPolarAngle={Math.PI / 1.94}
+      minAzimuthAngle={-Math.PI / 3.0}
+      maxAzimuthAngle={Math.PI / 3.0}
       dampingFactor={0.07}
       enableDamping
     />
