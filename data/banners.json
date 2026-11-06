@@ -1,0 +1,20 @@
+[
+  {
+    "id": "banner-announcement-main",
+    "title": "SCENTS & MISTS — Signature Collection",
+    "ctaHref": "/collections",
+    "ctaText": "Explore Collection",
+    "isActive": false,
+    "subtitle": "Explore our signature high-altitude botanical Eau de Parfum showcase.",
+    "placement": "collection"
+  },
+  {
+    "id": "banner-editorial-consultation",
+    "title": "Private Olfactory Consultations",
+    "ctaHref": "/contact",
+    "ctaText": "Submit an Enquiry",
+    "isActive": false,
+    "subtitle": "Connect with our fragrance specialists for bespoke scent profiling and press enquiries.",
+    "placement": "collection"
+  }
+]

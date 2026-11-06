@@ -1,5 +1,7 @@
 "use server";
 
+import fs from "node:fs";
+import path from "node:path";
 import { revalidatePath } from "next/cache";
 import { createSupabaseServerClient, isSupabaseConfigured } from "@/lib/supabase/server";
 import {
@@ -335,15 +337,44 @@ export async function updateBrandStoryContentAction(
   return { success: true };
 }
 
+const DATA_DIR = path.resolve(process.cwd(), "data");
+const BANNERS_FILE = path.join(DATA_DIR, "banners.json");
+
+function readLocalBanners(): BannerItemConfig[] | null {
+  try {
+    if (fs.existsSync(BANNERS_FILE)) {
+      const data = fs.readFileSync(BANNERS_FILE, "utf-8");
+      const parsed = JSON.parse(data);
+      if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+    }
+  } catch {
+    // fallback
+  }
+  return null;
+}
+
+function writeLocalBanners(banners: BannerItemConfig[]) {
+  try {
+    if (!fs.existsSync(DATA_DIR)) {
+      fs.mkdirSync(DATA_DIR, { recursive: true });
+    }
+    fs.writeFileSync(BANNERS_FILE, JSON.stringify(banners, null, 2), "utf-8");
+  } catch {
+    // ignore
+  }
+}
+
 export async function getBannersContentAction(): Promise<BannerItemConfig[]> {
+  const local = readLocalBanners();
+
   if (!isSupabaseConfigured()) {
-    return DEFAULT_BANNERS;
+    return local || DEFAULT_BANNERS;
   }
 
   try {
     const supabase =
       createSupabaseServiceClient() ?? (await createSupabaseServerClient());
-    if (!supabase) return DEFAULT_BANNERS;
+    if (!supabase) return local || DEFAULT_BANNERS;
 
     const { data } = await supabase
       .from("site_content")
@@ -353,12 +384,13 @@ export async function getBannersContentAction(): Promise<BannerItemConfig[]> {
 
     const row = data as { content_value: BannerItemConfig[] } | null;
     if (!row || !Array.isArray(row.content_value)) {
-      return DEFAULT_BANNERS;
+      return local || DEFAULT_BANNERS;
     }
 
+    writeLocalBanners(row.content_value);
     return row.content_value;
   } catch {
-    return DEFAULT_BANNERS;
+    return local || DEFAULT_BANNERS;
   }
 }
 
@@ -367,6 +399,8 @@ export const getBannersAction = getBannersContentAction;
 export async function updateBannersContentAction(
   banners: BannerItemConfig[]
 ): Promise<{ success: boolean; error?: string }> {
+  writeLocalBanners(banners);
+
   const auth = await verifyServerAdmin();
   if (!auth.authorized || !auth.admin) {
     return { success: false, error: auth.error || "Unauthorized admin operation." };
@@ -387,6 +421,7 @@ export async function updateBannersContentAction(
       content_key: "banners",
       content_value: banners,
       updated_by: auth.admin.id,
+      updated_at: new Date().toISOString(),
     },
     { onConflict: "content_key" }
   );
@@ -404,6 +439,7 @@ export async function updateBannersContentAction(
   });
 
   revalidatePath("/");
+  revalidatePath("/shop");
   revalidatePath("/collections");
   revalidatePath("/admin/content");
   revalidatePath("/admin/content/banners");

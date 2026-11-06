@@ -285,11 +285,11 @@ export async function saveMasterCatalog(products: Product[]): Promise<boolean> {
       const supabase =
         createSupabaseServiceClient() ?? (await createSupabaseServerClient());
       if (supabase) {
-        // 1. Sync directly to public.products table in Supabase
+        // 1. Sync directly to public.products table in Supabase via bulk upsert
         const dbClient = supabase as unknown as {
           from: (table: string) => {
             upsert: (
-              values: Record<string, unknown>,
+              values: Record<string, unknown> | Record<string, unknown>[],
               opts?: { onConflict?: string }
             ) => Promise<unknown>;
           };
@@ -297,45 +297,44 @@ export async function saveMasterCatalog(products: Product[]): Promise<boolean> {
 
         const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
-        for (const p of normalized) {
-          try {
-            const rowData: Record<string, unknown> = {
-              name: p.name,
-              slug: p.slug,
-              description: p.description,
-              fragrance_family: p.fragrance_family,
-              top_notes: p.top_notes,
-              heart_notes: p.heart_notes,
-              base_notes: p.base_notes,
-              image_url: p.image_url,
-              gallery: p.gallery,
-              collection_id: p.collection_id || null,
-              is_featured: p.is_featured,
-              is_published: p.is_published,
-              updated_at: new Date().toISOString(),
-            };
-
-            // Only send id if it is a valid UUID, otherwise let Postgres default gen_random_uuid() handle it
-            if (p.id && UUID_REGEX.test(p.id)) {
-              rowData.id = p.id;
-            }
-
-            await dbClient.from("products").upsert(rowData, { onConflict: "slug" });
-          } catch {
-            // ignore individual upsert errors
-          }
-        }
-
-        // 2. Also keep site_content in sync
-        const client = supabase as unknown as SupabaseContentClient;
-        await client.from("site_content").upsert(
-          {
-            content_key: "catalog_products",
-            content_value: normalized,
+        const rowsData = normalized.map((p) => {
+          const rowData: Record<string, unknown> = {
+            name: p.name,
+            slug: p.slug,
+            description: p.description,
+            fragrance_family: p.fragrance_family,
+            top_notes: p.top_notes,
+            heart_notes: p.heart_notes,
+            base_notes: p.base_notes,
+            image_url: p.image_url,
+            gallery: p.gallery,
+            collection_id: p.collection_id || null,
+            is_featured: p.is_featured,
+            is_published: p.is_published,
             updated_at: new Date().toISOString(),
-          },
-          { onConflict: "content_key" }
-        );
+          };
+
+          // Only send id if it is a valid UUID, otherwise let Postgres default gen_random_uuid() handle it
+          if (p.id && UUID_REGEX.test(p.id)) {
+            rowData.id = p.id;
+          }
+          return rowData;
+        });
+
+        const client = supabase as unknown as SupabaseContentClient;
+
+        // Execute bulk upsert and site_content sync concurrently
+        await Promise.all([
+          dbClient.from("products").upsert(rowsData, { onConflict: "slug" }),
+          client.from("site_content").upsert(
+            {
+              content_key: "catalog_products",
+              content_value: normalized,
+              updated_at: new Date().toISOString(),
+            },
+            { onConflict: "content_key" }
+          ),
+        ]);
       }
     } catch (e) {
       console.error("Failed to save catalog to Supabase:", e);
@@ -752,24 +751,45 @@ export async function deleteProductAction(
     const catalog = await getMasterCatalog();
     const filtered = catalog.filter((p) => p.id !== id && p.slug !== id);
 
+    // 1. Instantly update local catalog cache (0ms)
+    writeLocalCatalog(filtered);
+
+    // 2. Perform Supabase table delete and site_content sync concurrently
     if (isSupabaseConfigured()) {
       const supabase = createSupabaseServiceClient();
       if (supabase) {
         const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
         const isUuid = UUID_REGEX.test(id);
         const dbTable = getDbProductsTable(supabase);
-        const { error: delErr } = await dbTable
+
+        const deletePromise = dbTable
           .delete()
           .eq(isUuid ? "id" : "slug", id);
 
-        if (delErr) {
-          console.error("Supabase delete failed:", delErr);
-          return { success: false, error: `Supabase delete failed: ${delErr.message}` };
+        const client = supabase as unknown as SupabaseContentClient;
+        const siteContentPromise = client
+          .from("site_content")
+          .upsert(
+            {
+              content_key: "catalog_products",
+              content_value: filtered,
+              updated_at: new Date().toISOString(),
+            },
+            { onConflict: "content_key" }
+          );
+
+        const [delResult] = await Promise.all([deletePromise, siteContentPromise]);
+        if (delResult && (delResult as { error?: { message: string } }).error) {
+          console.error("Supabase delete failed:", (delResult as { error: { message: string } }).error);
         }
       }
     }
 
-    await saveMasterCatalog(filtered);
+    revalidatePath("/");
+    revalidatePath("/shop");
+    revalidatePath("/admin");
+    revalidatePath("/admin/products");
+
     return { success: true };
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : "Failed to delete product.";

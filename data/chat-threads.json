@@ -5,18 +5,18 @@
     "messages": [
       {
         "id": "msg_welcome_intro",
-        "text": "Hi! Welcome to SCENTS & MISTS. How can we help you today?",
+        "text": "Greetings Guest Client! How may we assist you with our 50ml Aroma Mists or 85ml Victoria's Secret perfumes today? Feel free to ask about scent profiles, Cash on Delivery, or delivery timing.",
         "sender": "seller",
         "status": "read",
         "threadId": "thread_1793950550354_q7b561",
         "timestamp": "2026-11-06T07:35:51.265Z",
-        "senderName": "SCENTS & MISTS"
+        "senderName": "SCENTS & MISTS Atelier Concierge"
       }
     ],
     "createdAt": "2026-11-06T07:35:51.265Z",
     "updatedAt": "2026-11-06T07:35:51.265Z",
     "customerName": "Guest Client",
-    "lastMessageText": "Hi! Welcome to SCENTS & MISTS. How can we help you today?",
+    "lastMessageText": "Greetings Guest Client! How may we assist you with our 50ml Aroma Mists or 85ml Victoria's Secret perfumes today? Feel free to ask about scent profiles, Cash on Delivery, or delivery timing.",
     "lastMessageSender": "seller",
     "unreadByAdminCount": 0,
     "unreadByCustomerCount": 0
