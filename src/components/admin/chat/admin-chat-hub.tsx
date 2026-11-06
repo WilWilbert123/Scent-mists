@@ -18,6 +18,7 @@ import {
   markChatThreadReadAction,
   updateChatThreadStatusAction,
 } from "@/actions/chat.actions";
+import { useAdminChatNotification } from "@/context/admin-chat-notification-context";
 import type { ChatMessage, ChatThread } from "@/types/chat";
 import { cn } from "@/lib/utils";
 
@@ -38,6 +39,7 @@ export function AdminChatHub({
   initialThreads,
   initialUnreadCount = 0,
 }: AdminChatHubProps) {
+  const { setUnreadCount } = useAdminChatNotification();
   const [threads, setThreads] = useState<ChatThread[]>(initialThreads);
   const [selectedThreadId, setSelectedThreadId] = useState<string>(
     initialThreads[0]?.id || ""
@@ -51,6 +53,12 @@ export function AdminChatHub({
   const activeThread = threads.find((t) => t.id === selectedThreadId);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const replyInputRef = useRef<HTMLTextAreaElement | null>(null);
+
+  // Sync unread count to global admin notification context whenever threads update
+  useEffect(() => {
+    const unread = threads.reduce((acc, t) => acc + (t.unreadByAdminCount || 0), 0);
+    setUnreadCount(unread);
+  }, [threads, setUnreadCount]);
 
   // Auto-scroll messages
   const scrollToBottom = useCallback((smooth = true) => {
@@ -73,6 +81,15 @@ export function AdminChatHub({
       setThreads((prev) =>
         prev.map((t) => (t.id === selectedThreadId ? { ...t, unreadByAdminCount: 0 } : t))
       );
+      try {
+        if (typeof window !== "undefined" && "BroadcastChannel" in window) {
+          const bc = new BroadcastChannel("scent_mists_chat_sync");
+          bc.postMessage({ type: "thread_read", threadId: selectedThreadId });
+          bc.close();
+        }
+      } catch {
+        // ignore broadcast errors
+      }
     })();
   }, [selectedThreadId]);
 
@@ -91,51 +108,74 @@ export function AdminChatHub({
     }
   }, [selectedThreadId]);
 
-  // Real-time synchronization: listen for broadcasts and poll
+  // Real-time synchronization: listen for Supabase broadcasts, BroadcastChannel, and poll
   useEffect(() => {
+    // 1. Multi-tab BroadcastChannel listener
+    let bc: BroadcastChannel | null = null;
+    if (typeof window !== "undefined" && "BroadcastChannel" in window) {
+      bc = new BroadcastChannel("scent_mists_chat_sync");
+      bc.onmessage = (event) => {
+        if (event.data?.type === "new_customer_message") {
+          void refreshThreads(false);
+        }
+      };
+    }
+
+    // 2. Custom window event
+    const handleLocalUpdate = () => {
+      void refreshThreads(false);
+    };
+    window.addEventListener("scent_mists_chat_updated", handleLocalUpdate);
+
+    // 3. Supabase Realtime channel
     const supabase = createSupabaseBrowserClient();
-    if (!supabase) return;
+    let channel: ReturnType<NonNullable<ReturnType<typeof createSupabaseBrowserClient>>["channel"]> | null = null;
 
-    const channel = supabase.channel("admin-chat-feed");
+    if (supabase) {
+      channel = supabase.channel("admin-chat-feed");
+      channel
+        .on("broadcast", { event: "new_message" }, ({ payload }) => {
+          const msg = payload as ChatMessage;
+          if (!msg || !msg.threadId) return;
 
-    channel
-      .on("broadcast", { event: "new_message" }, ({ payload }) => {
-        const msg = payload as ChatMessage;
-        if (!msg || !msg.threadId) return;
-
-        setThreads((prev) => {
-          const index = prev.findIndex((t) => t.id === msg.threadId);
-          if (index === -1) {
-            // New thread arrived
-            void refreshThreads(false);
-            return prev;
-          }
-          const updated = [...prev];
-          const target = { ...updated[index] };
-          if (!target.messages.some((m) => m.id === msg.id)) {
-            target.messages = [...target.messages, msg];
-            target.lastMessageText = msg.text;
-            target.lastMessageSender = msg.sender;
-            target.updatedAt = msg.timestamp;
-            if (msg.sender === "customer" && target.id !== selectedThreadId) {
-              target.unreadByAdminCount = (target.unreadByAdminCount || 0) + 1;
+          setThreads((prev) => {
+            const index = prev.findIndex((t) => t.id === msg.threadId);
+            if (index === -1) {
+              // New thread arrived
+              void refreshThreads(false);
+              return prev;
             }
-            updated.splice(index, 1);
-            updated.unshift(target);
-          }
-          return updated;
-        });
-      })
-      .subscribe();
+            const updated = [...prev];
+            const target = { ...updated[index] };
+            if (!target.messages.some((m) => m.id === msg.id)) {
+              target.messages = [...target.messages, msg];
+              target.lastMessageText = msg.text;
+              target.lastMessageSender = msg.sender;
+              target.updatedAt = msg.timestamp;
+              if (msg.sender === "customer" && target.id !== selectedThreadId) {
+                target.unreadByAdminCount = (target.unreadByAdminCount || 0) + 1;
+              }
+              updated.splice(index, 1);
+              updated.unshift(target);
+            }
+            return updated;
+          });
+        })
+        .subscribe();
+    }
 
-    // Regular polling fallback every 6 seconds
+    // 4. Regular polling fallback every 5 seconds
     const interval = setInterval(() => {
       void refreshThreads(false);
-    }, 6000);
+    }, 5000);
 
     return () => {
       clearInterval(interval);
-      void supabase.removeChannel(channel);
+      window.removeEventListener("scent_mists_chat_updated", handleLocalUpdate);
+      if (bc) bc.close();
+      if (channel && supabase) {
+        void supabase.removeChannel(channel);
+      }
     };
   }, [selectedThreadId, refreshThreads]);
 

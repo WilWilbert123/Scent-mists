@@ -4,6 +4,7 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, ChevronRight } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 export interface MegaMenuColumn {
   title: string;
@@ -360,120 +361,135 @@ export function DesktopMegaMenu({
   if (!currentItem) return null;
 
   return (
-    <div
-      role="region"
-      aria-label={`${currentItem.label} navigation menu`}
-      onMouseEnter={() => onMouseEnter(activeMenu)}
-      className="absolute top-full left-0 right-0 z-50 w-full border-b border-border/70 bg-[#FCFAF7] dark:bg-[#141210] shadow-[0_24px_60px_rgba(0,0,0,0.12)] transition-all duration-300 ease-out animate-in fade-in slide-in-from-top-2"
-    >
-      <div className="mx-auto max-w-[1400px] px-6 lg:px-10 xl:px-12 py-8 sm:py-10">
-        <div className="grid grid-cols-12 gap-8 lg:gap-10 items-start">
-          {/* Main Visual Columns (9 cols) */}
-          <div className="col-span-8 lg:col-span-9 grid grid-cols-3 lg:grid-cols-3 gap-6 lg:gap-8">
-            {currentItem.columns.map((col, idx) => (
-              <div key={idx} className="space-y-4">
-                {/* Visual Thumbnail Card */}
-                <div className="relative aspect-[16/10] w-full overflow-hidden rounded-lg bg-surface border border-border/60 group">
-                  <Image
-                    src={col.image}
-                    alt={col.imageAlt}
-                    fill
-                    sizes="(max-width: 1200px) 25vw, 20vw"
-                    className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
-                  <span className="absolute bottom-2.5 left-3 text-xs sm:text-[13px] font-mono uppercase tracking-[0.16em] text-white font-semibold drop-shadow-md">
-                    {col.title}
-                  </span>
-                </div>
+    <>
+      {/* Invisible backdrop to capture outside clicks without any transparency or dimming */}
+      <div
+        aria-hidden="true"
+        onClick={onClose}
+        className="fixed inset-0 top-[115px] z-40 bg-transparent"
+      />
 
-                {/* Curated Links List */}
-                <ul className="space-y-3 pt-2">
-                  {col.links.map((link, lIdx) => (
-                    <li key={lIdx}>
-                      <Link
-                        href={link.href}
-                        onClick={onClose}
-                        className="group/link flex flex-col items-start py-1 transition-colors cursor-pointer"
-                      >
-                        <div className="flex items-center gap-2 text-sm sm:text-[15px] font-serif text-foreground hover:text-accent transition-colors font-normal">
-                          <span className="tracking-wide">{link.label}</span>
-                          {link.badge && (
-                            <span className="rounded-xs bg-accent/15 text-accent px-1.5 py-0.5 text-[10px] font-mono font-bold tracking-wider">
-                              {link.badge}
+      {/* Solid opaque white luxury mega-menu (Zero transparency) */}
+      <div
+        role="region"
+        aria-label={`${currentItem.label} navigation menu`}
+        onMouseEnter={() => onMouseEnter(activeMenu)}
+        className="absolute top-full left-0 right-0 z-50 w-full border-b border-border bg-white dark:bg-[#121110] shadow-[0_20px_50px_rgba(0,0,0,0.12)] transition-all duration-300 ease-out animate-in fade-in slide-in-from-top-1 max-h-[55vh] overflow-y-auto"
+      >
+        <div className="mx-auto max-w-[1400px] px-6 lg:px-10 py-5 sm:py-6">
+          <div className="grid grid-cols-12 gap-6 lg:gap-8 items-start">
+            {/* Main Visual Columns: automatically adapts to 4 columns on bestsellers, 3 on standard menus */}
+            <div
+              className={cn(
+                "col-span-8 lg:col-span-9 grid gap-4 lg:gap-6",
+                currentItem.columns.length >= 4 ? "grid-cols-4" : "grid-cols-3"
+              )}
+            >
+              {currentItem.columns.map((col, idx) => (
+                <div key={idx} className="space-y-2.5">
+                  {/* Visual Thumbnail Card - compact 16:9 ratio */}
+                  <div className="relative aspect-[16/9] w-full overflow-hidden rounded-md bg-surface border border-border/60 group">
+                    <Image
+                      src={col.image}
+                      alt={col.imageAlt}
+                      fill
+                      sizes="(max-width: 1200px) 25vw, 20vw"
+                      className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-transparent to-transparent pointer-events-none" />
+                    <span className="absolute bottom-1.5 left-2 right-2 text-[10px] sm:text-[11px] font-mono uppercase tracking-[0.14em] text-white font-semibold drop-shadow-md truncate">
+                      {col.title}
+                    </span>
+                  </div>
+
+                  {/* Curated Links List */}
+                  <ul className="space-y-1.5 pt-0.5">
+                    {col.links.map((link, lIdx) => (
+                      <li key={lIdx}>
+                        <Link
+                          href={link.href}
+                          onClick={onClose}
+                          className="group/link flex flex-col items-start py-0.5 transition-colors cursor-pointer"
+                        >
+                          <div className="flex items-center gap-1.5 text-xs sm:text-[13px] font-serif text-foreground hover:text-accent transition-colors font-medium">
+                            <span className="tracking-wide line-clamp-1">{link.label}</span>
+                            {link.badge && (
+                              <span className="rounded-xs bg-accent/15 text-accent px-1.5 py-0.2 text-[9px] font-mono font-bold tracking-wider shrink-0">
+                                {link.badge}
+                              </span>
+                            )}
+                            <ChevronRight className="h-3 w-3 opacity-0 -translate-x-1 transition-all group-hover/link:opacity-100 group-hover/link:translate-x-0 text-accent shrink-0" />
+                          </div>
+                          {link.subtitle && (
+                            <span className="text-[10px] sm:text-[11px] text-muted-foreground font-sans leading-tight pt-0.5 line-clamp-1">
+                              {link.subtitle}
                             </span>
                           )}
-                          <ChevronRight className="h-3.5 w-3.5 opacity-0 -translate-x-1.5 transition-all group-hover/link:opacity-100 group-hover/link:translate-x-0 text-accent" />
-                        </div>
-                        {link.subtitle && (
-                          <span className="text-xs text-muted-foreground font-sans leading-relaxed pt-0.5">
-                            {link.subtitle}
-                          </span>
-                        )}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-
-          {/* Featured Right Spotlight Card (3 cols) — Exact Jo Malone styling */}
-          <div className="col-span-4 lg:col-span-3 border-l border-border/70 pl-8 space-y-6">
-            <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl bg-surface border border-border/60 group">
-              <Image
-                src={currentItem.featured.image}
-                alt={currentItem.featured.title}
-                fill
-                sizes="25vw"
-                className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-transparent pointer-events-none" />
-              <div className="absolute bottom-3.5 left-3.5 right-3.5 text-white space-y-1.5">
-                <p className="font-serif text-base sm:text-lg font-medium leading-snug">
-                  {currentItem.featured.title}
-                </p>
-                {currentItem.featured.subtitle && (
-                  <p className="text-xs text-white/80 font-sans leading-relaxed line-clamp-2">
-                    {currentItem.featured.subtitle}
-                  </p>
-                )}
-                <Link
-                  href={currentItem.featured.ctaHref}
-                  onClick={onClose}
-                  className="inline-flex items-center gap-1.5 text-xs sm:text-[13px] font-mono uppercase tracking-wider text-accent-light hover:underline font-semibold cursor-pointer pt-0.5"
-                >
-                  <span>{currentItem.featured.ctaText}</span>
-                  <ArrowRight className="h-3.5 w-3.5" />
-                </Link>
-              </div>
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
             </div>
 
-            {/* Guidance Quick Links */}
-            {currentItem.featured.guidanceLinks.length > 0 && (
-              <div className="space-y-3 pt-1">
-                <p className="font-mono text-xs uppercase tracking-[0.2em] text-accent font-bold">
-                  {currentItem.featured.guidanceTitle || "Customer Services"}
-                </p>
-                <ul className="space-y-2">
-                  {currentItem.featured.guidanceLinks.map((gLink, gIdx) => (
-                    <li key={gIdx}>
-                      <Link
-                        href={gLink.href}
-                        onClick={onClose}
-                        className="text-sm font-sans text-muted-foreground hover:text-foreground transition-colors flex items-center justify-between group cursor-pointer py-1 font-medium"
-                      >
-                        <span>{gLink.label}</span>
-                        <ChevronRight className="h-3.5 w-3.5 opacity-0 group-hover:opacity-100 transition-opacity text-accent" />
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
+            {/* Featured Right Spotlight Card — Compact & Elegant */}
+            <div className="col-span-4 lg:col-span-3 border-l border-border/70 pl-6 space-y-3.5">
+              <div className="relative aspect-[16/10] w-full overflow-hidden rounded-lg bg-surface border border-border/60 group">
+                <Image
+                  src={currentItem.featured.image}
+                  alt={currentItem.featured.title}
+                  fill
+                  sizes="25vw"
+                  className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent pointer-events-none" />
+                <div className="absolute bottom-2.5 left-3 right-3 text-white space-y-1">
+                  <p className="font-serif text-xs sm:text-sm font-medium leading-tight line-clamp-1">
+                    {currentItem.featured.title}
+                  </p>
+                  {currentItem.featured.subtitle && (
+                    <p className="text-[10px] sm:text-[11px] text-white/80 font-sans leading-tight line-clamp-1">
+                      {currentItem.featured.subtitle}
+                    </p>
+                  )}
+                  <Link
+                    href={currentItem.featured.ctaHref}
+                    onClick={onClose}
+                    className="inline-flex items-center gap-1 text-[10px] sm:text-[11px] font-mono uppercase tracking-wider text-accent-light hover:underline font-semibold cursor-pointer pt-0.5"
+                  >
+                    <span>{currentItem.featured.ctaText}</span>
+                    <ArrowRight className="h-3 w-3" />
+                  </Link>
+                </div>
               </div>
-            )}
+
+              {/* Guidance Quick Links */}
+              {currentItem.featured.guidanceLinks.length > 0 && (
+                <div className="space-y-1.5 pt-0.5">
+                  <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-accent font-bold">
+                    {currentItem.featured.guidanceTitle || "Customer Services"}
+                  </p>
+                  <ul className="space-y-1">
+                    {currentItem.featured.guidanceLinks.slice(0, 3).map((gLink, gIdx) => (
+                      <li key={gIdx}>
+                        <Link
+                          href={gLink.href}
+                          onClick={onClose}
+                          className="text-xs font-sans text-muted-foreground hover:text-foreground transition-colors flex items-center justify-between group cursor-pointer py-0.5 font-medium"
+                        >
+                          <span className="line-clamp-1">{gLink.label}</span>
+                          <ChevronRight className="h-3 w-3 opacity-0 group-hover:opacity-100 transition-opacity text-accent shrink-0" />
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

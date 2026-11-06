@@ -1,5 +1,220 @@
 [
   {
+    "id": "thread_1793971946895_oabhof",
+    "status": "active",
+    "messages": [
+      {
+        "id": "msg_welcome_intro",
+        "text": "Hi! Welcome to SCENTS & MISTS. How can we help you today?",
+        "sender": "seller",
+        "status": "read",
+        "threadId": "thread_1793971946895_oabhof",
+        "timestamp": "2026-11-06T13:32:28.710Z",
+        "senderName": "SCENTS & MISTS"
+      },
+      {
+        "id": "msg_1793971970051_pv879",
+        "text": "Which mists and perfumes are your top bestsellers?",
+        "sender": "customer",
+        "status": "sent",
+        "threadId": "thread_1793971946895_oabhof",
+        "timestamp": "2026-11-06T13:32:50.051Z",
+        "senderName": "Guest Client"
+      },
+      {
+        "id": "msg_1793971972336_ynprw",
+        "text": "Our current #1 bestsellers are Clinique - Happy (50ml) and Bvlgari Man Black for men, and VS - Sweet Temptation (50ml) and Secret Angel Gold (85ml) for women! Both are in stock.",
+        "sender": "seller",
+        "status": "read",
+        "threadId": "thread_1793971946895_oabhof",
+        "timestamp": "2026-11-06T13:32:52.336Z",
+        "senderName": "SCENTS & MISTS Concierge"
+      },
+      {
+        "id": "msg_1793972018850_7qx4z",
+        "text": "Do you offer Cash on Delivery (COD)?",
+        "sender": "customer",
+        "status": "sent",
+        "threadId": "thread_1793971946895_oabhof",
+        "timestamp": "2026-11-06T13:33:38.850Z",
+        "senderName": "Guest Client"
+      },
+      {
+        "id": "msg_1793972095594_0i4bf",
+        "text": "Yes! We proudly offer Cash on Delivery (COD) as well as GCash. You only pay when your parcel is delivered safely to your doorstep.",
+        "sender": "seller",
+        "status": "read",
+        "threadId": "thread_1793971946895_oabhof",
+        "timestamp": "2026-11-06T13:34:55.594Z",
+        "senderName": "SCENTS & MISTS Concierge"
+      },
+      {
+        "id": "msg_1793972123906_bkun0",
+        "text": "How fast is delivery?",
+        "sender": "customer",
+        "status": "sent",
+        "threadId": "thread_1793971946895_oabhof",
+        "timestamp": "2026-11-06T13:35:23.906Z",
+        "senderName": "Guest Client"
+      },
+      {
+        "id": "msg_1793972127069_uh6l3",
+        "text": "Orders are prepared within 24 hours. Metro Manila & nearby delivery takes 1-3 business days, provincial areas take 3-5 days.",
+        "sender": "seller",
+        "status": "read",
+        "threadId": "thread_1793971946895_oabhof",
+        "timestamp": "2026-11-06T13:35:27.069Z",
+        "senderName": "SCENTS & MISTS Concierge"
+      },
+      {
+        "id": "msg_1793974076641_qa188",
+        "text": "Which mists and perfumes are your top bestsellers?",
+        "sender": "customer",
+        "status": "sent",
+        "threadId": "thread_1793971946895_oabhof",
+        "timestamp": "2026-11-06T14:07:56.641Z",
+        "senderName": "Guest Client"
+      },
+      {
+        "id": "msg_1793974078762_8mldg",
+        "text": "Our current #1 bestsellers are Clinique - Happy (50ml) and Bvlgari Man Black for men, and VS - Sweet Temptation (50ml) and Secret Angel Gold (85ml) for women! Both are in stock.",
+        "sender": "seller",
+        "status": "read",
+        "threadId": "thread_1793971946895_oabhof",
+        "timestamp": "2026-11-06T14:07:58.762Z",
+        "senderName": "SCENTS & MISTS Concierge"
+      },
+      {
+        "id": "msg_1793974083476_8s61w",
+        "text": "How fast is delivery?",
+        "sender": "customer",
+        "status": "sent",
+        "threadId": "thread_1793971946895_oabhof",
+        "timestamp": "2026-11-06T14:08:03.476Z",
+        "senderName": "Guest Client"
+      },
+      {
+        "id": "msg_1793974085727_dzx0g",
+        "text": "Orders are prepared within 24 hours. Metro Manila & nearby delivery takes 1-3 business days, provincial areas take 3-5 days.",
+        "sender": "seller",
+        "status": "read",
+        "threadId": "thread_1793971946895_oabhof",
+        "timestamp": "2026-11-06T14:08:05.727Z",
+        "senderName": "SCENTS & MISTS Concierge"
+      },
+      {
+        "id": "msg_1793974092887_m50d4",
+        "text": "Do you offer Cash on Delivery (COD)?",
+        "sender": "customer",
+        "status": "sent",
+        "threadId": "thread_1793971946895_oabhof",
+        "timestamp": "2026-11-06T14:08:12.887Z",
+        "senderName": "Guest Client"
+      },
+      {
+        "id": "msg_1793974094936_a3siz",
+        "text": "Yes! We proudly offer Cash on Delivery (COD) as well as GCash. You only pay when your parcel is delivered safely to your doorstep.",
+        "sender": "seller",
+        "status": "read",
+        "threadId": "thread_1793971946895_oabhof",
+        "timestamp": "2026-11-06T14:08:14.936Z",
+        "senderName": "SCENTS & MISTS Concierge"
+      },
+      {
+        "id": "msg_1793974101802_w3jnc",
+        "text": "How does the GPS pin delivery work?",
+        "sender": "customer",
+        "status": "sent",
+        "threadId": "thread_1793971946895_oabhof",
+        "timestamp": "2026-11-06T14:08:21.802Z",
+        "senderName": "Guest Client"
+      },
+      {
+        "id": "msg_1793974103829_sf30y",
+        "text": "Our checkout features an interactive GPS map! Simply tap 'Use My Current Location' or drag the pin directly over your house/building for precise courier delivery.",
+        "sender": "seller",
+        "status": "read",
+        "threadId": "thread_1793971946895_oabhof",
+        "timestamp": "2026-11-06T14:08:23.829Z",
+        "senderName": "SCENTS & MISTS Concierge"
+      },
+      {
+        "id": "msg_1793974156566_tbzcc",
+        "text": "Which mists and perfumes are your top bestsellers?",
+        "sender": "customer",
+        "status": "sent",
+        "threadId": "thread_1793971946895_oabhof",
+        "timestamp": "2026-11-06T14:09:16.566Z",
+        "senderName": "Guest Client"
+      },
+      {
+        "id": "msg_1793974158736_kyn0z",
+        "text": "Our current #1 bestsellers are Clinique - Happy (50ml) and Bvlgari Man Black for men, and VS - Sweet Temptation (50ml) and Secret Angel Gold (85ml) for women! Both are in stock.",
+        "sender": "seller",
+        "status": "read",
+        "threadId": "thread_1793971946895_oabhof",
+        "timestamp": "2026-11-06T14:09:18.736Z",
+        "senderName": "SCENTS & MISTS Concierge"
+      }
+    ],
+    "createdAt": "2026-11-06T13:32:28.710Z",
+    "updatedAt": "2026-11-06T14:09:18.736Z",
+    "customerName": "Guest Client",
+    "lastMessageText": "Our current #1 bestsellers are Clinique - Happy (50ml) and Bvlgari Man Black for men, and VS - Sweet Temptation (50ml) and Secret Angel Gold (85ml) for women! Both are in stock.",
+    "lastMessageSender": "seller",
+    "unreadByAdminCount": 8,
+    "unreadByCustomerCount": 0
+  },
+  {
+    "id": "thread_1793958897642_6qzh8q",
+    "status": "active",
+    "messages": [
+      {
+        "id": "msg_welcome_intro",
+        "text": "Hi! Welcome to SCENTS & MISTS. How can we help you today?",
+        "sender": "seller",
+        "status": "read",
+        "threadId": "thread_1793958897642_6qzh8q",
+        "timestamp": "2026-11-06T09:54:58.372Z",
+        "senderName": "SCENTS & MISTS"
+      },
+      {
+        "id": "msg_1793958917805_h3apu",
+        "text": "hey",
+        "sender": "customer",
+        "status": "read",
+        "threadId": "thread_1793958897642_6qzh8q",
+        "timestamp": "2026-11-06T09:55:17.804Z",
+        "senderName": "Guest Client"
+      },
+      {
+        "id": "msg_1793958999374_2tnm6",
+        "text": "You can pin your exact house or gate location on our checkout map for accurate courier delivery.",
+        "sender": "seller",
+        "status": "read",
+        "threadId": "thread_1793958897642_6qzh8q",
+        "timestamp": "2026-11-06T09:56:39.374Z",
+        "senderName": "SCENTS & MISTS"
+      },
+      {
+        "id": "msg_1793959013835_x5pwd",
+        "text": "Thank you for contacting SCENTS & MISTS! How may we assist with your fragrance order today?",
+        "sender": "seller",
+        "status": "read",
+        "threadId": "thread_1793958897642_6qzh8q",
+        "timestamp": "2026-11-06T09:56:53.835Z",
+        "senderName": "SCENTS & MISTS"
+      }
+    ],
+    "createdAt": "2026-11-06T09:54:58.372Z",
+    "updatedAt": "2026-11-06T09:56:53.835Z",
+    "customerName": "Guest Client",
+    "lastMessageText": "Thank you for contacting SCENTS & MISTS! How may we assist with your fragrance order today?",
+    "lastMessageSender": "seller",
+    "unreadByAdminCount": 0,
+    "unreadByCustomerCount": 0
+  },
+  {
     "id": "thread_1793950550354_q7b561",
     "status": "active",
     "messages": [

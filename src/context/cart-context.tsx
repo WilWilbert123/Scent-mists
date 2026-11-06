@@ -25,6 +25,7 @@ import {
   type EffectivePriceResult,
 } from "@/lib/promotions";
 import { toast } from "@/components/ui/toast";
+import { createSupabaseBrowserClient } from "@/lib/supabase/client";
 
 const CartContext = createContext<CartState | undefined>(undefined);
 
@@ -40,6 +41,13 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const [flashSaleCampaign, setFlashSaleCampaign] = useState<FlashSaleCampaign>(
     DEFAULT_FLASH_SALE_CAMPAIGN
   );
+
+  // Real-time schedule ticker: keeps promotion windows accurate down to the exact second
+  const [currentTime, setCurrentTime] = useState<Date>(new Date());
+  useEffect(() => {
+    const timer = setInterval(() => setCurrentTime(new Date()), 3000);
+    return () => clearInterval(timer);
+  }, []);
 
   const refreshSettings = useCallback(async () => {
     try {
@@ -57,6 +65,111 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       // fallback to defaults
     }
   }, []);
+
+  // Real-time synchronization across Supabase, browser tabs, and window focus
+  useEffect(() => {
+    // 1. Supabase Postgres changes subscription
+    const supabase = createSupabaseBrowserClient();
+    let channel: ReturnType<NonNullable<typeof supabase>["channel"]> | null = null;
+    if (supabase) {
+      channel = supabase
+        .channel("promotions-and-settings-realtime")
+        .on(
+          "postgres_changes",
+          {
+            event: "*",
+            schema: "public",
+            table: "site_content",
+          },
+          (payload) => {
+            const row = payload.new as
+              | { content_key?: string; content_value?: unknown }
+              | undefined;
+            if (!row || !row.content_key) return;
+
+            if (
+              row.content_key === "flash_sale_campaign" &&
+              row.content_value &&
+              typeof row.content_value === "object"
+            ) {
+              setFlashSaleCampaign(row.content_value as FlashSaleCampaign);
+            } else if (
+              row.content_key === "cart_delivery_settings" &&
+              row.content_value &&
+              typeof row.content_value === "object"
+            ) {
+              setDeliverySettings(row.content_value as CartDeliverySettings);
+            }
+          }
+        )
+        .subscribe();
+    }
+
+    // 2. Cross-tab BroadcastChannel for 0ms multi-tab sync
+    let bc: BroadcastChannel | null = null;
+    try {
+      if (typeof window !== "undefined" && "BroadcastChannel" in window) {
+        bc = new BroadcastChannel("scent_mists_promotions_channel");
+        bc.onmessage = (event) => {
+          if (event.data?.type === "FLASH_SALE_UPDATED" && event.data.payload) {
+            setFlashSaleCampaign(event.data.payload);
+          } else if (event.data?.type === "DELIVERY_UPDATED" && event.data.payload) {
+            setDeliverySettings(event.data.payload);
+          } else if (event.data?.type === "SETTINGS_SYNC") {
+            void refreshSettings();
+          }
+        };
+      }
+    } catch {
+      // ignore
+    }
+
+    // 3. Storage event listener (fallback cross-tab)
+    const handleStorage = (e: StorageEvent) => {
+      if (e.key === "scent_mists_promo_sync_timestamp") {
+        void refreshSettings();
+      }
+    };
+    window.addEventListener("storage", handleStorage);
+
+    // 4. Custom window event (for same-window instant dispatch from admin actions)
+    const handleCustomSync = (e: Event) => {
+      const customEvent = e as CustomEvent<{ flashSale?: FlashSaleCampaign; delivery?: CartDeliverySettings }>;
+      if (customEvent.detail?.flashSale) {
+        setFlashSaleCampaign(customEvent.detail.flashSale);
+      } else if (customEvent.detail?.delivery) {
+        setDeliverySettings(customEvent.detail.delivery);
+      } else {
+        void refreshSettings();
+      }
+    };
+    window.addEventListener("scent_mists_flash_sale_updated", handleCustomSync);
+
+    // 5. Window focus and visibility change (auto-refresh when customer returns to tab)
+    const handleFocus = () => {
+      void refreshSettings();
+    };
+    window.addEventListener("focus", handleFocus);
+    const handleVisibility = () => {
+      if (document.visibilityState === "visible") {
+        void refreshSettings();
+      }
+    };
+    document.addEventListener("visibilitychange", handleVisibility);
+
+    return () => {
+      if (supabase && channel) {
+        void supabase.removeChannel(channel);
+      }
+      if (bc) {
+        bc.close();
+      }
+      window.removeEventListener("storage", handleStorage);
+      window.removeEventListener("scent_mists_flash_sale_updated", handleCustomSync);
+      window.removeEventListener("focus", handleFocus);
+      document.removeEventListener("visibilitychange", handleVisibility);
+    };
+  }, [refreshSettings]);
 
   // Load from localStorage & fetch settings on mount
   useEffect(() => {
@@ -89,9 +202,9 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   const getEffectivePrice = useCallback(
     (product: Product): EffectivePriceResult => {
-      return getProductEffectivePrice(product, flashSaleCampaign);
+      return getProductEffectivePrice(product, flashSaleCampaign, currentTime);
     },
-    [flashSaleCampaign]
+    [flashSaleCampaign, currentTime]
   );
 
   const addItem = (product: Product, quantity = 1) => {

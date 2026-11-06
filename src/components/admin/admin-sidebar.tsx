@@ -24,6 +24,7 @@ import {
 import { ADMIN_NAV_ITEMS, type AdminNavItem } from "@/data/admin-navigation";
 import { BRAND_NAME } from "@/lib/constants";
 import { signOutAdminAction } from "@/actions/auth.actions";
+import { useAdminChatNotification } from "@/context/admin-chat-notification-context";
 import { cn } from "@/lib/utils";
 import { toast } from "@/components/ui/toast";
 
@@ -45,6 +46,7 @@ const ICON_MAP: Record<AdminNavItem["iconName"], React.ComponentType<{ className
 export function AdminSidebar() {
   const pathname = usePathname();
   const router = useRouter();
+  const { unreadCount } = useAdminChatNotification();
   const [pendingHref, setPendingHref] = useState<string | null>(null);
 
   // Clear pending indicator as soon as route pathname updates
@@ -147,12 +149,22 @@ export function AdminSidebar() {
                     />
                     <span>{item.label}</span>
                   </span>
-                  {isLoadingThisItem && (
-                    <Loader2
-                      className="h-3.5 w-3.5 shrink-0 animate-spin text-accent dark:text-[#E8C6CE]"
-                      aria-hidden="true"
-                    />
-                  )}
+                  <span className="flex items-center gap-2">
+                    {item.href === "/admin/chat" && unreadCount > 0 && (
+                      <span
+                        title={`${unreadCount} unread customer chat${unreadCount > 1 ? "s" : ""}`}
+                        className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-rose-600 px-1.5 text-[10px] font-bold text-white font-mono shadow-xs animate-pulse dark:bg-rose-500"
+                      >
+                        {unreadCount > 99 ? "99+" : unreadCount}
+                      </span>
+                    )}
+                    {isLoadingThisItem && (
+                      <Loader2
+                        className="h-3.5 w-3.5 shrink-0 animate-spin text-accent dark:text-[#E8C6CE]"
+                        aria-hidden="true"
+                      />
+                    )}
+                  </span>
                 </Link>
               </li>
             );

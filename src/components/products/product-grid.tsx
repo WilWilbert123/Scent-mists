@@ -3,7 +3,9 @@
 import React, { useState, useMemo } from "react";
 import type { Product } from "@/types/product";
 import { ProductCard } from "./product-card";
-import { Search, Package } from "lucide-react";
+import { Search, Package, Zap } from "lucide-react";
+import { useCart } from "@/context/cart-context";
+import { isFlashSaleActive } from "@/lib/promotions";
 import { cn } from "@/lib/utils";
 
 interface ProductGridProps {
@@ -30,9 +32,15 @@ const PRIORITY_SLUG_ORDER = [
 ];
 
 export function ProductGrid({ products }: ProductGridProps) {
+  const { flashSaleCampaign } = useCart();
   const [activeTab, setActiveTab] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [sortBy, setSortBy] = useState<string>("featured");
+
+  const isLiveFlashSale = useMemo(
+    () => isFlashSaleActive(flashSaleCampaign),
+    [flashSaleCampaign]
+  );
 
   const TABS = [
     { id: "all", label: "All", count: products.length },
@@ -166,6 +174,34 @@ export function ProductGrid({ products }: ProductGridProps) {
           </select>
         </div>
       </div>
+
+      {/* Real-time Scheduled Flash Sale Live Callout Banner */}
+      {isLiveFlashSale && flashSaleCampaign && (
+        <div className="relative overflow-hidden rounded-xl sm:rounded-2xl border border-amber-500/40 bg-gradient-to-r from-amber-500/15 via-rose-500/15 to-amber-500/10 p-3 sm:p-4 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-rose-600 text-white font-bold shrink-0 shadow-xs">
+              <Zap className="h-4 w-4 fill-white" />
+            </span>
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="font-bold text-foreground text-xs sm:text-sm">
+                  {flashSaleCampaign.name || "Fragrance Flash Sale"}
+                </span>
+                <span className="rounded-full bg-rose-500 text-white px-2 py-0.5 text-[10px] font-mono font-bold uppercase tracking-wider shadow-xs animate-pulse">
+                  {flashSaleCampaign.discountType === "percentage"
+                    ? `-${flashSaleCampaign.discountValue}% OFF`
+                    : `-₱${flashSaleCampaign.discountValue} OFF`}
+                </span>
+              </div>
+              <p className="text-[11px] sm:text-xs text-muted-foreground mt-0.5">
+                {flashSaleCampaign.bannerText ||
+                  "Special promotional prices applied automatically across our signature fragrance collection!"}
+              </p>
+            </div>
+          </div>
+          
+        </div>
+      )}
 
       {/* Responsive Grid: 2 columns on mobile, 3 columns on desktop for spacious luxury framing */}
       {filteredProducts.length === 0 ? (

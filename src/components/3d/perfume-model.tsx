@@ -54,7 +54,7 @@ export function PerfumeModel({ theme }: PerfumeModelProps) {
   // Base position aligned with background stone ledge with balanced headroom so cap and base never clip
   const basePosition: [number, number, number] = isDark
     ? [isMobile ? 0.12 : 0.14, isMobile ? -0.50 : -0.58, 0]
-    : [isMobile ? 0.10 : 0.12, isMobile ? -0.26 : -0.32, 0];
+    : [isMobile ? 0.10 : 0.12, isMobile ? -0.22 : -0.18, 0];
 
   // Fresh effervescent micro-bubbles inside the fresh perfume water chamber
   const bubbles = useMemo(() => {
