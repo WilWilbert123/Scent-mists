@@ -131,6 +131,15 @@ export function BannerManager({ initialBanners, updatedAt }: BannerManagerProps)
   const [uploadProgress, setUploadProgress] = useState<Record<string, number>>({});
   const fileInputRefs = useRef<Record<string, HTMLInputElement | null>>({});
 
+  // Bulk upload state (Upload 1 to 15 images at once)
+  const [isBulkUploading, setIsBulkUploading] = useState(false);
+  const [bulkProgress, setBulkProgress] = useState<{ current: number; total: number; percent: number }>({
+    current: 0,
+    total: 0,
+    percent: 0,
+  });
+  const bulkFileInputRef = useRef<HTMLInputElement | null>(null);
+
   useEffect(() => {
     setBanners(initialBanners);
   }, [initialBanners]);
@@ -300,6 +309,73 @@ export function BannerManager({ initialBanners, updatedAt }: BannerManagerProps)
     setActiveBannerForLibrary(null);
   };
 
+  // Bulk Upload (1 to 15 images) with automatic banner card creation
+  const handleBulkUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const rawFiles = Array.from(e.target.files || []);
+    if (rawFiles.length === 0) return;
+
+    if (rawFiles.length > 15) {
+      toast.warning(`You selected ${rawFiles.length} images. Only the first 15 will be uploaded.`);
+    }
+    const selectedFiles = rawFiles.slice(0, 15);
+
+    setIsBulkUploading(true);
+    setBulkProgress({ current: 0, total: selectedFiles.length, percent: 5 });
+
+    const newBanners: BannerItemConfig[] = [];
+    let successCount = 0;
+
+    for (let i = 0; i < selectedFiles.length; i++) {
+      const file = selectedFiles[i];
+      const progressPercent = Math.round(((i + 1) / selectedFiles.length) * 95);
+      setBulkProgress({ current: i + 1, total: selectedFiles.length, percent: progressPercent });
+
+      try {
+        const optimizedFile = await compressImageFile(file);
+        const formData = new FormData();
+        formData.append("file", optimizedFile);
+        formData.append("bucket", "site-assets");
+
+        const res = await uploadProductImageAction(formData);
+        if (res.success && res.url) {
+          const cleanTitle = file.name
+            .replace(/\.[^/.]+$/, "")
+            .replace(/[-_]/g, " ")
+            .replace(/\b\w/g, (c) => c.toUpperCase());
+
+          newBanners.push({
+            id: `banner-${Date.now()}-${i}-${Math.random().toString(36).slice(2, 6)}`,
+            title: cleanTitle || `Showcase Slide #${banners.length + i + 1}`,
+            subtitle: "Discover iconic floral notes and oil-rich sillage with Cash on Delivery.",
+            ctaText: "Shop Collection",
+            ctaHref: "/shop",
+            imageUrl: res.url,
+            isActive: true,
+            placement: "shop",
+          });
+          successCount++;
+        } else {
+          toast.error(`Failed to upload ${file.name}: ${res.error || "Upload error"}`);
+        }
+      } catch {
+        toast.error(`Error processing ${file.name}`);
+      }
+    }
+
+    if (newBanners.length > 0) {
+      setBanners((prev) => [...prev, ...newBanners]);
+      toast.success(
+        `Uploaded and added ${successCount} banner image${successCount > 1 ? "s" : ""}! Click "Save Banner Configuration" to make them live.`
+      );
+    }
+
+    setIsBulkUploading(false);
+    setBulkProgress({ current: 0, total: 0, percent: 0 });
+    if (bulkFileInputRef.current) {
+      bulkFileInputRef.current.value = "";
+    }
+  };
+
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSaving(true);
@@ -310,6 +386,18 @@ export function BannerManager({ initialBanners, updatedAt }: BannerManagerProps)
         return;
       }
       toast.success("Promotional & editorial banners saved to Supabase.");
+
+      // Instant multi-tab broadcast sync across admin and shop carousel
+      try {
+        if (typeof window !== "undefined" && "BroadcastChannel" in window) {
+          const bc = new BroadcastChannel("scent_mists_banners_channel");
+          bc.postMessage({ type: "BANNERS_UPDATED", payload: banners });
+          bc.close();
+        }
+      } catch {
+        // ignore
+      }
+
       router.refresh();
     } finally {
       setIsSaving(false);
@@ -358,6 +446,40 @@ export function BannerManager({ initialBanners, updatedAt }: BannerManagerProps)
             <span>Preview Collections</span>
             <ExternalLink className="h-3 w-3" aria-hidden="true" />
           </Link>
+
+          {/* Hidden input for bulk uploading 1 to 15 images */}
+          <input
+            ref={bulkFileInputRef}
+            type="file"
+            multiple
+            accept="image/webp,image/jpeg,image/png,image/avif"
+            onChange={handleBulkUpload}
+            disabled={isBulkUploading}
+            className="hidden"
+            id="bulk-banner-upload-input"
+          />
+
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            disabled={isBulkUploading}
+            onClick={() => bulkFileInputRef.current?.click()}
+            className="cursor-pointer border-accent/40 bg-accent/10 text-accent hover:bg-accent/20"
+            title="Select 1 to 15 images to automatically create carousel banners"
+          >
+            {isBulkUploading ? (
+              <Loader2 className="h-3.5 w-3.5 mr-1.5 animate-spin" />
+            ) : (
+              <Upload className="h-3.5 w-3.5 mr-1.5" />
+            )}
+            <span>
+              {isBulkUploading
+                ? `Uploading (${bulkProgress.current}/${bulkProgress.total})...`
+                : "Bulk Upload (1-15 Images)"}
+            </span>
+          </Button>
+
           <Button
             type="button"
             variant="outline"
@@ -370,6 +492,27 @@ export function BannerManager({ initialBanners, updatedAt }: BannerManagerProps)
           </Button>
         </div>
       </div>
+
+      {/* Real-time Bulk Upload Progress Bar */}
+      {isBulkUploading && (
+        <div className="rounded-xl border border-accent/40 bg-accent/10 p-4 space-y-2 text-xs">
+          <div className="flex items-center justify-between text-accent font-medium">
+            <span className="flex items-center gap-2">
+              <Loader2 className="h-4 w-4 animate-spin" />
+              <span>
+                Optimizing &amp; uploading banner images ({bulkProgress.current} of {bulkProgress.total})...
+              </span>
+            </span>
+            <span className="font-mono font-semibold">{bulkProgress.percent}%</span>
+          </div>
+          <div className="h-2 w-full bg-accent/20 rounded-full overflow-hidden">
+            <div
+              className="h-full bg-accent transition-all duration-300 rounded-full"
+              style={{ width: `${bulkProgress.percent}%` }}
+            />
+          </div>
+        </div>
+      )}
 
       {/* Banner Cards List */}
       <div className="space-y-6">
@@ -673,17 +816,35 @@ export function BannerManager({ initialBanners, updatedAt }: BannerManagerProps)
       </div>
 
       {/* Bottom Sticky Action Bar */}
-      <div className="sticky bottom-4 z-20 flex items-center justify-between rounded-xl border border-border/80 bg-surface-elevated/95 p-4 shadow-xl backdrop-blur-md">
-        <Button
-          type="button"
-          variant="outline"
-          size="sm"
-          onClick={handleAddBanner}
-          className="cursor-pointer"
-        >
-          <Plus className="h-4 w-4 mr-1.5" />
-          <span>Add Another Banner</span>
-        </Button>
+      <div className="sticky bottom-4 z-20 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-border/80 bg-surface-elevated/95 p-4 shadow-xl backdrop-blur-md">
+        <div className="flex items-center gap-2">
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={handleAddBanner}
+            className="cursor-pointer"
+          >
+            <Plus className="h-4 w-4 mr-1.5" />
+            <span>Add Another Banner</span>
+          </Button>
+
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            disabled={isBulkUploading}
+            onClick={() => bulkFileInputRef.current?.click()}
+            className="cursor-pointer border-accent/40 bg-accent/10 text-accent hover:bg-accent/20"
+          >
+            {isBulkUploading ? (
+              <Loader2 className="h-4 w-4 mr-1.5 animate-spin" />
+            ) : (
+              <Upload className="h-4 w-4 mr-1.5" />
+            )}
+            <span>Bulk Upload (1-15 Images)</span>
+          </Button>
+        </div>
 
         <Button
           type="submit"
