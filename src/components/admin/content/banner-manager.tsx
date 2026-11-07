@@ -55,6 +55,12 @@ const CURATED_BACKGROUND_PRESETS = [
   { label: "✨ Flacon Showcase", url: "/images/lifestyle/fragrance-collection.webp" },
   { label: "🌸 Cherry Petals", url: "/images/hero/botanical-sakura-petals.webp" },
   { label: "🍵 White Tea Terraces", url: "/images/hero/botanical-white-tea-terraces.webp" },
+  { label: "🌹 Velvet Rose & Oud", url: "/images/lifestyle/banner-velvet-rose-oud.webp" },
+  { label: "🌙 Midnight Orchid", url: "/images/lifestyle/banner-midnight-orchid.webp" },
+  { label: "🍊 Sunlit Bergamot", url: "/images/lifestyle/banner-citrus-bergamot.webp" },
+  { label: "🪵 Smoked Sandalwood", url: "/images/lifestyle/banner-sandalwood-amber.webp" },
+  { label: "🌲 Himalayan Timberline", url: "/images/hero/botanical-deodar-timberline.webp" },
+  { label: "🌌 Twilight Blossom", url: "/images/hero/himalayan-cherry-blossom-dark-bg.webp" },
 ];
 
 /**
@@ -414,7 +420,7 @@ export function BannerManager({ initialBanners, updatedAt }: BannerManagerProps)
   return (
     <form onSubmit={handleSave} className="space-y-6">
       {/* Top Status & Controls Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border border-border bg-surface px-4 py-3 text-xs text-muted-foreground rounded-xl">
+      <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-3 border border-border bg-surface px-4 py-3 text-xs text-muted-foreground rounded-xl">
         <div className="flex flex-wrap items-center gap-3">
           <div className="flex items-center gap-2">
             <Database className="h-4 w-4 text-accent shrink-0" aria-hidden="true" />
@@ -424,27 +430,27 @@ export function BannerManager({ initialBanners, updatedAt }: BannerManagerProps)
             </span>
           </div>
           <span className="hidden sm:inline-block text-border">•</span>
-          <span className="font-medium text-foreground">
+          <span className="font-medium text-foreground whitespace-nowrap">
             {banners.length} total ({activeCount} active, {shopCount} in Shop Carousel)
           </span>
         </div>
 
-        <div className="flex items-center gap-2.5 self-start sm:self-center">
+        <div className="flex flex-wrap items-center gap-2 sm:gap-2.5 self-start xl:self-center shrink-0">
           <Link
             href="/shop"
             target="_blank"
-            className="inline-flex items-center gap-1.5 border border-border bg-surface-elevated px-3 py-1.5 text-xs font-medium text-foreground rounded-lg transition-colors hover:border-accent"
+            className="inline-flex items-center gap-1.5 border border-border bg-surface-elevated px-3 py-1.5 text-xs font-medium text-foreground rounded-lg transition-colors hover:border-accent whitespace-nowrap shrink-0"
           >
             <span>Preview Shop Carousel</span>
-            <ExternalLink className="h-3 w-3" aria-hidden="true" />
+            <ExternalLink className="h-3 w-3 shrink-0" aria-hidden="true" />
           </Link>
           <Link
             href="/collections"
             target="_blank"
-            className="inline-flex items-center gap-1.5 border border-border bg-surface-elevated px-3 py-1.5 text-xs font-medium text-foreground rounded-lg transition-colors hover:border-accent"
+            className="inline-flex items-center gap-1.5 border border-border bg-surface-elevated px-3 py-1.5 text-xs font-medium text-foreground rounded-lg transition-colors hover:border-accent whitespace-nowrap shrink-0"
           >
             <span>Preview Collections</span>
-            <ExternalLink className="h-3 w-3" aria-hidden="true" />
+            <ExternalLink className="h-3 w-3 shrink-0" aria-hidden="true" />
           </Link>
 
           {/* Hidden input for bulk uploading 1 to 15 images */}
@@ -465,7 +471,7 @@ export function BannerManager({ initialBanners, updatedAt }: BannerManagerProps)
             size="sm"
             disabled={isBulkUploading}
             onClick={() => bulkFileInputRef.current?.click()}
-            className="cursor-pointer border-accent/40 bg-accent/10 text-accent hover:bg-accent/20"
+            className="cursor-pointer border-accent/40 bg-accent/10 text-accent hover:bg-accent/20 whitespace-nowrap shrink-0"
             title="Select 1 to 15 images to automatically create carousel banners"
           >
             {isBulkUploading ? (
@@ -485,7 +491,7 @@ export function BannerManager({ initialBanners, updatedAt }: BannerManagerProps)
             variant="outline"
             size="sm"
             onClick={handleAddBanner}
-            className="cursor-pointer"
+            className="cursor-pointer whitespace-nowrap shrink-0"
           >
             <Plus className="h-3.5 w-3.5" aria-hidden="true" />
             <span>Add Banner</span>

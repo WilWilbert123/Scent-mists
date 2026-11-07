@@ -26,9 +26,9 @@ export default async function AdminDashboardLayout({
 
   return (
     <AdminChatNotificationProvider initialUnreadCount={initialUnreadCount}>
-      <div className="flex min-h-dvh bg-background text-foreground">
+      <div className="min-h-dvh bg-background text-foreground">
         <AdminSidebar />
-        <div className="flex flex-1 flex-col min-w-0">
+        <div className="flex flex-1 flex-col min-w-0 lg:pl-64">
           <AdminHeader
             adminEmail={verification.admin?.email || "Not connected (.env.local)"}
             adminName={verification.admin?.full_name || "House Administrator"}

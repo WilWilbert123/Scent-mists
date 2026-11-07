@@ -76,10 +76,10 @@ export function AdminSidebar() {
   return (
     <aside
       aria-label="Administrator navigation"
-      className="hidden lg:flex lg:w-64 lg:flex-col lg:shrink-0 sticky top-0 h-dvh z-30 border-r border-border bg-surface-elevated text-foreground transition-colors duration-200 dark:bg-[#1B1918] dark:text-[#F5F0EB]"
+      className="hidden lg:flex lg:flex-col lg:fixed lg:inset-y-0 lg:left-0 lg:w-64 lg:z-30 border-r border-border bg-surface-elevated text-foreground transition-colors duration-200 dark:bg-[#1B1918] dark:text-[#F5F0EB]"
     >
       {/* Brand Header */}
-      <div className="flex h-16 items-center justify-between border-b border-border px-5 dark:border-white/10">
+      <div className="flex h-16 shrink-0 items-center justify-between border-b border-border px-5 dark:border-white/10">
         <Link
           href="/admin"
           prefetch={true}
@@ -104,8 +104,11 @@ export function AdminSidebar() {
         </span>
       </div>
 
-      {/* Navigation List */}
-      <nav aria-label="Admin sections" className="flex-1 overflow-y-auto px-3 py-5">
+      {/* Navigation List - Stable on left, internally scrollable on short laptop screens */}
+      <nav
+        aria-label="Admin sections"
+        className="flex-1 min-h-0 overflow-y-auto px-3 py-5 [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-thumb]:bg-border/60 [&::-webkit-scrollbar-thumb]:rounded-full"
+      >
         <ul className="space-y-1">
           {ADMIN_NAV_ITEMS.map((item) => {
             const Icon = ICON_MAP[item.iconName];
@@ -173,7 +176,7 @@ export function AdminSidebar() {
       </nav>
 
       {/* Bottom Links */}
-      <div className="border-t border-border p-4 space-y-2 dark:border-white/10">
+      <div className="shrink-0 border-t border-border p-4 space-y-2 dark:border-white/10">
         <Link
           href="/"
           target="_blank"
