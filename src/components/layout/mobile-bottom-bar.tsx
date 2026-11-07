@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   Home,
   Store,
@@ -15,7 +15,20 @@ import { cn } from "@/lib/utils";
 
 export function MobileBottomBar() {
   const pathname = usePathname();
+  const router = useRouter();
   const [hasActiveOrder, setHasActiveOrder] = useState(false);
+
+  // Pre-warm client cache for all bottom tabs so changing tabs is 0ms instantaneous
+  useEffect(() => {
+    const bottomRoutes = ["/", "/shop", "/fragrance-guide", "/orders", "/contact"];
+    bottomRoutes.forEach((route) => {
+      try {
+        router.prefetch(route);
+      } catch {
+        // ignore
+      }
+    });
+  }, [router]);
 
   // Check if customer has active in-process orders on this device (decoupled from pathname for instant tab switching)
   useEffect(() => {
@@ -114,7 +127,7 @@ export function MobileBottomBar() {
               href={item.href}
               prefetch={true}
               className={cn(
-                "relative flex flex-1 flex-col items-center justify-center py-1.5 transition-all select-none rounded-lg active:scale-95",
+                "relative flex flex-1 flex-col items-center justify-center py-1.5 select-none rounded-lg active:opacity-75 transition-opacity",
                 item.isActive
                   ? "text-accent font-semibold"
                   : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"

@@ -102,7 +102,7 @@ export function ShopBannerCarousel({
                 alt={banner.title}
                 fill
                 priority={index === 0}
-                unoptimized
+                decoding="async"
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 1200px"
                 className="object-cover object-center"
               />

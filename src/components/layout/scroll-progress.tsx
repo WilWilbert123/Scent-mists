@@ -1,19 +1,32 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { motion, useScroll, useSpring } from "framer-motion";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
 
 export function ScrollProgress() {
   const prefersReducedMotion = useReducedMotion();
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsDesktop(window.innerWidth >= 768);
+    check();
+    window.addEventListener("resize", check, { passive: true });
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
+  if (prefersReducedMotion || !isDesktop) return null;
+
+  return <DesktopProgressBar />;
+}
+
+function DesktopProgressBar() {
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
     stiffness: 110,
     damping: 30,
     restDelta: 0.001,
   });
-
-  if (prefersReducedMotion) return null;
 
   return (
     <motion.div

@@ -13,9 +13,14 @@ export interface ProductCardProps {
   editionIndex?: number;
   onOpenDossier?: (product: Product) => void;
   className?: string;
+  priority?: boolean;
 }
 
-export function ProductCard({ product, className }: ProductCardProps) {
+export const ProductCard = React.memo(function ProductCard({
+  product,
+  className,
+  priority = false,
+}: ProductCardProps) {
   const fallbackImage = "/images/products/sakura-mountain-mist.webp";
   const [imgSrc, setImgSrc] = React.useState(
     product.image_url || fallbackImage
@@ -54,8 +59,12 @@ export function ProductCard({ product, className }: ProductCardProps) {
 
   return (
     <article
+      style={{
+        contentVisibility: "auto",
+        containIntrinsicSize: "280px",
+      }}
       className={cn(
-        "group relative flex flex-col justify-between rounded-xl sm:rounded-2xl border border-border/80 bg-surface-elevated transition-all duration-300 hover:border-accent/60 hover:shadow-luxury overflow-hidden",
+        "group relative flex flex-col justify-between rounded-xl sm:rounded-2xl border border-border/80 bg-surface-elevated transition-colors duration-200 sm:transition-all sm:duration-300 hover:border-accent/60 hover:shadow-luxury overflow-hidden",
         className
       )}
     >
@@ -70,25 +79,27 @@ export function ProductCard({ product, className }: ProductCardProps) {
             src={imgSrc}
             alt={product.name}
             fill
-            unoptimized
+            priority={priority}
+            loading={priority ? "eager" : "lazy"}
+            decoding="async"
             onError={() => setImgSrc(fallbackImage)}
-            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 33vw"
-            className="object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
+            sizes="(max-width: 640px) 45vw, (max-width: 1024px) 30vw, 300px"
+            className="object-cover object-center sm:transition-transform sm:duration-700 sm:ease-out sm:group-hover:scale-105"
           />
         </Link>
 
-        {/* Sophisticated Frosted Glass Tags on Image */}
+        {/* Crisp tags on image without GPU backdrop blur shaders */}
         <div className="absolute left-2.5 top-2.5 sm:left-3.5 sm:top-3.5 z-10 flex flex-wrap gap-1.5 pointer-events-none">
-          <span className="rounded-md bg-black/60 backdrop-blur-md px-2.5 py-0.5 text-[9px] sm:text-[10px] font-mono font-medium text-white border border-white/10 shadow-xs">
+          <span className="rounded-md bg-black/75 px-2.5 py-0.5 text-[9px] sm:text-[10px] font-mono font-medium text-white border border-white/10 shadow-xs">
             {product.volume || "50ml"}
           </span>
           {product.is_main_male && (
-            <span className="rounded-md bg-slate-900/80 backdrop-blur-md text-slate-100 border border-slate-700/50 px-2.5 py-0.5 text-[9px] sm:text-[10px] font-medium tracking-wide shadow-xs">
+            <span className="rounded-md bg-slate-900/90 text-slate-100 border border-slate-700/50 px-2.5 py-0.5 text-[9px] sm:text-[10px] font-medium tracking-wide shadow-xs">
               Male
             </span>
           )}
           {product.is_main_female && (
-            <span className="rounded-md bg-rose-950/70 backdrop-blur-md text-rose-200 border border-rose-500/20 px-2.5 py-0.5 text-[9px] sm:text-[10px] font-medium tracking-wide shadow-xs">
+            <span className="rounded-md bg-rose-950/85 text-rose-200 border border-rose-500/20 px-2.5 py-0.5 text-[9px] sm:text-[10px] font-medium tracking-wide shadow-xs">
               Female
             </span>
           )}
@@ -111,7 +122,7 @@ export function ProductCard({ product, className }: ProductCardProps) {
 
         {/* Out of Stock Overlay */}
         {isOutOfStock && (
-          <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/60 backdrop-blur-xs">
+          <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/60">
             <span className="rounded-md bg-red-600 px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-white">
               Out of Stock
             </span>
@@ -198,4 +209,4 @@ export function ProductCard({ product, className }: ProductCardProps) {
       </div>
     </article>
   );
-}
+});
