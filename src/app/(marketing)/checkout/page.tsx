@@ -102,6 +102,16 @@ export default function CheckoutPage() {
       if (res.success && res.order) {
         setCompletedOrder(res.order);
         clearCart();
+        if (typeof window !== "undefined") {
+          window.dispatchEvent(new CustomEvent("scent_mists_orders_updated"));
+          try {
+            const bc = new BroadcastChannel("scent_mists_orders_channel");
+            bc.postMessage({ type: "new_order_placed", order: res.order });
+            bc.close();
+          } catch {
+            // ignore
+          }
+        }
         try {
           const storedOrdersRaw = localStorage.getItem("scent_mists_customer_orders");
           const existingList: string[] = storedOrdersRaw ? JSON.parse(storedOrdersRaw) : [];

@@ -8,6 +8,7 @@ import { ADMIN_NAV_ITEMS } from "@/data/admin-navigation";
 import { BRAND_NAME } from "@/lib/constants";
 import { signOutAdminAction } from "@/actions/auth.actions";
 import { useAdminChatNotification } from "@/context/admin-chat-notification-context";
+import { useAdminOrderNotification } from "@/context/admin-order-notification-context";
 import { cn } from "@/lib/utils";
 import { toast } from "@/components/ui/toast";
 
@@ -16,6 +17,7 @@ export function AdminMobileNav() {
   const pathname = usePathname();
   const router = useRouter();
   const { unreadCount } = useAdminChatNotification();
+  const { pendingOrdersCount } = useAdminOrderNotification();
 
   const handleLogout = async () => {
     setOpen(false);
@@ -73,6 +75,11 @@ export function AdminMobileNav() {
                       )}
                     >
                       <span>{item.label}</span>
+                      {item.href === "/admin/orders" && pendingOrdersCount > 0 && (
+                        <span className="inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-rose-600 px-1 text-[10px] font-bold text-white font-mono animate-pulse">
+                          {pendingOrdersCount > 99 ? "99+" : pendingOrdersCount}
+                        </span>
+                      )}
                       {item.href === "/admin/chat" && unreadCount > 0 && (
                         <span className="inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-rose-600 px-1 text-[10px] font-bold text-white font-mono animate-pulse">
                           {unreadCount > 99 ? "99+" : unreadCount}

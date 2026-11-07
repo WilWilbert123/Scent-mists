@@ -79,6 +79,32 @@ export async function getOrdersAction(): Promise<Order[]> {
   return local;
 }
 
+/**
+ * Fast lightweight action to return pending orders count for admin badges and realtime notifications
+ */
+export async function getPendingOrdersCountAction(): Promise<{
+  success: boolean;
+  pendingCount: number;
+  totalCount: number;
+}> {
+  try {
+    const orders = await getOrdersAction();
+    const pendingCount = orders.filter((o) => o.status === "pending").length;
+    return {
+      success: true,
+      pendingCount,
+      totalCount: orders.length,
+    };
+  } catch (err) {
+    console.warn("[OrderActions] Failed to fetch pending orders count:", err);
+    return {
+      success: false,
+      pendingCount: 0,
+      totalCount: 0,
+    };
+  }
+}
+
 export async function saveOrders(orders: Order[]): Promise<void> {
   writeLocalOrders(orders);
 

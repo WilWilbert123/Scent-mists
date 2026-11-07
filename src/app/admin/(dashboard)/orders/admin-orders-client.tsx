@@ -281,6 +281,16 @@ export function AdminOrdersClient({ initialOrders }: AdminOrdersClientProps) {
       const res = await updateOrderStatusAction(orderId, newStatus);
       if (res.success) {
         toast.success(`Order status updated to "${STATUS_CONFIG[newStatus].label}".`);
+        if (typeof window !== "undefined") {
+          window.dispatchEvent(new CustomEvent("scent_mists_orders_updated"));
+          try {
+            const bc = new BroadcastChannel("scent_mists_orders_channel");
+            bc.postMessage({ type: "order_status_changed" });
+            bc.close();
+          } catch {
+            // ignore
+          }
+        }
       } else {
         toast.error(res.error || "Failed to update order status.");
         refreshOrders(true);
@@ -309,6 +319,16 @@ export function AdminOrdersClient({ initialOrders }: AdminOrdersClientProps) {
           `Updated ${res.updatedCount || idsToUpdate.length} order(s) to "${STATUS_CONFIG[newStatus].label}".`
         );
         setSelectedIds(new Set());
+        if (typeof window !== "undefined") {
+          window.dispatchEvent(new CustomEvent("scent_mists_orders_updated"));
+          try {
+            const bc = new BroadcastChannel("scent_mists_orders_channel");
+            bc.postMessage({ type: "order_status_changed" });
+            bc.close();
+          } catch {
+            // ignore
+          }
+        }
       } else {
         toast.error(res.error || "Failed to bulk update orders.");
         refreshOrders(true);
