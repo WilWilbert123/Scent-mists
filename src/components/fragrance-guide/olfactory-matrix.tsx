@@ -46,12 +46,31 @@ const FAMILY_METADATA: Record<string, FamilyMeta> = {
 };
 
 export function OlfactoryMatrix({ products }: OlfactoryMatrixProps) {
+  // Curate 4 distinct signature creations representing key olfactory families
+  const showcaseProducts = React.useMemo(() => {
+    if (products.length <= 4) return products;
+    const seen = new Set<string>();
+    const curated: Product[] = [];
+    for (const p of products) {
+      if (!seen.has(p.fragrance_family) && curated.length < 4) {
+        seen.add(p.fragrance_family);
+        curated.push(p);
+      }
+    }
+    for (const p of products) {
+      if (curated.length < 4 && !curated.some((c) => c.id === p.id)) {
+        curated.push(p);
+      }
+    }
+    return curated;
+  }, [products]);
+
   const [selectedSlug, setSelectedSlug] = useState<string>(
-    products[0]?.slug || "sakura-and-mountain-mist"
+    showcaseProducts[0]?.slug || products[0]?.slug || "sakura-and-mountain-mist"
   );
 
   const activeProduct =
-    products.find((p) => p.slug === selectedSlug) || products[0];
+    products.find((p) => p.slug === selectedSlug) || showcaseProducts[0] || products[0];
 
   const meta =
     FAMILY_METADATA[activeProduct?.fragrance_family || "Floral Musky"] || {
@@ -62,14 +81,14 @@ export function OlfactoryMatrix({ products }: OlfactoryMatrixProps) {
     };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 sm:space-y-8 w-full max-w-full overflow-hidden">
       {/* 4 Interactive Family Cards */}
       <div
         role="tablist"
         aria-label="Fragrance families"
-        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 w-full"
       >
-        {products.map((product) => {
+        {showcaseProducts.map((product) => {
           const isSelected = product.slug === selectedSlug;
           const familyInfo = FAMILY_METADATA[product.fragrance_family];
 
@@ -81,7 +100,7 @@ export function OlfactoryMatrix({ products }: OlfactoryMatrixProps) {
               aria-selected={isSelected}
               onClick={() => setSelectedSlug(product.slug)}
               className={cn(
-                "group relative flex flex-col justify-between p-6 text-left border transition-all duration-300",
+                "group relative flex flex-col justify-between p-4 sm:p-6 text-left border transition-all duration-300 rounded-xl sm:rounded-none w-full max-w-full overflow-hidden cursor-pointer",
                 isSelected
                   ? "border-accent bg-surface-elevated ring-1 ring-accent/60 shadow-luxury"
                   : "border-border bg-surface hover:border-accent/40 hover:bg-surface-elevated/70"
@@ -95,7 +114,7 @@ export function OlfactoryMatrix({ products }: OlfactoryMatrixProps) {
                 )}
               />
 
-              <div className="space-y-3">
+              <div className="space-y-2.5 sm:space-y-3 w-full min-w-0">
                 <div className="flex items-center justify-between text-xs font-mono uppercase tracking-[0.18em]">
                   <span className="text-accent">
                     {product.is_featured ? "Signature" : "Chapter"}
@@ -105,7 +124,7 @@ export function OlfactoryMatrix({ products }: OlfactoryMatrixProps) {
                   </span>
                 </div>
 
-                <h3 className="font-serif text-xl text-foreground font-medium">
+                <h3 className="font-serif text-lg sm:text-xl text-foreground font-medium break-words">
                   {product.fragrance_family}
                 </h3>
 
@@ -114,13 +133,13 @@ export function OlfactoryMatrix({ products }: OlfactoryMatrixProps) {
                 </p>
               </div>
 
-              <div className="border-t border-border/70 pt-4 mt-6 flex items-center justify-between w-full">
-                <span className="font-serif text-xs text-foreground font-medium truncate max-w-[140px]">
+              <div className="border-t border-border/70 pt-3 sm:pt-4 mt-4 sm:mt-6 flex items-center justify-between w-full min-w-0">
+                <span className="font-serif text-xs text-foreground font-medium truncate flex-1 min-w-0 pr-2">
                   {product.name}
                 </span>
                 <span
                   className={cn(
-                    "text-[10px] uppercase tracking-[0.16em] transition-colors font-mono",
+                    "text-[10px] uppercase tracking-[0.16em] transition-colors font-mono shrink-0",
                     isSelected ? "text-accent" : "text-muted-foreground group-hover:text-foreground"
                   )}
                 >
@@ -134,9 +153,9 @@ export function OlfactoryMatrix({ products }: OlfactoryMatrixProps) {
 
       {/* Selected Fragrance Composition Blueprint */}
       {activeProduct && (
-        <article className="border border-border bg-surface-elevated p-8 sm:p-12 shadow-luxury grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+        <article className="border border-border bg-surface-elevated p-4 sm:p-8 lg:p-12 shadow-luxury grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-12 items-center rounded-2xl sm:rounded-none w-full max-w-full overflow-hidden">
           {/* Flacon Visual */}
-          <div className="lg:col-span-5 relative aspect-[4/5] min-h-[340px] w-full border border-border/80 bg-surface overflow-hidden">
+          <div className="lg:col-span-5 relative aspect-[4/5] min-h-[260px] sm:min-h-[340px] w-full border border-border/80 bg-surface overflow-hidden rounded-xl sm:rounded-none">
             <Image
               src={activeProduct.image_url}
               alt={`${activeProduct.name} flacon`}
@@ -149,18 +168,18 @@ export function OlfactoryMatrix({ products }: OlfactoryMatrixProps) {
               aria-hidden="true"
               className="absolute inset-0 bg-gradient-to-t from-background/70 via-transparent to-transparent pointer-events-none"
             />
-            <div className="absolute bottom-4 left-4 right-4 border border-border/80 bg-background/85 p-3.5 backdrop-blur-xs flex items-center justify-between text-xs">
-              <div>
-                <p className="font-serif text-base text-foreground font-medium">
+            <div className="absolute bottom-3 left-3 right-3 sm:bottom-4 sm:left-4 sm:right-4 border border-border/80 bg-background/85 p-2.5 sm:p-3.5 backdrop-blur-xs flex items-center justify-between text-xs rounded-lg sm:rounded-none">
+              <div className="min-w-0 flex-1 pr-2">
+                <p className="font-serif text-sm sm:text-base text-foreground font-medium truncate">
                   {activeProduct.name}
                 </p>
-                <p className="font-mono text-[10px] text-muted-foreground uppercase tracking-widest">
+                <p className="font-mono text-[9px] sm:text-[10px] text-muted-foreground uppercase tracking-widest truncate">
                   {activeProduct.fragrance_family} • 20% EDP
                 </p>
               </div>
               <Link
                 href={`/products/${activeProduct.slug}`}
-                className="inline-flex items-center gap-1.5 bg-foreground text-background px-3 py-1.5 text-[10px] uppercase tracking-[0.16em] font-medium hover:bg-accent hover:text-white transition-colors"
+                className="inline-flex shrink-0 items-center gap-1.5 bg-foreground text-background px-2.5 py-1 sm:px-3 sm:py-1.5 text-[9px] sm:text-[10px] uppercase tracking-[0.16em] font-medium hover:bg-accent hover:text-white transition-colors"
               >
                 <span>Dossier</span>
                 <ArrowRight className="h-3 w-3" aria-hidden="true" />
@@ -169,9 +188,9 @@ export function OlfactoryMatrix({ products }: OlfactoryMatrixProps) {
           </div>
 
           {/* Three-Tier Pyramid Decomposition */}
-          <div className="lg:col-span-7 space-y-8">
-            <div className="space-y-3 border-b border-border/80 pb-6">
-              <div className="flex flex-wrap items-center justify-between gap-3">
+          <div className="lg:col-span-7 space-y-6 sm:space-y-8 w-full min-w-0">
+            <div className="space-y-2 sm:space-y-3 border-b border-border/80 pb-4 sm:pb-6">
+              <div className="flex flex-wrap items-center justify-between gap-2 sm:gap-3">
                 <span className="font-mono text-xs uppercase tracking-[0.2em] text-accent">
                   Olfactory Family Blueprint
                 </span>
@@ -179,32 +198,32 @@ export function OlfactoryMatrix({ products }: OlfactoryMatrixProps) {
                   {meta.recommendedSeason}
                 </span>
               </div>
-              <h3 className="heading-display text-foreground">
+              <h3 className="font-serif text-2xl sm:text-4xl text-foreground font-normal break-words">
                 {activeProduct.name}
               </h3>
-              <p className="body-editorial text-muted-foreground">
+              <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
                 {activeProduct.description}
               </p>
             </div>
 
             {/* Three-Tier Notes Breakdown */}
-            <div className="space-y-4">
+            <div className="space-y-3 sm:space-y-4">
               <h4 className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted-foreground">
                 Evolution On Skin
               </h4>
 
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
                 {/* Top Notes */}
-                <div className="border border-border bg-surface p-4 space-y-2">
+                <div className="border border-border bg-surface p-3.5 sm:p-4 space-y-2 rounded-xl sm:rounded-none">
                   <div className="flex items-center gap-1.5 text-accent text-xs">
-                    <Wind className="h-3.5 w-3.5" aria-hidden="true" />
+                    <Wind className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
                     <span className="font-mono uppercase tracking-widest text-[10px]">
                       Top (0–15 Min)
                     </span>
                   </div>
                   <ul className="space-y-1 text-xs text-foreground font-serif">
                     {activeProduct.top_notes?.map((n) => (
-                      <li key={n} className="leading-snug">
+                      <li key={n} className="leading-snug break-words">
                         {n}
                       </li>
                     ))}
@@ -212,16 +231,16 @@ export function OlfactoryMatrix({ products }: OlfactoryMatrixProps) {
                 </div>
 
                 {/* Heart Notes */}
-                <div className="border border-border bg-surface p-4 space-y-2">
+                <div className="border border-border bg-surface p-3.5 sm:p-4 space-y-2 rounded-xl sm:rounded-none">
                   <div className="flex items-center gap-1.5 text-accent text-xs">
-                    <Flower2 className="h-3.5 w-3.5" aria-hidden="true" />
+                    <Flower2 className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
                     <span className="font-mono uppercase tracking-widest text-[10px]">
                       Heart (20M–4 Hrs)
                     </span>
                   </div>
                   <ul className="space-y-1 text-xs text-foreground font-serif">
                     {activeProduct.heart_notes?.map((n) => (
-                      <li key={n} className="leading-snug">
+                      <li key={n} className="leading-snug break-words">
                         {n}
                       </li>
                     ))}
@@ -229,16 +248,16 @@ export function OlfactoryMatrix({ products }: OlfactoryMatrixProps) {
                 </div>
 
                 {/* Base Notes */}
-                <div className="border border-border bg-surface p-4 space-y-2">
+                <div className="border border-border bg-surface p-3.5 sm:p-4 space-y-2 rounded-xl sm:rounded-none">
                   <div className="flex items-center gap-1.5 text-accent text-xs">
-                    <Droplets className="h-3.5 w-3.5" aria-hidden="true" />
+                    <Droplets className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
                     <span className="font-mono uppercase tracking-widest text-[10px]">
                       Base (4–12+ Hrs)
                     </span>
                   </div>
                   <ul className="space-y-1 text-xs text-foreground font-serif">
                     {activeProduct.base_notes?.map((n) => (
-                      <li key={n} className="leading-snug">
+                      <li key={n} className="leading-snug break-words">
                         {n}
                       </li>
                     ))}
@@ -248,19 +267,19 @@ export function OlfactoryMatrix({ products }: OlfactoryMatrixProps) {
             </div>
 
             {/* Direct Links */}
-            <div className="flex flex-wrap items-center gap-4 pt-2">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 pt-2 w-full">
               <Link
                 href={`/products/${activeProduct.slug}`}
-                className="inline-flex items-center gap-2 border border-foreground bg-foreground px-6 py-3 text-xs uppercase tracking-[0.18em] text-background transition-colors hover:border-accent hover:bg-accent hover:text-white"
+                className="inline-flex items-center justify-center gap-2 border border-foreground bg-foreground px-4 sm:px-6 py-3 text-xs uppercase tracking-[0.16em] text-background transition-colors hover:border-accent hover:bg-accent hover:text-white rounded-lg sm:rounded-none text-center"
               >
-                <span>Experience {activeProduct.name}</span>
-                <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+                <span className="truncate max-w-[200px] sm:max-w-xs">Experience {activeProduct.name}</span>
+                <ArrowRight className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
               </Link>
               <Link
                 href="/shop"
-                className="inline-flex items-center gap-2 border border-border bg-surface px-6 py-3 text-xs uppercase tracking-[0.18em] text-foreground transition-colors hover:border-accent"
+                className="inline-flex items-center justify-center gap-2 border border-border bg-surface px-4 sm:px-6 py-3 text-xs uppercase tracking-[0.16em] text-foreground transition-colors hover:border-accent rounded-lg sm:rounded-none text-center"
               >
-                <span>Compare All 4 Compositions</span>
+                <span>Compare All Compositions</span>
               </Link>
             </div>
           </div>

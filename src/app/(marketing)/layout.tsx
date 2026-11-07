@@ -34,7 +34,7 @@ export default async function MarketingLayout({
         logoUrl={homepageContent.headerLogoUrl}
         brandName={homepageContent.headerBrandName}
       />
-      <main id="main-content" tabIndex={-1} className="flex-1 pb-14 md:pb-0">
+      <main id="main-content" tabIndex={-1} className="flex-1 pb-14 md:pb-0 overflow-x-hidden w-full max-w-full">
         {children}
       </main>
       <Footer
