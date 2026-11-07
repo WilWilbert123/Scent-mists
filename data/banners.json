@@ -1,20 +1,62 @@
 [
   {
-    "id": "banner-announcement-main",
-    "title": "SCENTS & MISTS — Signature Collection",
-    "ctaHref": "/collections",
-    "ctaText": "Explore Collection",
-    "isActive": false,
-    "subtitle": "Explore our signature high-altitude botanical Eau de Parfum showcase.",
-    "placement": "collection"
+    "id": "banner-1794028737587-0-fppd",
+    "title": "Gemini Generated Image 2d3jza2d3jza2d3j",
+    "ctaHref": "/shop",
+    "ctaText": "Shop Collection",
+    "imageUrl": "/images/lifestyle/banner-velvet-rose-oud.webp",
+    "isActive": true,
+    "subtitle": "Discover iconic floral notes and oil-rich sillage with Cash on Delivery.",
+    "placement": "shop"
   },
   {
-    "id": "banner-editorial-consultation",
-    "title": "Private Olfactory Consultations",
-    "ctaHref": "/contact",
-    "ctaText": "Submit an Enquiry",
-    "isActive": false,
-    "subtitle": "Connect with our fragrance specialists for bespoke scent profiling and press enquiries.",
-    "placement": "collection"
+    "id": "banner-1794028742091-1-8iwr",
+    "title": "Gemini Generated Image 2omb4u2omb4u2omb",
+    "ctaHref": "/shop",
+    "ctaText": "Shop Collection",
+    "imageUrl": "/images/hero/botanical-sakura-petals.webp",
+    "isActive": true,
+    "subtitle": "Discover iconic floral notes and oil-rich sillage with Cash on Delivery.",
+    "placement": "shop"
+  },
+  {
+    "id": "banner-1794028747661-2-5etn",
+    "title": "Gemini Generated Image 3nqvu33nqvu33nqv",
+    "ctaHref": "/shop",
+    "ctaText": "Shop Collection",
+    "imageUrl": "/images/lifestyle/fragrance-collection.webp",
+    "isActive": true,
+    "subtitle": "Discover iconic floral notes and oil-rich sillage with Cash on Delivery.",
+    "placement": "shop"
+  },
+  {
+    "id": "banner-1794028752975-3-guix",
+    "title": "Gemini Generated Image 4mtvh54mtvh54mtv",
+    "ctaHref": "/shop",
+    "ctaText": "Shop Collection",
+    "imageUrl": "/images/lifestyle/banner-sandalwood-amber.webp",
+    "isActive": true,
+    "subtitle": "Discover iconic floral notes and oil-rich sillage with Cash on Delivery.",
+    "placement": "shop"
+  },
+  {
+    "id": "banner-1794028755212-4-z0sc",
+    "title": "Gemini Generated Image 77hu9b77hu9b77hu",
+    "ctaHref": "/shop",
+    "ctaText": "Shop Collection",
+    "imageUrl": "/images/hero/himalayan-cherry-blossom-dark-bg.webp",
+    "isActive": true,
+    "subtitle": "Discover iconic floral notes and oil-rich sillage with Cash on Delivery.",
+    "placement": "shop"
+  },
+  {
+    "id": "banner-1794028757340-5-qlm1",
+    "title": "Gemini Generated Image Gudv15gudv15gudv",
+    "ctaHref": "/shop",
+    "ctaText": "Shop Collection",
+    "imageUrl": "https://xpguejvrmwkchzblzsvx.supabase.co/storage/v1/object/public/site-assets/uploads/1794028756784-gemini_generated_image_gudv15gudv15gudv.webp",
+    "isActive": true,
+    "subtitle": "Discover iconic floral notes and oil-rich sillage with Cash on Delivery.",
+    "placement": "shop"
   }
 ]
