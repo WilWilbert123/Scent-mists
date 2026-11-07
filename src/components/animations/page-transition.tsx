@@ -1,8 +1,7 @@
 "use client";
 
 import React from "react";
-import { motion } from "framer-motion";
-import { useReducedMotion } from "@/hooks/use-reduced-motion";
+import { cn } from "@/lib/utils";
 
 export function PageTransition({
   children,
@@ -11,21 +10,16 @@ export function PageTransition({
   children: React.ReactNode;
   className?: string;
 }) {
-  const prefersReducedMotion = useReducedMotion();
-
-  if (prefersReducedMotion) {
-    return <div className={className}>{children}</div>;
-  }
-
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.2, ease: "easeOut" }}
-      className={className}
+    <div
+      className={cn(
+        "animate-in fade-in duration-150 ease-out will-change-[opacity]",
+        className
+      )}
     >
       {children}
-    </motion.div>
+    </div>
   );
 }
+
 

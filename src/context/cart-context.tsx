@@ -42,12 +42,49 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     DEFAULT_FLASH_SALE_CAMPAIGN
   );
 
-  // Real-time schedule ticker: keeps promotion windows accurate down to the exact second
-  const [currentTime, setCurrentTime] = useState<Date>(new Date());
+  // Intelligent promotion transition scheduler: checks start/end boundaries without continuous 3s interval thrashing
+  const [promoClock, setPromoClock] = useState<number>(() => Date.now());
+
   useEffect(() => {
-    const timer = setInterval(() => setCurrentTime(new Date()), 3000);
-    return () => clearInterval(timer);
-  }, []);
+    if (!flashSaleCampaign?.enabled || !flashSaleCampaign.startDate || !flashSaleCampaign.endDate) {
+      return;
+    }
+
+    const start = new Date(flashSaleCampaign.startDate).getTime();
+    const end = new Date(flashSaleCampaign.endDate).getTime();
+    if (isNaN(start) || isNaN(end)) return;
+
+    const now = Date.now();
+    let timeoutId: ReturnType<typeof setTimeout> | null = null;
+    let intervalId: ReturnType<typeof setInterval> | null = null;
+
+    if (now < start) {
+      const msUntilStart = start - now;
+      if (msUntilStart > 0 && msUntilStart <= 86400000) {
+        // Schedule exact transition for when sale starts
+        timeoutId = setTimeout(() => {
+          setPromoClock(Date.now());
+        }, msUntilStart + 100);
+      }
+    } else if (now <= end) {
+      const msUntilEnd = end - now;
+      if (msUntilEnd > 0 && msUntilEnd <= 86400000) {
+        // Schedule exact transition for when sale ends
+        timeoutId = setTimeout(() => {
+          setPromoClock(Date.now());
+        }, msUntilEnd + 100);
+      }
+      // While active, lightweight fallback check every 30s
+      intervalId = setInterval(() => {
+        setPromoClock(Date.now());
+      }, 30000);
+    }
+
+    return () => {
+      if (timeoutId) clearTimeout(timeoutId);
+      if (intervalId) clearInterval(intervalId);
+    };
+  }, [flashSaleCampaign]);
 
   const refreshSettings = useCallback(async () => {
     try {
@@ -202,12 +239,12 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   const getEffectivePrice = useCallback(
     (product: Product): EffectivePriceResult => {
-      return getProductEffectivePrice(product, flashSaleCampaign, currentTime);
+      return getProductEffectivePrice(product, flashSaleCampaign, new Date(promoClock));
     },
-    [flashSaleCampaign, currentTime]
+    [flashSaleCampaign, promoClock]
   );
 
-  const addItem = (product: Product, quantity = 1) => {
+  const addItem = useCallback((product: Product, quantity = 1) => {
     if (
       product.status === "out_of_stock" ||
       (typeof product.stock === "number" && product.stock <= 0)
@@ -219,51 +256,54 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     }
 
     const maxStock = typeof product.stock === "number" ? product.stock : 99;
-    const existingItem = items.find((item) => item.product.id === product.id);
 
-    if (existingItem) {
-      const currentQty = existingItem.quantity;
-      const newQty = Math.min(currentQty + quantity, maxStock);
-      if (newQty === currentQty) {
-        toast.warning(`Maximum available stock reached (${maxStock} items).`, {
-          id: `cart-max-${product.id}`,
+    setItems((prev) => {
+      const existingItem = prev.find((item) => item.product.id === product.id);
+      if (existingItem) {
+        const currentQty = existingItem.quantity;
+        const newQty = Math.min(currentQty + quantity, maxStock);
+        if (newQty === currentQty) {
+          toast.warning(`Maximum available stock reached (${maxStock} items).`, {
+            id: `cart-max-${product.id}`,
+          });
+          return prev;
+        }
+
+        toast.success(`Updated "${product.name}" quantity (${newQty} in cart).`, {
+          id: `cart-${product.id}`,
         });
-        return;
-      }
-
-      setItems((prev) =>
-        prev.map((item) =>
+        return prev.map((item) =>
           item.product.id === product.id ? { ...item, quantity: newQty } : item
-        )
-      );
-      toast.success(`Updated "${product.name}" quantity (${newQty} in cart).`, {
-        id: `cart-${product.id}`,
-      });
-    } else {
-      const initialQty = Math.min(quantity, maxStock);
-      const newItem: CartItem = {
-        product,
-        quantity: initialQty,
-        selectedSize: product.volume,
-      };
+        );
+      } else {
+        const initialQty = Math.min(quantity, maxStock);
+        const newItem: CartItem = {
+          product,
+          quantity: initialQty,
+          selectedSize: product.volume,
+        };
 
-      setItems((prev) => [...prev, newItem]);
-      toast.success(`Added "${product.name}" to cart.`, {
-        id: `cart-${product.id}`,
-      });
-    }
-  };
+        toast.success(`Added "${product.name}" to cart.`, {
+          id: `cart-${product.id}`,
+        });
+        return [...prev, newItem];
+      }
+    });
+  }, []);
 
-  const removeItem = (productId: string) => {
+  const removeItem = useCallback((productId: string) => {
     setItems((prev) => prev.filter((item) => item.product.id !== productId));
     toast.info("Item removed from cart.", {
       id: `cart-remove-${productId}`,
     });
-  };
+  }, []);
 
-  const updateQuantity = (productId: string, quantity: number) => {
+  const updateQuantity = useCallback((productId: string, quantity: number) => {
     if (quantity <= 0) {
-      removeItem(productId);
+      setItems((prev) => prev.filter((item) => item.product.id !== productId));
+      toast.info("Item removed from cart.", {
+        id: `cart-remove-${productId}`,
+      });
       return;
     }
 
@@ -278,11 +318,11 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         return item;
       })
     );
-  };
+  }, []);
 
-  const clearCart = () => {
+  const clearCart = useCallback(() => {
     setItems([]);
-  };
+  }, []);
 
   const totalItems = useMemo(
     () => items.reduce((sum, item) => sum + item.quantity, 0),
@@ -306,28 +346,47 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const deliveryFee = isFreeDeliveryQualified ? 0 : baseFee;
   const grandTotal = subtotal + deliveryFee;
 
+  const contextValue = useMemo<CartState>(
+    () => ({
+      items,
+      addItem,
+      removeItem,
+      updateQuantity,
+      clearCart,
+      totalItems,
+      subtotal,
+      isCartOpen,
+      setIsCartOpen,
+      deliverySettings,
+      flashSaleCampaign,
+      getEffectivePrice,
+      deliveryFee,
+      isFreeDeliveryQualified,
+      grandTotal,
+      refreshDeliverySettings: refreshSettings,
+      refreshSettings,
+    }),
+    [
+      items,
+      addItem,
+      removeItem,
+      updateQuantity,
+      clearCart,
+      totalItems,
+      subtotal,
+      isCartOpen,
+      deliverySettings,
+      flashSaleCampaign,
+      getEffectivePrice,
+      deliveryFee,
+      isFreeDeliveryQualified,
+      grandTotal,
+      refreshSettings,
+    ]
+  );
+
   return (
-    <CartContext.Provider
-      value={{
-        items,
-        addItem,
-        removeItem,
-        updateQuantity,
-        clearCart,
-        totalItems,
-        subtotal,
-        isCartOpen,
-        setIsCartOpen,
-        deliverySettings,
-        flashSaleCampaign,
-        getEffectivePrice,
-        deliveryFee,
-        isFreeDeliveryQualified,
-        grandTotal,
-        refreshDeliverySettings: refreshSettings,
-        refreshSettings,
-      }}
-    >
+    <CartContext.Provider value={contextValue}>
       {children}
     </CartContext.Provider>
   );

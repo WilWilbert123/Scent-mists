@@ -214,8 +214,12 @@ export function ProductGrid({ products }: ProductGridProps) {
         </div>
       ) : (
         <div className="grid grid-cols-2 gap-3.5 sm:gap-6 lg:grid-cols-3 xl:gap-8">
-          {filteredProducts.map((product) => (
-            <ProductCard key={product.id} product={product} />
+          {filteredProducts.map((product, idx) => (
+            <ProductCard
+              key={product.id}
+              product={product}
+              priority={idx < 4}
+            />
           ))}
         </div>
       )}

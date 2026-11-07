@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import {
-  Search,
+  Home,
   MapPin,
   Compass,
   MessageSquare,
@@ -161,15 +161,15 @@ export function Navbar({
 
         <div className="hidden md:block border-b border-border/50">
           <div className="w-full flex h-16 items-center justify-between px-3 sm:px-4 lg:px-6">
-            {/* Left Utilities (Search, GPS Delivery Pin, Scent Guide) — positioned near the left edge */}
+            {/* Left Utilities (Home, GPS Delivery Pin, Scent Guide) — positioned near the left edge */}
             <div className="flex-1 flex items-center justify-start gap-1 sm:gap-2 text-muted-foreground">
               <Link
-                href="/shop"
+                href="/"
                 className="group flex h-9 w-9 items-center justify-center rounded-full text-muted-foreground hover:text-foreground hover:bg-surface/80 transition-colors cursor-pointer"
-                aria-label="Search perfumes"
-                title="Search perfumes"
+                aria-label="Home"
+                title="Return to Home"
               >
-                <Search className="h-4 w-4 transition-transform group-hover:scale-110" />
+                <Home className="h-4 w-4 transition-transform group-hover:scale-110" />
               </Link>
 
               <Link
