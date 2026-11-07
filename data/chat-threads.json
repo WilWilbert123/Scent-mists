@@ -1,5 +1,45 @@
 [
   {
+    "id": "thread_1794014416741_7sc376",
+    "status": "active",
+    "messages": [
+      {
+        "id": "msg_welcome_intro",
+        "text": "Hi! Welcome to SCENTS & MISTS. How can we help you today?",
+        "sender": "seller",
+        "status": "read",
+        "threadId": "thread_1794014416741_7sc376",
+        "timestamp": "2026-11-07T01:20:18.078Z",
+        "senderName": "SCENTS & MISTS"
+      },
+      {
+        "id": "msg_1794014421802_f1qo2",
+        "text": "Which mists and perfumes are your top bestsellers?",
+        "sender": "customer",
+        "status": "sent",
+        "threadId": "thread_1794014416741_7sc376",
+        "timestamp": "2026-11-07T01:20:21.802Z",
+        "senderName": "Guest Client"
+      },
+      {
+        "id": "msg_1794014424102_069bb",
+        "text": "Our current #1 bestsellers are Clinique - Happy (50ml) and Bvlgari Man Black for men, and VS - Sweet Temptation (50ml) and Secret Angel Gold (85ml) for women! Both are in stock.",
+        "sender": "seller",
+        "status": "read",
+        "threadId": "thread_1794014416741_7sc376",
+        "timestamp": "2026-11-07T01:20:24.102Z",
+        "senderName": "SCENTS & MISTS Concierge"
+      }
+    ],
+    "createdAt": "2026-11-07T01:20:18.077Z",
+    "updatedAt": "2026-11-07T01:20:24.102Z",
+    "customerName": "Guest Client",
+    "lastMessageText": "Our current #1 bestsellers are Clinique - Happy (50ml) and Bvlgari Man Black for men, and VS - Sweet Temptation (50ml) and Secret Angel Gold (85ml) for women! Both are in stock.",
+    "lastMessageSender": "seller",
+    "unreadByAdminCount": 1,
+    "unreadByCustomerCount": 0
+  },
+  {
     "id": "thread_1793971946895_oabhof",
     "status": "active",
     "messages": [
