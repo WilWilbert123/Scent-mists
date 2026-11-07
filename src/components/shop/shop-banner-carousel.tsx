@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
 import type { BannerItemConfig } from "@/types/admin";
+import { createSupabaseBrowserClient } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
 
 interface ShopBannerCarouselProps {
@@ -16,12 +17,75 @@ export function ShopBannerCarousel({
   banners,
   autoSlideInterval = 4500,
 }: ShopBannerCarouselProps) {
+  const [currentBanners, setCurrentBanners] = useState<BannerItemConfig[]>(banners);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const touchStartX = useRef<number | null>(null);
   const touchEndX = useRef<number | null>(null);
 
-  const activeBanners = banners.filter((b) => b.isActive !== false);
+  useEffect(() => {
+    setCurrentBanners(banners);
+  }, [banners]);
+
+  // Real-time synchronization: instant carousel update when admin saves banners in Supabase
+  useEffect(() => {
+    const supabase = createSupabaseBrowserClient();
+    let channel: ReturnType<NonNullable<typeof supabase>["channel"]> | null = null;
+
+    if (supabase) {
+      channel = supabase
+        .channel("shop-banners-carousel-realtime")
+        .on(
+          "postgres_changes",
+          {
+            event: "*",
+            schema: "public",
+            table: "site_content",
+            filter: "content_key=eq.banners",
+          },
+          (payload) => {
+            const row = payload.new as { content_value?: BannerItemConfig[] } | undefined;
+            if (row && Array.isArray(row.content_value)) {
+              const activeShopBanners = row.content_value.filter(
+                (b) => (b.placement === "shop" || !b.placement) && b.isActive !== false && Boolean(b.imageUrl)
+              );
+              if (activeShopBanners.length > 0) {
+                setCurrentBanners(activeShopBanners);
+                setCurrentIndex(0);
+              }
+            }
+          }
+        )
+        .subscribe();
+    }
+
+    let bc: BroadcastChannel | null = null;
+    try {
+      if (typeof window !== "undefined" && "BroadcastChannel" in window) {
+        bc = new BroadcastChannel("scent_mists_banners_channel");
+        bc.onmessage = (event) => {
+          if (event.data?.type === "BANNERS_UPDATED" && Array.isArray(event.data.payload)) {
+            const activeShopBanners = (event.data.payload as BannerItemConfig[]).filter(
+              (b) => (b.placement === "shop" || !b.placement) && b.isActive !== false && Boolean(b.imageUrl)
+            );
+            if (activeShopBanners.length > 0) {
+              setCurrentBanners(activeShopBanners);
+              setCurrentIndex(0);
+            }
+          }
+        };
+      }
+    } catch {
+      // ignore
+    }
+
+    return () => {
+      if (supabase && channel) void supabase.removeChannel(channel);
+      if (bc) bc.close();
+    };
+  }, []);
+
+  const activeBanners = currentBanners.filter((b) => b.isActive !== false && Boolean(b.imageUrl));
 
   const nextSlide = useCallback(() => {
     if (activeBanners.length <= 1) return;

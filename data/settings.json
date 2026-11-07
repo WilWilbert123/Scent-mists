@@ -8,10 +8,10 @@
     "enabled": true,
     "name": "Weekend Fragrance Flash Sale",
     "discountType": "percentage",
-    "discountValue": 50,
-    "startDate": "2026-11-06T00:00",
-    "endDate": "2026-11-06T23:59",
-    "scope": "all",
+    "discountValue": 30,
+    "startDate": "2026-11-13T08:00",
+    "endDate": "2026-11-13T10:00",
+    "scope": "volume_50ml",
     "bannerText": "⚡ FLASH SALE LIVE: Special promotional prices applied to our signature collection!"
   }
 }
